@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ভর্তি তথ্য ও আসন সংখ্যা - বগাচতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসা</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body { 
+      font-family: 'Hind Siliguri', sans-serif; 
+      background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f1f5f9 100%);
+    }
+    .hero-pattern {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <div>
+    <!-- হেডার -->
+    <header class="hero-pattern text-white py-10 px-4 shadow-2xl relative overflow-hidden mb-8 border-b-4 border-amber-400">
+      <div class="max-w-4xl mx-auto text-center space-y-3">
+        <span class="bg-amber-400 text-slate-900 text-xs px-4 py-1.5 rounded-full font-extrabold uppercase tracking-wide inline-block shadow-md">
+          🕌 বগাচতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসা
+        </span>
+        <h1 class="text-3xl font-extrabold text-emerald-50">ভর্তি তথ্য ও নির্দেশিকা (শিশু - ৯ম শ্রেণী)</h1>
+        
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 space-y-8 pb-12">
+
+      <!-- ন্যাভিগেশন বাটন -->
+      <div class="flex justify-between items-center bg-white p-4 rounded-2xl shadow-md border border-emerald-100">
+        <a href="index.html" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs transition flex items-center gap-2 shadow">
+          <i class="fa-solid fa-house"></i> হোম পেজে যান
+        </a>
+        <a href="noticeBord.html" class="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white font-bold rounded-xl text-xs transition flex items-center gap-2">
+          <i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড
+        </a>
+      </div>
+
+      <!-- ১. সাধারণ ভর্তি ও আসন সম্পর্কিত নোটিশ ও নির্দেশিকা -->
+      <div class="bg-white p-6 rounded-2xl shadow-xl border border-emerald-100 space-y-4">
+        <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2 border-b pb-2">
+          <i class="fa-solid fa-circle-exclamation text-amber-500"></i> ভর্তি ও আসন সংক্রান্ত সাধারণ নির্দেশিকা
+        </h2>
+        <div class="space-y-3 text-slate-700 text-xs sm:text-sm leading-relaxed">
+          <div class="p-4 bg-emerald-50 rounded-xl border border-emerald-200 space-y-2">
+            <p class="font-bold text-emerald-900 flex items-center gap-2">
+              <i class="fa-solid fa-check-circle text-emerald-600"></i> ভর্তি প্রক্রিয়া ও আসন সংক্রান্ত গুরুত্বপূর্ণ নিয়মাবলী:
+            </p>
+            <ul class="list-disc list-inside space-y-1.5 text-slate-700 pl-2">
+               <li>প্রতি বছর ১লা ডিসেম্বর থেকে ৩১শে ডিসেম্বর পর্যন্ত ভর্তি নেওয়া হয়।</li>
+              <li>বগাচতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসায় শিশু শ্রেণী থেকে ৯ম শ্রেণী পর্যন্ত প্রতি শিক্ষাবর্ষে সীমিত আসনে ভর্তি নেওয়া হয়।</li>
+              <li>আসন সংখ্যা সীমিত থাকায় মেধার ভিত্তিতে ছাত্র-ছাত্রী নির্বাচন করা হবে। আসন পূর্ণ হয়ে গেলে পরবর্তীতে আর ভর্তি নেওয়া সম্ভব নয়।</li>
+              <li>ভর্তির সময় শিক্ষার্থীর Applicant Copy, জন্মনিবন্ধন সনদ, পাসপোর্ট সাইজ ছবি এবং পিতামাতার জাতীয় পরিচয়পত্রের ফটোকপি সাথে আনতে হবে।</li>
+              <li>নির্দিষ্ট সময়ের মধ্যে ভর্তি ফি ও মাসিক বেতন পরিশোধ করে ভর্তি নিশ্চিত করতে হবে।</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ২. ক্লাস ভিত্তিক আসন সংখ্যা ও ফি চার্ট (শিশু - ১০ম শ্রেণী) -->
+      <div class="bg-white p-6 rounded-2xl shadow-xl border border-emerald-100 space-y-4">
+        <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2 border-b pb-2">
+          <i class="fa-solid fa-table-cells text-emerald-600"></i> ক্লাস ভিত্তিক আসন সংখ্যা ও ফি (শিশু - ১০ম শ্রেণী)
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <thead>
+              <tr class="bg-emerald-700 text-white">
+                <th class="p-3 rounded-l-xl">ক্লাস</th>
+                <th class="p-3">সর্বমোট আসন</th>
+                <th class="p-3">ভর্তি ফি</th>
+                <th class="p-3 rounded-r-xl">মাসিক বেতন</th>
+              </tr>
+            </thead>
+            <tbody id="dynamicClassTableBody" class="divide-y divide-emerald-100 text-slate-700">
+              <!-- জাভাস্ক্রিপ্ট দিয়ে ডাইনামিক ডেটা লোড হবে -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ৩. বর্তমান ভর্তি ঘোষণা ও নোটিশ সেকশন -->
+      <div id="admissionNoticeBoardContainer" class="space-y-4">
+        <!-- ব্যাকএন্ড থেকে ডাইনামিক নোটিশ ও ফাইল ডাউনলোড অপশন এখানে লোড হবে -->
+      </div>
+
+    </main>
+  </div>
+
+<script>
+  function loadPublicAdmissionNotices() {
+      const container = document.getElementById('admissionNoticeBoardContainer');
+      if (!container) return;
+
+      fetch('http://localhost:5000/api/notices')
+        .then(res => res.json())
+        .then(response => {
+          const notices = Array.isArray(response) ? response : (response.data || []);
+          
+          container.innerHTML = '';
+
+          if (notices.length === 0) {
+            container.innerHTML = `
+              <div class="bg-white p-6 rounded-2xl shadow-xl border border-emerald-100 space-y-4">
+                <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2 border-b pb-2">
+                  <i class="fa-solid fa-bullhorn text-emerald-600"></i> বর্তমান ভর্তি ঘোষণা ও নোটিশ
+                </h2>
+                <div class="text-center py-6 text-slate-400 text-sm italic">
+                  বর্তমানে কোনো বিশেষ ভর্তি ঘোষণা বা নোটিশ প্রকাশিত হয়নি।
+                </div>
+              </div>
+            `;
+            return;
+          }
+
+          let noticesHtml = `
+            <div class="bg-white p-6 rounded-2xl shadow-xl border border-emerald-100 space-y-4">
+              <h2 class="text-lg font-bold text-emerald-900 flex items-center gap-2 border-b pb-2">
+                <i class="fa-solid fa-bullhorn text-emerald-600"></i> বর্তমান ভর্তি ঘোষণা ও নোটিশসমূহ
+              </h2>
+              <div class="space-y-4">
+          `;
+
+          notices.forEach(notice => {
+            let fileSection = '';
+            if (notice.fileUrl) {
+              if (notice.fileUrl.match(/\.(jpeg|jpg|gif|png)$/) || notice.fileUrl.startsWith('data:image/')) {
+                fileSection = `
+                  <div class="mt-3 pt-3 border-t border-slate-100">
+                    <img src="${notice.fileUrl}" alt="Notice Image" class="rounded-xl max-h-96 mx-auto shadow-md border" />
+                    <div class="mt-2 text-center">
+                      <a href="${notice.fileUrl}" download="notice-image" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-xl shadow transition">
+                        <i class="fa-solid fa-download"></i> ছবি ডাউনলোড করুন
+                      </a>
+                    </div>
+                  </div>
+                `;
+              } else {
+                fileSection = `
+                  <div class="mt-3 pt-3 border-t border-slate-100 flex items-center gap-2">
+                    <a href="${notice.fileUrl}" download="notice-document" target="_blank" class="inline-flex items-center gap-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-xl shadow transition">
+                      <i class="fa-solid fa-file-arrow-down"></i> ফাইল/ডকুমেন্ট দেখুন ও ডাউনলোড করুন
+                    </a>
+                  </div>
+                `;
+              }
+            }
+
+            noticesHtml += `
+              <div class="bg-slate-50 p-5 rounded-xl border border-emerald-100 space-y-3 shadow-xs">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs text-emerald-700 font-semibold bg-emerald-100 px-3 py-1 rounded-full">${notice.date || ''}</span>
+                  ${notice.category ? `<span class="text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full"><i class="fa-solid fa-circle-info"></i> ${notice.category}</span>` : ''}
+                </div>
+                
+                <h3 class="text-base font-bold text-emerald-950">${notice.title}</h3>
+                
+                <p class="text-sm text-slate-700 whitespace-pre-line leading-relaxed">${notice.description || ''}</p>
+                
+                ${fileSection}
+              </div>
+            `;
+          });
+
+          noticesHtml += `</div></div>`;
+          container.innerHTML = noticesHtml;
+        })
+        .catch(err => {
+          console.error('Error loading public notices:', err);
+        });
+    }
+</script>
+<script>
+  // LocalStorage থেকে শ্রেণীভিত্তিক আসন ও ফির তথ্য লোড করার ফাংশন
+function loadClassAdmissionData() {
+  const tableBody = document.getElementById('dynamicClassTableBody');
+  if (!tableBody) return;
+
+  // অ্যাডমিন প্যানেল থেকে সেভ হওয়া ডেটা পড়া
+  const savedData = JSON.parse(localStorage.getItem('siteAdmissionFeesData'));
+
+  // যদি অ্যাডমিন থেকে কোনো ডেটা সেভ না থাকে তবে ডিফল্ট ডেটা দেখাবে
+  const classDataList = savedData || [
+    { className: 'শিশু শ্রেণী', totalSeats: '৪০টি', admissionFee: '৫০০ টাকা', monthlyFee: '২০০ টাকা' },
+    { className: '১ম শ্রেণী', totalSeats: '৪৫টি', admissionFee: '৬০০ টাকা', monthlyFee: '২৫০ টাকা' },
+    { className: '২য় শ্রেণী', totalSeats: '৪৫টি', admissionFee: '৬০০ টাকা', monthlyFee: '২৫০ টাকা' },
+    { className: '৩য় শ্রেণী', totalSeats: '৫০টি', admissionFee: '৭০টি টাকা', monthlyFee: '৩০০ টাকা' },
+    { className: '৪র্থ শ্রেণী', totalSeats: '৫০টি', admissionFee: '৭০০ টাকা', monthlyFee: '৩০০ টাকা' },
+    { className: '৫ম শ্রেণী', totalSeats: '৫০টি', admissionFee: '৮০০ টাকা', monthlyFee: '৩৫০ টাকা' },
+    { className: '৬ষ্ঠ শ্রেণী', totalSeats: '৬০টি', admissionFee: '১০০০ টাকা', monthlyFee: '৪০০ টাকা' },
+    { className: '৭ম শ্রেণী', totalSeats: '৬০টি', admissionFee: '১০০০ টাকা', monthlyFee: '৪০০ টাকা' },
+    { className: '৮ম শ্রেণী', totalSeats: '৬০টি', admissionFee: '১২০০ টাকা', monthlyFee: '৪৫০ টাকা' },
+    { className: '৯ম শ্রেণী', totalSeats: '৫০টি', admissionFee: '১৫০০ টাকা', monthlyFee: '৫০০ টাকা' },
+    { className: '১০ম শ্রেণী', totalSeats: '৫০টি', admissionFee: '১৫০০ টাকা', monthlyFee: '৫০০ টাকা' }
+  ];
+
+  tableBody.innerHTML = '';
+
+  classDataList.forEach((item) => {
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-emerald-50/50 transition border-b border-emerald-100';
+    tr.innerHTML = `
+      <td class="p-3 font-semibold text-emerald-950">${item.className}</td>
+      <td class="p-3">${item.totalSeats}</td>
+      <td class="p-3 font-medium text-emerald-700">${item.admissionFee}</td>
+      <td class="p-3 font-medium text-emerald-700">${item.monthlyFee}</td>
+    `;
+    tableBody.appendChild(tr);
+  });
+}
+
+// পেজ লোড হলে রান হবে
+window.addEventListener('DOMContentLoaded', () => {
+  loadClassAdmissionData();
+  loadPublicAdmissionNotices(); // আপনার আগের নোটিশ লোড ফাংশন
+});
+
+// অ্যাডমিন প্যানেল থেকে কোনো পরিবর্তন হলে পেজ না রিফ্রেশ করেই রিয়েল-টাইমে আপডেট হবে
+window.addEventListener('storage', (e) => {
+  if (e.key === 'siteAdmissionFeesData') {
+    loadClassAdmissionData();
+  }
+});
+</script>
+
+  <!-- FOOTER -->
+  <footer class="bg-emerald-950 text-white mt-10 shadow-inner">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+              
+              <!-- ১. প্রতিষ্ঠানের অবস্থান ও ম্যাপ -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>🗺️</span> প্রতিষ্ঠানের অবস্থান
+                  </h3>
+                  <div class="rounded-xl overflow-hidden border border-amber-500/30 shadow-md">
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5357.967221678154!2d92.25207829498358!3d22.96056772557256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3752bd55e5422bfd%3A0x3a5f51cbe97c5be0!2z4Kas4KaX4Ka-4Kaa4Kak4KawIOCmrOCmvuCnn-CmpOCngeCmsiDgprngp4Hgpqbgpr4g4KaG4KaH4Kah4Ka_4Kef4Ka-4KayIOCmpuCmvuCmluCmv-CmsiDgpq7gpr7gpqbgp43gprDgpr7gprjgpr4!5e0!3m2!1sen!2sbd!4v1786909078940!5m2!1sen!2sbd" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                  </div>
+                  <p class="text-xs text-emerald-100 mt-3 flex items-start gap-2">
+                      <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      </svg>
+                      <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                          <span id="indexAddress">১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি</span>
+                      </a>
+                  </p>
+              </div>
+
+              <!-- ২. শিক্ষা বোর্ডসমূহ -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>🎓</span> সকল শিক্ষা বোর্ড
+                  </h3>
+                  <ul class="space-y-2.5 text-sm text-emerald-100">
+                      <li><a href="https://moedu.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• শিক্ষা মন্ত্রণালয়</a></li>
+                      <li><a href="https://bmeb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• বাংলাদেশ মাদ্রাসা শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://dhakaeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• ঢাকা শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://chittagongeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• চট্টগ্রাম শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://rajshahieducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• রাজশাহী শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://nctb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• এনসিটিবি (পাঠ্যপুস্তক)</a></li>
+                  </ul>
+              </div>
+
+              <!-- ৩. গুরুত্বপূর্ণ তথ্য -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>💡</span> গুরুত্বপূর্ণ তথ্য
+                  </h3>
+                  <ul class="space-y-2.5 text-sm text-emerald-100">
+                      <li><a href="admission.html" class="hover:text-amber-300 transition">• ভর্তি বিজ্ঞপ্তি</a></li>
+                      <li><a href="result.html" class="hover:text-amber-300 transition">• পরীক্ষার ফলাফল</a></li>
+                      <li><a href="noticeBord.html" class="hover:text-amber-300 transition">• ক্লাসরুটিন ও নোটিশ</a></li>
+                      <li><a href="teacher.html" class="hover:text-amber-300 transition">• শিক্ষক কর্মচারীদের তথ্য</a></li>
+                      <li><a href="library.html" class="hover:text-amber-300 transition">• বগাচতর আলোর ভুবন পাঠাগার</a></li>
+                      <li><a href="about.html" class="hover:text-amber-300 transition">• মাদ্রাসা পরিচিতি</a></li>
+                  </ul>
+              </div>
+
+              <!-- ৪. যোগাযোগ ও সোশ্যাল মিডিয়া -->
+              <div class="md:col-span-1 space-y-4">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>📞</span> যোগাযোগ
+                  </h3>
+                  <div class="space-y-3 text-sm">
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-location-dot text-amber-400"></i>
+                          <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                              <span id="indexAddressLinkText">১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি</span>
+                          </a>
+                      </p>
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-phone text-amber-400"></i>
+                          <span id="indexPhone">০১৭০০-০০০০০০</span>
+                      </p>
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-envelope text-amber-400"></i>
+                          <a id="indexEmailLink" href="mailto:info@madrasah.com" class="hover:text-amber-300 transition underline"><span id="indexEmail">info@madrasah.com</span></a>
+                      </p>
+
+                      <!-- সোশ্যাল মিডিয়া আইকনসমূহ -->
+                      <div class="flex items-center gap-3 pt-2">
+                          <a id="indexFacebook" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition shadow">
+                              <i class="fa-brands fa-facebook-f"></i>
+                          </a>
+                          <a id="indexWhatsapp" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition shadow">
+                              <i class="fa-brands fa-whatsapp"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+
+          <div class="mt-10 pt-6 border-t border-emerald-900 flex flex-col sm:flex-row justify-between items-center text-xs text-emerald-300 gap-2 text-center sm:text-left">
+              <p>&copy; ২০২৬ বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা। সর্বস্বত্ব সংরক্ষিত।</p>
+              <p>কারিগরি সহায়তায়: <span class="font-bold text-amber-300">Md Anamul Hoq</span></p>
+          </div>
+      </div>
+  </footer>
+
+  <!-- Script to load dynamic details from localStorage -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedContact = JSON.parse(localStorage.getItem('siteContactInfo'));
+      if (savedContact) {
+        if (document.getElementById('indexAddress') && savedContact.address) {
+          document.getElementById('indexAddress').innerText = savedContact.address;
+        }
+        if (document.getElementById('indexAddressLinkText') && savedContact.address) {
+          document.getElementById('indexAddressLinkText').innerText = savedContact.address;
+        }
+        if (document.getElementById('indexPhone') && savedContact.phone) {
+          document.getElementById('indexPhone').innerText = savedContact.phone;
+        }
+        if (document.getElementById('topBarPhone') && savedContact.phone) {
+          document.getElementById('topBarPhone').innerText = savedContact.phone;
+        }
+        if (document.getElementById('indexEmail') && savedContact.email) {
+          document.getElementById('indexEmail').innerText = savedContact.email;
+          const emailLinkEl = document.getElementById('indexEmailLink');
+          if(emailLinkEl) {
+            emailLinkEl.href = 'mailto:' + savedContact.email;
+          }
+        }
+        if (document.getElementById('topBarEiin') && savedContact.eiin) {
+          document.getElementById('topBarEiin').innerText = savedContact.eiin;
+        }
+        if (document.getElementById('topBarEstablished') && savedContact.established) {
+          document.getElementById('topBarEstablished').innerText = savedContact.established;
+        }
+
+        const fbEl = document.getElementById('indexFacebook');
+        if (fbEl && savedContact.facebook) {
+          fbEl.href = savedContact.facebook;
+          fbEl.style.display = 'flex';
+        } else if (fbEl) {
+          fbEl.style.display = 'none';
+        }
+
+        const waEl = document.getElementById('indexWhatsapp');
+        if (waEl && savedContact.whatsapp) {
+          waEl.href = savedContact.whatsapp;
+          waEl.style.display = 'flex';
+        } else if (waEl) {
+          waEl.style.display = 'none';
+        }
+      }
+    });
+  </script>
+
+
+</body>
+</html>

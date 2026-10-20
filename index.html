@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা</title>
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Font (Hind Siliguri for Bangla) -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  
+  <style>
+    body { 
+      font-family: 'Hind Siliguri', sans-serif; 
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+   <!-- TOP BAR (Marquee & Dynamic EIIN/Established) -->
+    <div class="bg-emerald-900 text-emerald-100 text-xs sm:text-sm py-2 px-6 overflow-hidden">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <!-- চলমান টেক্সট (Marquee) -->
+            <div class="w-full sm:w-2/3 overflow-hidden whitespace-nowrap">
+                <marquee behavior="scroll" direction="left" scrollamount="5" class="font-medium" id="topBarMarquee">
+                    বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা 
+                </marquee>
+            </div>
+            <!-- ডাইনামিক EIIN ও স্থাপিত সাল -->
+            <div class="w-full sm:w-auto text-center sm:text-right shrink-0">
+                ইআইআইএন (EIIN): <span id="topBarEiin">১২৩৪৫৬</span> | স্থাপিত: <span id="topBarEstablished">২০১৫ ইং</span>
+            </div>
+        </div>
+    </div>
+    <!-- হোম পেজে লোকালস্টোরেজ থেকে ডেটা লোড করার স্ক্রিপ্ট (index.html এর নিচে বা <script> ট্যাগ এর মধ্যে দিন) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // সেভ করা ডেটা লোড করা, না থাকলে ডিফল্ট দেখাবে
+            const savedMarquee = localStorage.getItem('school_marquee_text');
+            const savedEiin = localStorage.getItem('school_eiin');
+            const savedEstablished = localStorage.getItem('school_established');
+
+            if (savedMarquee) {
+                document.getElementById('topBarMarquee').innerText = savedMarquee;
+            }
+            if (savedEiin) {
+                document.getElementById('topBarEiin').innerText = savedEiin;
+            }
+            if (savedEstablished) {
+                document.getElementById('topBarEstablished').innerText = savedEstablished;
+            }
+        });
+    </script>
+
+
+
+  <!-- NAVBAR -->
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 h-20 flex items-center justify-between gap-2">
+    
+    <!-- Logo & Name (FULL NAME VISIBLE ON MOBILE) -->
+    <a href="index.html" class="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+      <img src="logo.jpg" alt="বগাছতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা লোগো" class="w-10 h-10 sm:w-12 sm:h-12 object-contain shrink-0" />
+      <div class="flex-1 min-w-0">
+        <h1 class="text-xs sm:text-base font-bold text-emerald-900 leading-snug break-words">
+          বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা
+        </h1>
+        <p class="text-[10px] sm:text-xs text-slate-500 leading-tight break-words">Bogachator Baitul Huda Ideal Dakhil Madrasa</p>
+      </div>
+    </a>
+    
+    <!-- Desktop Menu Links -->
+    <div class="hidden lg:flex items-center space-x-6 text-sm font-semibold text-slate-700">
+      <a href="index.html" class="hover:text-emerald-700 transition">হোম</a>
+      <a href="about.html" class="hover:text-emerald-700 transition">আমাদের সম্পর্কে</a>
+      <a href="#academics" class="hover:text-emerald-700 transition">শিক্ষা কার্যক্রম</a>
+      <a href="noticeBord.html" class="hover:text-emerald-700 transition">নোটিশ বোর্ড</a>
+      <a href="gallery.html" class="hover:text-emerald-700 transition">গ্যালারি</a>
+      <a href="teacher.html" class="hover:text-emerald-700 transition">শিক্ষক</a>
+      <a href="result.html" class="hover:text-emerald-700 transition">ফলাফল</a>
+      <a href="admission.html" class="hover:text-emerald-700 transition">ভর্তি ফরম</a>
+      <a href="admin.html?action=login" class="inline-block group" title="এডমিন প্যানেল">
+        <img src="anamul.jpg" alt="Admin" class="w-10 h-10 rounded-full object-cover border-2 border-emerald-600 group-hover:scale-105 group-hover:border-emerald-800 transition shadow-sm" />
+      </a>
+    </div>
+
+    <!-- Mobile Menu Button & Admin Profile for Mobile -->
+    <div class="flex items-center space-x-2 sm:space-x-3 lg:hidden shrink-0">
+      <a href="admin.html?action=login" class="inline-block shrink-0 group" title="এডমিন প্যানেল">
+        <img src="anamul.jpg" alt="Admin" class="w-9 h-9 sm:w-10 sm:h-10 aspect-square rounded-full object-cover border-2 border-emerald-600 transition shadow-sm" />
+      </a>
+      <button id="mobileMenuBtn" class="text-emerald-900 text-2xl focus:outline-none p-1">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Dropdown Menu -->
+  <div id="mobileMenu" class="hidden lg:hidden bg-white border-b border-slate-200 px-6 py-4 space-y-3 shadow-lg">
+    <a href="index.html" class="block text-sm font-semibold text-slate-700 hover:text-emerald-700 transition">হোম</a>
+    <a href="about.html" class="block text-sm font-semibold text-slate-700 hover:text-emerald-700 transition">আমাদের সম্পর্কে</a>
+    <a href="#academics" class="block text-sm font-semibold text-slate-700 hover:text-emerald-700 transition">শিক্ষা কার্যক্রম</a>
+    <a href="noticeBord.html" class="block text-sm font-semibold text-slate-700 hover:text-emerald-700 transition">নোটিশ বোর্ড</a>
+    <a href="gallery.html" class="block text-sm font-semibold text-slate-700 hover:text-emerald-700 transition">গ্যালারি</a>
+    <a href="teacher.html" class="block text-sm font-semibold text-slate-700 hover:text-emerald-700 transition">শিক্ষক</a>
+    <a href="result.html" class="block text-sm font-semibold text-slate-700 hover:text-emerald-700 transition">ফলাফল</a>
+    <a href="admission.html" class="block text-sm font-semibold text-slate-700 hover:text-emerald-700 transition">ভর্তির তথ্য</a>
+  </div>
+</nav>
+
+<!-- Mobile Menu Script -->
+<script>
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  mobileMenuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+    const icon = mobileMenuBtn.querySelector('i');
+    if(mobileMenu.classList.contains('hidden')) {
+      icon.classList.remove('fa-xmark');
+      icon.classList.add('fa-bars');
+    } else {
+      icon.classList.remove('fa-bars');
+      icon.classList.add('fa-xmark');
+    }
+  });
+</script>
+
+
+<!-- HERO BANNER SECTION -->
+<section id="home" class="relative w-full bg-slate-900 text-white bg-contain md:bg-cover bg-center bg-no-repeat flex items-center justify-center min-h-[420px] sm:min-h-[520px] lg:min-h-[600px] px-4 sm:px-6" style="background-image: linear-gradient(to bottom, rgba(6, 78, 59, 0.45) 0%, rgba(15, 23, 42, 0.25) 50%, rgba(15, 23, 42, 0.70) 100%), url('bm.jpg');">
+  <div class="max-w-7xl mx-auto w-full h-full flex flex-col justify-between py-6 sm:py-10 relative z-10">
+    
+    <!-- ১. ওপর থেকে ৮০ পিক্সেল নিচে হেডিং -->
+    <div class="text-center lg:text-left space-y-2 sm:space-y-3 pt-[80px]">
+      <div>
+        <span class="inline-block px-3 py-1 rounded-full bg-emerald-500/40 text-emerald-100 border border-emerald-400/50 text-[11px] sm:text-xs font-bold tracking-wide uppercase shadow-md backdrop-blur-md">
+          দ্বীনি ও আধুনিক শিক্ষার সমন্বয়
+        </span>
+      </div>
+      <h2 class="text-xl sm:text-3xl lg:text-4xl font-extrabold leading-snug sm:leading-tight drop-shadow-xl text-white">
+        সুশিক্ষা ও নৈতিক চরিত্র গঠনে এক বিশ্বস্ত প্রতিষ্ঠান
+      </h2>
+    </div>
+
+    <!-- ২. ফাঁকা স্পেস: পুরো ব্যানার ক্লিয়ার রাখার জন্য -->
+
+    <!-- ৩. নিচে বিবরণী ও বাটন -->
+    <div class="text-center lg:text-left space-y-3 sm:space-y-4 pt-10 sm:pt-16">
+      <p class="text-emerald-50 text-xs sm:text-base lg:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed drop-shadow-lg font-medium">
+        বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসায় কুরআন-সুন্নাহর শিক্ষার পাশাপাশি সাধারণ শিক্ষায় শিক্ষার্থীদের আদর্শ নাগরিক হিসেবে গড়ে তোলা হয়।
+      </p>
+      <div class="flex flex-row gap-3 justify-center lg:justify-start pt-1">
+        <a href="admission-info.html" class="px-5 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-base rounded-lg sm:rounded-xl bg-amber-500 hover:bg-amber-400 font-bold text-slate-900 shadow-xl transition text-center">
+          ভর্তির তথ্য
+        </a>
+        <a href="about.html" class="px-5 sm:px-8 py-2.5 sm:py-3.5 text-xs sm:text-base rounded-lg sm:rounded-xl bg-white/20 hover:bg-white/30 border border-white/40 font-semibold text-white transition text-center backdrop-blur-md shadow-lg">
+          বিস্তারিত জানুন
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AUDIO SECTION -->
+<section class="py-2 px-3 sm:py-3 sm:px-4 md:py-4 md:px-6 bg-emerald-950 border-b border-amber-500/10">
+    <div class="max-w-4xl mx-auto">
+        
+        <!-- হেডিং সেকশন -->
+        <div class="text-center mb-2.5 sm:mb-4">
+            <span class="inline-flex items-center gap-1.5 bg-amber-600/10 text-amber-400 text-[10px] sm:text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-amber-500/20">
+                <i class="fa-solid fa-waveform-lines text-amber-500 text-[10px]"></i>
+                শ্রব্য পরিবেশনা
+            </span>
+            <h2 class="text-lg sm:text-xl md:text-2xl font-black text-amber-300 mt-1 tracking-tight">
+                🎧 হামদ-নাত অডিও
+            </h2>
+            <p class="text-emerald-200 text-[11px] sm:text-xs mt-0.5 max-w-xl mx-auto opacity-90 leading-tight">
+                বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসার শিক্ষার্থীদের কণ্ঠে মধুর সুর
+            </p>
+        </div>
+
+        <!-- নাত অডিও প্লেয়ার কন্টেইনার -->
+        <div class="bg-emerald-900 border border-amber-500/30 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 shadow-lg ring-1 ring-black/20">
+            
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-4">
+                
+                <!-- নাত অডিও তথ্য -->
+                <div class="flex items-center gap-2.5 w-full sm:w-auto">
+                    <div class="bg-amber-500 text-emerald-950 rounded-full text-sm sm:text-base shadow-sm shrink-0 flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 ring-2 ring-amber-500/20">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+                    <div class="flex-grow min-w-0">
+                        <h3 class="font-extrabold text-amber-300 text-xs sm:text-sm md:text-base tracking-tight truncate">
+                            মধুর নাত-এ-রাসূল (সা.)
+                        </h3>
+                        <p class="text-[10px] sm:text-[11px] text-emerald-100 opacity-80 truncate">
+                            পরিবেশনায়: [শিক্ষার্থীর নাম]
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- অডিও প্লেয়ার (উচ্চতা 30px) -->
+                <div class="w-full sm:w-60 md:w-72 flex-grow max-w-md">
+                    <audio controls class="w-full h-[30px] rounded-full accent-amber-500 shadow-sm custom-audio-player">
+                        <source src="Ar-Rahman.mp3" type="audio/mpeg">
+                        আপনার ব্রাউজারটি অডিও প্লেয়ার সমর্থন করছে না।
+                    </audio>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- অডিও প্লেয়ারের কাস্টম স্টাইলিং -->
+<style>
+    audio.custom-audio-player::-webkit-media-controls-panel {
+        background-color: #064e3b; /* bg-emerald-900 */
+    }
+    audio.custom-audio-player::-webkit-media-controls-current-time-display,
+    audio.custom-audio-player::-webkit-media-controls-time-remaining-display {
+        color: #fcd34d; /* text-amber-300 */
+        font-size: 11px;
+    }
+    audio.custom-audio-player::-webkit-media-controls-play-button,
+    audio.custom-audio-player::-webkit-media-controls-mute-button {
+        background-color: #f59e0b; /* bg-amber-500 */
+        border-radius: 50%;
+        transform: scale(0.85);
+    }
+    audio.custom-audio-player::-webkit-media-controls-play-button:hover,
+    audio.custom-audio-player::-webkit-media-controls-mute-button:hover {
+        background-color: #d97706; /* bg-amber-600 */
+    }
+</style>
+ <!-- news  SECTION -->
+
+
+ 
+
+  <!-- PHOTO GALLERY AUTO-SLIDER SECTION -->
+  <div class="max-w-full mx-auto px-4 py-12 bg-gradient-to-b from-emerald-50/60 via-white to-emerald-50/40 rounded-3xl shadow-inner my-6">
+    <div class="max-w-xl mx-auto text-center mb-10 bg-white/80 backdrop-blur-md py-6 px-6 rounded-2xl shadow-sm border border-emerald-100">
+      <h2 class="text-3xl font-extrabold text-emerald-950 tracking-tight">কার্যক্রমের ফটো গ্যালারি</h2>
+      <p class="text-sm text-slate-600 mt-2">আমাদের মাদ্রাসার স্থিরচিত্রের স্বয়ংক্রিয় স্লাইডশো</p>
+    </div>
+    <div class="max-w-7xl mx-auto relative overflow-hidden w-full py-2">
+      <div id="autoSliderTrack" class="flex gap-4 transition-transform duration-700 ease-in-out"></div>
+    </div>
+  </div>
+
+  <script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const defaultPhotos = [
+      { url: "https://images.unsplash.com/photo-1542816417-0983cbe82752?q=80&w=600&auto=format&fit=crop", title: "কুরআন তিলওয়াত প্রতিযোগিতা" },
+      { url: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=600&auto=format&fit=crop", title: "আধুনিক সুসজ্জিত ক্লাসরুম" },
+      { url: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=600&auto=format&fit=crop", title: "বার্ষিক ক্রীড়া প্রতিযোগিতা" },
+      { url: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=600&auto=format&fit=crop", title: "কম্পিউটার ল্যাব" }
+    ];
+
+    // অ্যাডমিন প্যানেলের সাথে সিঙ্ক রাখার জন্য 'sitePhotosList' ব্যবহার করা হলো
+    let allPhotos = JSON.parse(localStorage.getItem('sitePhotosList')) || JSON.parse(localStorage.getItem('sitePhotos')) || defaultPhotos;
+    if (!Array.isArray(allPhotos) || allPhotos.length === 0) {
+      allPhotos = defaultPhotos;
+    }
+
+    const sliderTrack = document.getElementById('autoSliderTrack');
+    if (sliderTrack) {
+      sliderTrack.innerHTML = '';
+      const extendedPhotos = [...allPhotos, ...allPhotos];
+      
+      extendedPhotos.forEach((photo) => {
+        let photoUrl = typeof photo === 'string' ? photo : (photo.url || '');
+        let photoTitle = typeof photo === 'object' && photo.title ? photo.title : "মাদ্রাসা কার্যক্রম";
+
+        sliderTrack.innerHTML += `
+          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 shrink-0 px-1">
+            <div class="bg-white p-1.5 rounded-2xl shadow-md border border-emerald-100 hover:shadow-xl transition transform duration-500">
+              <div class="overflow-hidden aspect-video bg-slate-100 rounded-xl relative group">
+                <img src="${photoUrl}" alt="${photoTitle}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/600?text=Image+Not+Found'">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-2.5">
+                  <p class="text-xs text-white font-semibold truncate">${photoTitle}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      let currentIndex = 0;
+      const totalOriginalSlides = allPhotos.length;
+
+      function autoSlide() {
+        currentIndex++;
+        const slideItem = sliderTrack.children[0];
+        if (!slideItem) return;
+        
+        const slideWidth = slideItem.getBoundingClientRect().width + 16;
+        sliderTrack.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
+        if (currentIndex >= totalOriginalSlides) {
+          setTimeout(() => {
+            sliderTrack.style.transition = 'none';
+            currentIndex = 0;
+            sliderTrack.style.transform = `translateX(0px)`;
+            setTimeout(() => {
+              sliderTrack.style.transition = 'transform 700ms ease-in-out';
+            }, 50);
+          }, 700);
+        }
+      }
+
+      let slideInterval = setInterval(autoSlide, 3000);
+      sliderTrack.addEventListener('mouseenter', () => clearInterval(slideInterval));
+      sliderTrack.addEventListener('mouseleave', () => slideInterval = setInterval(autoSlide, 3000));
+    }
+  });
+</script>
+
+
+
+
+<!-- ================= সভাপতি মহোদয়ের পরিচিতি সেকশন ================= -->
+<section class="max-w-5xl mx-auto my-6 sm:my-10 p-4 sm:p-6 md:p-8 bg-white rounded-2xl shadow-lg border border-emerald-100">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-center">
+    
+    <!-- ১. সভাপতি মহোদয়ের ছবি ও কন্টাক্ট লিঙ্ক -->
+    <div class="flex flex-col items-center text-center space-y-3 sm:space-y-4 md:border-r md:border-emerald-100 md:pr-6">
+      <div class="relative group">
+        <!-- মোবাইলে ছবি ছোট (w-28 h-28) এবং বড় স্ক্রিনে আগের মতো (md:w-44 md:h-44) রাখা হয়েছে -->
+        <div class="w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full p-1 bg-gradient-to-tr from-emerald-600 to-amber-400 shadow-xl overflow-hidden mx-auto">
+          <img 
+            id="presidentImage" 
+            src="khokon.jpg" 
+            alt="সভাপতি মহোদয়ের ছবি" 
+            class="w-full h-full object-cover rounded-full group-hover:scale-105 transition duration-300"
+          >
+        </div>
+        <span class="absolute bottom-1 right-2 sm:bottom-2 sm:right-4 bg-emerald-600 text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow-md border-2 border-white">
+          <i class="fa-solid fa-circle-check"></i> প্রতিষ্ঠাতা ও সভাপতি
+        </span>
+      </div>
+
+      <!-- নাম ও পদবী -->
+      <div>
+        <h3 id="presidentName" class="text-lg sm:text-xl font-bold text-slate-900">মোহাম্মদ ছিদ্দিকুর রহমান খোকন</h3>
+        <p id="presidentDesignation" class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full inline-block mt-1 border border-emerald-200">
+          সভাপতি, পরিচালনা পর্ষদ
+        </p>
+      </div>
+
+      <!-- সোশ্যাল ও ফোন কন্টাক্ট বাটন -->
+      <div class="flex items-center gap-3 pt-1 sm:pt-2">
+        <!-- ফেসবুক লিঙ্ক -->
+        <a 
+          id="presidentFacebook" 
+          href="https://web.facebook.com/siddikurrahman.khokon.7" 
+          target="_blank" 
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition shadow-md hover:scale-110" 
+          title="ফেসবুক প্রোফাইল"
+        >
+          <i class="fa-brands fa-facebook-f text-base sm:text-lg"></i>
+        </a>
+
+        <!-- ফোন কল বাটন -->
+        <a 
+          id="presidentPhoneLink" 
+          href="tel:01632348474" 
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition shadow-md hover:scale-110" 
+          title="সরাসরি কল করুন"
+        >
+          <i class="fa-solid fa-phone text-sm sm:text-base"></i>
+        </a>
+
+        <!-- হোয়াটসঅ্যাপ বাটন -->
+        <a 
+          id="presidentWhatsapp" 
+          href="https://wa.me/01632348474" 
+          target="_blank" 
+          class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-green-500 hover:bg-green-600 text-white flex items-center justify-center transition shadow-md hover:scale-110" 
+          title="হোয়াটসঅ্যাপে যোগাযোগ"
+        >
+          <i class="fa-brands fa-whatsapp text-lg sm:text-xl"></i>
+        </a>
+      </div>
+
+      <!-- ফোন নম্বর টেক্সট -->
+      <p class="text-xs text-slate-600 font-semibold flex items-center gap-1.5">
+        <i class="fa-solid fa-mobile-screen-button text-emerald-600"></i>
+        <span id="presidentPhoneText">01632348474</span>
+      </p>
+    </div>
+
+    <!-- ২. সভাপতি মহোদয়ের বাণী/বার্তা -->
+    <div class="md:col-span-2 space-y-3 sm:space-y-4">
+      <div class="border-b border-emerald-100 pb-2 sm:pb-3 flex items-center justify-between">
+        <h2 class="text-lg sm:text-xl font-bold text-emerald-950 flex items-center gap-2">
+          <i class="fa-solid fa-quote-left text-amber-500 text-xl sm:text-2xl"></i> সভাপতি মহোদয়ের বাণী
+        </h2>
+        <span class="text-[11px] sm:text-xs text-slate-400 font-medium italic">বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা</span>
+      </div>
+
+      <p id="presidentMessage" class="text-slate-700 text-xs sm:text-sm leading-relaxed sm:leading-relaxed text-justify whitespace-pre-line italic">
+        "বিসমিল্লাহির রাহমানির রাহিম। দ্বীনি ও আধুনিক শিক্ষার এক অপূর্ব সমন্বয়ে আমাদের এই প্রতিষ্ঠানটি পরিচালিত হয়ে আসছে। সুশিক্ষিত, নীতিবান ও সুনাগরিক হিসেবে শিক্ষার্থীদের গড়ে তোলাই আমাদের মূল লক্ষ্য। অভিভাবকদের আস্থা ও সর্বস্তরের মানুষের ভালোবাসায় আমরা নিরলসভাবে কাজ করে যাচ্ছি। আল্লাহ তাআলা আমাদের এই যাত্রাকে কবুল করুন।"
+      </p>
+
+      <div class="pt-1 sm:pt-2 flex justify-end">
+        <div class="text-right">
+          <p class="text-xs font-bold text-slate-800">শুভকামনায়,</p>
+          <p id="presidentSignName" class="text-xs sm:text-sm font-bold text-emerald-900">পরিচালনা পর্ষদ ও ব্যবস্থাপনা কমিটি</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= স্টোরেজ থেকে ডাইনামিক ডেটা লোড করার স্কিপ্ট ================= -->
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    // LocalStorage থেকে সভাপতির তথ্য পড়া
+    const savedPresident = JSON.parse(localStorage.getItem('sitePresidentInfo'));
+    
+    if (savedPresident) {
+      if (savedPresident.name) {
+        document.getElementById('presidentName').innerText = savedPresident.name;
+      }
+      if (savedPresident.designation) {
+        document.getElementById('presidentDesignation').innerText = savedPresident.designation;
+      }
+      if (savedPresident.message) {
+        document.getElementById('presidentMessage').innerText = `"${savedPresident.message}"`;
+      }
+      if (savedPresident.photoUrl) {
+        document.getElementById('presidentImage').src = savedPresident.photoUrl;
+      }
+      if (savedPresident.phone) {
+        document.getElementById('presidentPhoneText').innerText = savedPresident.phone;
+        document.getElementById('presidentPhoneLink').href = 'tel:' + savedPresident.phone;
+      }
+      if (savedPresident.facebook) {
+        document.getElementById('presidentFacebook').href = savedPresident.facebook;
+      }
+      if (savedPresident.whatsapp) {
+        document.getElementById('presidentWhatsapp').href = 'https://wa.me/' + savedPresident.whatsapp;
+      }
+    }
+  });
+</script>
+
+<!-- VIDEO GALLERY SECTION -->
+<div class="max-w-full mx-auto px-4 py-12 bg-gradient-to-b from-emerald-50/60 via-white to-emerald-50/40 rounded-3xl shadow-inner my-6">
+  <div class="max-w-xl mx-auto text-center mb-10 bg-white/80 backdrop-blur-md py-6 px-6 rounded-2xl shadow-sm border border-emerald-100">
+    <h2 class="text-3xl font-extrabold text-emerald-950 tracking-tight">ভিডিও গ্যালারি</h2>
+    <p class="text-sm text-slate-600 mt-2">আমাদের মাদ্রাসার বিভিন্ন ইভেন্ট ও কার্যক্রমের ভিডিও ক্লিপস</p>
+  </div>
+  <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div id="videoGalleryGrid" class="contents"></div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const defaultVideos = [
+      { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "বার্ষিক ওয়াজ মাহফিল" },
+      { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "দাখিল পরীক্ষার্থীদের বিদায় সংবর্ধনা" },
+      { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "বার্ষিক ক্রীড়া প্রতিযোগিতা" },
+      { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "মাদ্রাসার অভ্যন্তরীণ কার্যক্রম" }
+    ];
+
+    // অ্যাডমিন প্যানেলের সাথে মিল রেখে প্রথমে 'siteVideosList' এবং ফলব্যাক হিসেবে 'siteVideos' চেক করা হবে
+    let savedVideos = JSON.parse(localStorage.getItem('siteVideosList')) || JSON.parse(localStorage.getItem('siteVideos')) || defaultVideos;
+    if (!Array.isArray(savedVideos) || savedVideos.length === 0) {
+      savedVideos = defaultVideos;
+    }
+
+    const videoGrid = document.getElementById('videoGalleryGrid');
+    if (videoGrid) {
+      videoGrid.innerHTML = '';
+      savedVideos.forEach((video, index) => {
+        let vUrl = typeof video === 'string' ? video : (video.url || '');
+        let vTitle = typeof video === 'object' && video.title ? video.title : `ভিডিও ক্লিপ ${index + 1}`;
+
+        // সাধারণ ইউটিউব লিংক হলে এমবেড লিংকে রূপান্তর করা
+        if (vUrl.includes('watch?v=')) {
+          vUrl = vUrl.replace('watch?v=', 'embed/');
+        } else if (vUrl.includes('youtu.be/')) {
+          let videoId = vUrl.split('youtu.be/')[1]?.split('?')[0];
+          if (videoId) vUrl = `https://www.youtube.com/embed/${videoId}`;
+        }
+
+        videoGrid.innerHTML += `
+          <div class="bg-white p-3 rounded-2xl shadow-md border border-emerald-100 hover:shadow-xl transition transform duration-300 flex flex-col justify-between">
+            <div class="overflow-hidden aspect-video bg-slate-900 rounded-xl relative">
+              <iframe src="${vUrl}" title="${vTitle}" class="w-full h-full border-0" allowfullscreen></iframe>
+            </div>
+            <div class="mt-2 px-1">
+              <h3 class="text-xs font-bold text-emerald-950 truncate">${vTitle}</h3>
+            </div>
+          </div>
+        `;
+      });
+    }
+  });
+</script>
+
+
+  <!-- FEATURES / ACADEMICS -->
+  <section id="academics" class="py-16 bg-emerald-50 border-y border-emerald-100 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h2 class="text-3xl font-bold text-slate-900 mb-3">আমাদের বিশেষত্ব</h2>
+        <p class="text-slate-600 text-sm">কেন আপনার সন্তানকে আমাদের প্রতিষ্ঠানে ভর্তি করাবেন?</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-xl border border-emerald-100 shadow-sm text-center space-y-3">
+          <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl">🕌</div>
+          <h3 class="font-bold text-slate-900"><a href="qualified edu.html" class="hover:text-emerald-700 transition">মানসম্মত দ্বীনি শিক্ষা</a></h3>
+          <p class="text-slate-500 text-xs leading-relaxed">সহিহ তিলওয়াত, মাসআলা-মাসায়েল ও তাফসির শিক্ষা প্রদান।</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-emerald-100 shadow-sm text-center space-y-3">
+          <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl">💻</div>
+          <h3 class="font-bold text-slate-900"><a href="computer ict.html" class="hover:text-emerald-700 transition">কম্পিউটার ও আধুনিক প্রযুক্তি</a></h3>
+          <p class="text-slate-500 text-xs leading-relaxed">কম্পিউটার শিক্ষা ও আধুনিক প্রযুক্তিভিত্তিক ক্লাসরুম।</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-emerald-100 shadow-sm text-center space-y-3">
+          <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl">📚</div>
+          <h3 class="font-bold text-slate-900"><a href="library.html" class="hover:text-emerald-700 transition">সমৃদ্ধ লাইব্রেরি</a></h3>
+          <p class="text-slate-500 text-xs leading-relaxed">ইসলামিক ও সাধারণ জ্ঞানের হরেক রকমের বইয়ের সংগ্রহ।</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-emerald-100 shadow-sm text-center space-y-3">
+          <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl">🏆</div>
+          <h3 class="font-bold text-slate-900"><a href="computer ict.html" class="hover:text-emerald-700 transition">মেধা ও বিকাশ</a></h3>
+          <p class="text-slate-500 text-xs leading-relaxed">বার্ষিক ক্বিরাত, হামদ-নাাত ও সাহিত্য প্রতিযোগিতার ব্যবস্থা।</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-emerald-950 text-white mt-10 shadow-inner">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+              
+              <!-- ১. প্রতিষ্ঠানের অবস্থান ও ম্যাপ -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>🗺️</span> প্রতিষ্ঠানের অবস্থান
+                  </h3>
+                  <div class="rounded-xl overflow-hidden border border-amber-500/30 shadow-md">
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5357.967221678154!2d92.25207829498358!3d22.96056772557256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3752bd55e5422bfd%3A0x3a5f51cbe97c5be0!2z4Kas4KaX4Ka-4Kaa4Kak4KawIOCmrOCmvuCnn-CmpOCngeCmsiDgprngp4Hgpqbgpr4g4KaG4KaH4Kah4Ka_4Kef4Ka-4KayIOCmpuCmvuCmluCmv-CmsiDgpq7gpr7gpqbgp43gprDgpr7gprjgpr4!5e0!3m2!1sen!2sbd!4v1786909078940!5m2!1sen!2sbd" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                  </div>
+                  <p class="text-xs text-emerald-100 mt-3 flex items-start gap-2">
+                      <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      </svg>
+                      <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                          <span id="indexAddress">১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি</span>
+                      </a>
+                  </p>
+              </div>
+
+              <!-- ২. শিক্ষা বোর্ডসমূহ -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>🎓</span> সকল শিক্ষা বোর্ড
+                  </h3>
+                  <ul class="space-y-2.5 text-sm text-emerald-100">
+                      <li><a href="https://moedu.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• শিক্ষা মন্ত্রণালয়</a></li>
+                      <li><a href="https://bmeb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• বাংলাদেশ মাদ্রাসা শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://dhakaeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• ঢাকা শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://chittagongeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• চট্টগ্রাম শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://rajshahieducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• রাজশাহী শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://nctb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• এনসিটিবি (পাঠ্যপুস্তক)</a></li>
+                  </ul>
+              </div>
+
+              <!-- ৩. গুরুত্বপূর্ণ তথ্য -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>💡</span> গুরুত্বপূর্ণ তথ্য
+                  </h3>
+                  <ul class="space-y-2.5 text-sm text-emerald-100">
+                      <li><a href="admission.html" class="hover:text-amber-300 transition">• ভর্তি বিজ্ঞপ্তি</a></li>
+                      <li><a href="result.html" class="hover:text-amber-300 transition">• পরীক্ষার ফলাফল</a></li>
+                      <li><a href="noticeBord.html" class="hover:text-amber-300 transition">• ক্লাসরুটিন ও নোটিশ</a></li>
+                      <li><a href="teacher.html" class="hover:text-amber-300 transition">• শিক্ষক কর্মচারীদের তথ্য</a></li>
+                      <li><a href="library.html" class="hover:text-amber-300 transition">• বগাচতর আলোর ভুবন পাঠাগার</a></li>
+                      <li><a href="about.html" class="hover:text-amber-300 transition">• মাদ্রাসা পরিচিতি</a></li>
+                  </ul>
+              </div>
+
+              <!-- ৪. যোগাযোগ ও সোশ্যাল মিডিয়া -->
+              <div class="md:col-span-1 space-y-4">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>📞</span> যোগাযোগ
+                  </h3>
+                  <div class="space-y-3 text-sm">
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-location-dot text-amber-400"></i>
+                          <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                              <span id="indexAddressLinkText">১-নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি</span>
+                          </a>
+                      </p>
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-phone text-amber-400"></i>
+                          <span id="indexPhone">০১৬৩৯৯৩৯২৮০</span>
+                      </p>
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-envelope text-amber-400"></i>
+                          <a id="indexEmailLink" href="mailto:info@madrasah.com" class="hover:text-amber-300 transition underline"><span id="indexEmail">info@madrasah.com</span></a>
+                      </p>
+
+                      <!-- সোশ্যাল মিডিয়া আইকনসমূহ -->
+                      <div class="flex items-center gap-3 pt-2">
+                          <a id="indexFacebook" href="https://web.facebook.com/profile.php?id=100084246662201" target="_blank" class="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition shadow">
+                              <i class="fa-brands fa-facebook-f"></i>
+                          </a>
+                          <a id="indexWhatsapp" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition shadow">
+                              <i class="fa-brands fa-whatsapp"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+
+          <div class="mt-10 pt-6 border-t border-emerald-900 flex flex-col sm:flex-row justify-between items-center text-xs text-emerald-300 gap-2 text-center sm:text-left">
+              <p>&copy; ২০২৬ বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা। সর্বস্বত্ব সংরক্ষিত।</p>
+              <p>কারিগরি সহায়তায়: <span class="font-bold text-amber-300">Md Anamul Hoq</span></p>
+          </div>
+      </div>
+  </footer>
+
+  <!-- Script to load dynamic details from localStorage -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedContact = JSON.parse(localStorage.getItem('siteContactInfo'));
+      if (savedContact) {
+        if (document.getElementById('indexAddress') && savedContact.address) {
+          document.getElementById('indexAddress').innerText = savedContact.address;
+        }
+        if (document.getElementById('indexAddressLinkText') && savedContact.address) {
+          document.getElementById('indexAddressLinkText').innerText = savedContact.address;
+        }
+        if (document.getElementById('indexPhone') && savedContact.phone) {
+          document.getElementById('indexPhone').innerText = savedContact.phone;
+        }
+        if (document.getElementById('topBarPhone') && savedContact.phone) {
+          document.getElementById('topBarPhone').innerText = savedContact.phone;
+        }
+        if (document.getElementById('indexEmail') && savedContact.email) {
+          document.getElementById('indexEmail').innerText = savedContact.email;
+          const emailLinkEl = document.getElementById('indexEmailLink');
+          if(emailLinkEl) {
+            emailLinkEl.href = 'mailto:' + savedContact.email;
+          }
+        }
+        if (document.getElementById('topBarEiin') && savedContact.eiin) {
+          document.getElementById('topBarEiin').innerText = savedContact.eiin;
+        }
+        if (document.getElementById('topBarEstablished') && savedContact.established) {
+          document.getElementById('topBarEstablished').innerText = savedContact.established;
+        }
+
+        const fbEl = document.getElementById('indexFacebook');
+        if (fbEl && savedContact.facebook) {
+          fbEl.href = savedContact.facebook;
+          fbEl.style.display = 'flex';
+        } else if (fbEl) {
+          fbEl.style.display = 'none';
+        }
+
+        const waEl = document.getElementById('indexWhatsapp');
+        if (waEl && savedContact.whatsapp) {
+          waEl.href = savedContact.whatsapp;
+          waEl.style.display = 'flex';
+        } else if (waEl) {
+          waEl.style.display = 'none';
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

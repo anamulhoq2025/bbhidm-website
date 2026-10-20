@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অনলাইন ভর্তি আবেদন ও অ্যাপ্লিকেন্টস কপি</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Cropper.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body class="bg-slate-100 py-8 px-4 font-sans">
+
+<div class="max-w-3xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-emerald-200 space-y-6">
+  
+  <!-- Header with Left Logo -->
+  <div class="flex items-center gap-4 border-b pb-4">
+    <img src="logo.jpg" alt="Madrasa Logo" class="w-16 h-16 object-contain shrink-0 bg-transparent" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" />
+    <div>
+      <h2 class="text-xl sm:text-2xl font-black text-emerald-900">বগাছতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসা</h2>
+      <p class="text-xs sm:text-sm text-emerald-700 font-semibold mt-0.5">অনলাইন ভর্তি আবেদন ফরম ২০২৬</p>
+    </div>
+  </div>
+  
+  <div class="flex items-center gap-4 text-sm font-medium">
+    <a href="index.html" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-sm font-bold">হোম</a>
+    <a href="admission-info.html" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-sm font-bold">ভর্তি তথ্য</a>
+  </div>
+
+  <form id="admissionForm" class="space-y-5">
+    
+    <!-- Photo Upload Section -->
+    <div class="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 flex items-center gap-4">
+      <div class="w-20 h-20 bg-white border-2 border-dashed border-emerald-300 rounded-xl flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+        <img id="photoPreview" src="" alt="Preview" class="w-full h-full object-cover hidden" />
+        <i id="photoPlaceholder" class="fa-solid fa-user-plus text-emerald-400 text-2xl"></i>
+      </div>
+      <div class="w-full space-y-1">
+        <label class="block text-xs font-bold text-slate-700">শিক্ষার্থীর ছবি (পাসপোর্ট সাইজ) <span class="text-rose-500">*</span></label>
+        <input type="file" id="studentPhoto" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer" />
+        <span class="text-[10px] text-slate-500 block">ছবি সিলেক্ট করার পর ক্রপ করার অপশন পাবেন।</span>
+      </div>
+    </div>
+
+    <!-- Cropper Modal -->
+    <div id="cropperModal" class="fixed inset-0 bg-slate-900/80 z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-white p-5 rounded-2xl max-w-lg w-full space-y-4 shadow-2xl">
+        <h3 class="text-sm font-bold text-emerald-900"><i class="fa-solid fa-crop text-emerald-600"></i> ছবি ক্রপ করুন</h3>
+        <div class="max-h-[60vh] overflow-hidden bg-slate-100 rounded-xl flex justify-center">
+          <img id="imageToCrop" src="" class="max-w-full block" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" id="cancelCropBtn" class="px-4 py-2 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs font-bold rounded-xl">বাতিল</button>
+          <button type="button" id="confirmCropBtn" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl">কনফার্ম করুন</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Name Fields -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">শিক্ষার্থীর নাম (বাংলায়) <span class="text-rose-500">*</span></label>
+        <input type="text" id="nameBn" required placeholder="পূর্ণ নাম বাংলায় লিখুন" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">শিক্ষার্থীর নাম (ইংরেজিতে - CAPITAL) <span class="text-rose-500">*</span></label>
+        <input type="text" id="nameEn" required placeholder="FULL NAME IN ENGLISH" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm uppercase" />
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-slate-700 mb-1">যে শ্রেণিতে ভর্তি হতে ইচ্ছুক <span class="text-rose-500">*</span></label>
+      <select id="className" required class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm bg-white">
+        <option value="">শ্রেণি নির্বাচন করুন</option>
+        <option value="শিশু শ্রেণি (Nurani)">শিশু শ্রেণি (Nurani)</option>
+        <option value="১ম শ্রেণি">১ম শ্রেণি</option>
+        <option value="২য় শ্রেণি">২য় শ্রেণি</option>
+        <option value="৩য় শ্রেণি">৩য় শ্রেণি</option>
+        <option value="৪র্থ শ্রেণি">৪র্থ শ্রেণি</option>
+        <option value="৫ম শ্রেণি">৫ম শ্রেণি</option>
+        <option value="৬ষ্ঠ শ্রেণি">৬ষ্ঠ শ্রেণি</option>
+        <option value="৭ম শ্রেণি">৭ম শ্রেণি</option>
+        <option value="৮ম শ্রেণি">৮ম শ্রেণি</option>
+        <option value="৯ম শ্রেণি">৯ম শ্রেণি</option>
+        <option value="দশম শ্রেণি">দশম শ্রেণি</option>
+      </select>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">পিতার নাম (বাংলায়) <span class="text-rose-500">*</span></label>
+        <input type="text" id="fatherBn" required placeholder="পিতার নাম বাংলায়" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">পিতার নাম (ইংরেজিতে - CAPITAL) <span class="text-rose-500">*</span></label>
+        <input type="text" id="fatherEn" required placeholder="FATHER'S NAME IN ENGLISH" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm uppercase" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">মাতার নাম (বাংলায়) <span class="text-rose-500">*</span></label>
+        <input type="text" id="motherBn" required placeholder="মাতার নাম বাংলায়" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">মাতার নাম (ইংরেজিতে - CAPITAL) <span class="text-rose-500">*</span></label>
+        <input type="text" id="motherEn" required placeholder="MOTHER'S NAME IN ENGLISH" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm uppercase" />
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">জন্ম তারিখ <span class="text-rose-500">*</span></label>
+        <input type="date" id="dob" required class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">জন্ম নিবন্ধন নম্বর (১৭ ডিজিট) <span class="text-rose-500">*</span></label>
+        <input type="text" id="birthReg" required placeholder="১৭ ডিজিটের জন্ম নিবন্ধন নম্বর" maxlength="17" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">লিঙ্গ (Gender) <span class="text-rose-500">*</span></label>
+        <select id="gender" required class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm bg-white">
+          <option value="">নির্বাচন করুন</option>
+          <option value="ছাত্র (Male)">ছাত্র (Male)</option>
+          <option value="ছাত্রী (Female)">ছাত্রী (Female)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">বর্তমান ঠিকানা <span class="text-rose-500">*</span></label>
+        <textarea id="presentAddr" rows="2" required placeholder="গ্রাম, ডাকঘর, উপজেলা, জেলা" class="w-full px-4 py-2 rounded-xl border border-emerald-300 text-sm"></textarea>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-slate-700 mb-1">স্থায়ী ঠিকানা <span class="text-rose-500">*</span></label>
+        <textarea id="permanentAddr" rows="2" required placeholder="গ্রাম, ডাকঘর, উপজেলা, জেলা" class="w-full px-4 py-2 rounded-xl border border-emerald-300 text-sm"></textarea>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-xs font-bold text-slate-700 mb-1">অভিভাবকের মোবাইল নম্বর <span class="text-rose-500">*</span></label>
+      <input type="tel" id="phone" required placeholder="01700000000" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
+    </div>
+
+    <div class="pt-2">
+      <button type="submit" class="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm rounded-xl shadow transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-eye"></i> ফরম প্রিভিউ দেখুন ও যাচাই করুন
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- PREVIEW MODAL -->
+<div id="previewModal" class="fixed inset-0 bg-slate-900/80 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+  <div class="bg-white p-6 rounded-2xl max-w-xl w-full space-y-4 shadow-2xl my-8">
+    <div class="text-center border-b pb-3">
+      <h3 class="text-lg font-black text-emerald-900">তথ্য যাচাই (Preview)</h3>
+      <p class="text-xs text-slate-500">দয়া করে তথ্যগুলো ভালোভাবে দেখে নিন। ভুল থাকলে 'এডিট করুন' দিন।</p>
+    </div>
+
+    <div class="flex justify-center">
+      <img id="prev_photo" src="" class="w-24 h-24 object-cover rounded-xl border-2 border-emerald-600 shadow" />
+    </div>
+
+    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs space-y-2 max-h-60 overflow-y-auto">
+      <p><b>শিক্ষার্থীর নাম (বাংলা):</b> <span id="prev_nameBn"></span></p>
+      <p><b>শিক্ষার্থীর নাম (ইংরেজি):</b> <span id="prev_nameEn"></span></p>
+      <p><b>শ্রেণি:</b> <span id="prev_class"></span></p>
+      <p><b>পিতার নাম (বাংলা):</b> <span id="prev_fatherBn"></span></p>
+      <p><b>পিতার নাম (ইংরেজি):</b> <span id="prev_fatherEn"></span></p>
+      <p><b>মাতার নাম (বাংলা):</b> <span id="prev_motherBn"></span></p>
+      <p><b>মাতার নাম (ইংরেজি):</b> <span id="prev_motherEn"></span></p>
+      <p><b>জন্ম তারিখ:</b> <span id="prev_dob"></span></p>
+      <p><b>জন্ম নিবন্ধন নম্বর:</b> <span id="prev_birthReg"></span></p>
+      <p><b>লিঙ্গ:</b> <span id="prev_gender"></span></p>
+      <p><b>বর্তমান ঠিকানা:</b> <span id="prev_presentAddr"></span></p>
+      <p><b>স্থায়ী ঠিকানা:</b> <span id="prev_permanentAddr"></span></p>
+      <p><b>মোবাইল নম্বর:</b> <span id="prev_phone"></span></p>
+    </div>
+
+    <!-- TERMS & CONDITIONS IN MODAL -->
+    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 flex items-start gap-3">
+      <input type="checkbox" id="modalTermsCheck" class="mt-1 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500 cursor-pointer" />
+      <label for="modalTermsCheck" class="text-xs text-slate-700 font-medium cursor-pointer leading-relaxed">
+        আমি ঘোষণা দিচ্ছি যে, ফরমের প্রদত্ত সকল তথ্য সঠিক এবং মাদ্রাসার নিয়মাবলী মেনে চলতে বাধ্য থাকিব। <span class="text-rose-500">*</span>
+      </label>
+    </div>
+
+    <div class="flex items-center gap-3 pt-2">
+      <button type="button" id="closePreviewBtn" class="w-1/2 py-2.5 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs font-bold rounded-xl transition">
+        <i class="fa-solid fa-pen-to-square"></i> এডিট করুন
+      </button>
+      <button type="button" id="finalSubmitBtn" class="w-1/2 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl shadow transition">
+        <i class="fa-solid fa-check"></i> চূড়ান্ত জমা দিন
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FIXED HIDDEN APPLICANT COPY TEMPLATE -->
+<div id="printAreaContainer" style="position: fixed; top: 0; left: 0; z-index: -9999; opacity: 0; pointer-events: none;">
+  <div id="printArea" style="width: 700px; background: #ffffff; padding: 25px; font-family: Arial, sans-serif; color: #0f172a;">
+    
+    <!-- Print Area Header -->
+    <div style="display: flex; align-items: center; gap: 15px; border-bottom: 3px solid #047857; padding-bottom: 10px; margin-bottom: 15px;">
+      <img src="logo.jpg" style="width: 60px; height: 60px; object-fit: contain; background: transparent;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" />
+      <div>
+        <h2 style="color: #047857; margin: 0; font-size: 20px; font-weight: 800;">বগাছতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসা</h2>
+        <p style="margin: 3px 0 0; font-size: 12px; color: #334155; font-weight: bold;">অনলাইন ভর্তি আবেদন কপি (Applicant Copy)</p>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #f0fdf4; padding: 10px 15px; border-radius: 8px; border: 1px solid #bbf7d0;">
+      <div>
+        <p style="margin: 0; font-size: 12px;"><b>আবেদন আইডি:</b> <span id="r_id" style="color: #047857; font-weight: bold;"></span></p>
+        <p style="margin: 4px 0 0; font-size: 12px;"><b>আবেদনের তারিখ:</b> <span id="r_date"></span></p>
+      </div>
+      <div>
+        <img id="r_photo" src="" style="width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 2px solid #047857;" />
+      </div>
+    </div>
+
+    <!-- All Data Table -->
+    <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; width: 35%; font-weight: bold;">শিক্ষার্থীর নাম (বাংলা):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_nameBn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">শিক্ষার্থীর নাম (ইংরেজি):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_nameEn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">যে শ্রেণিতে ভর্তি ইচ্ছুক:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_class"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">পিতার নাম (বাংলা):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_fatherBn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">পিতার নাম (ইংরেজি):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_fatherEn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">মাতার নাম (বাংলা):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_motherBn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">মাতার নাম (ইংরেজি):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_motherEn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">জন্ম তারিখ:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_dob"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">জন্ম নিবন্ধন নম্বর:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #047857;" id="r_birthReg"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">লিঙ্গ (Gender):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_gender"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">বর্তমান ঠিকানা:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_presentAddr"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">স্থায়ী ঠিকানা:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_permanentAddr"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">মোবাইল নম্বর:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_phone"></td>
+      </tr>
+    </table>
+
+    <!-- Note & Signatures Section -->
+    <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end; font-size: 10px; color: #475569;">
+      <p style="margin: 0; max-width: 250px; line-height: 1.3;">বিঃ দ্রঃ এই কপিটি প্রিন্ট করে সংরক্ষণ করুন। ভর্তি পরীক্ষার সময় এটি প্রদর্শন করতে হবে।</p>
+      
+      <div style="display: flex; gap: 20px; text-align: center;">
+        <div>
+          <div style="border-bottom: 1px solid #0f172a; width: 130px; height: 20px; margin-bottom: 2px;"></div>
+          <div style="font-weight: bold; color: #0f172a;">শিক্ষার্থীর স্বাক্ষর</div>
+        </div>
+        <div>
+          <div style="border-bottom: 1px solid #0f172a; width: 130px; height: 20px; margin-bottom: 2px;"></div>
+          <div style="font-weight: bold; color: #0f172a;">প্রধান শিক্ষকের স্বাক্ষর</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cropper.js Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+<script>
+  let croppedBase64 = "";
+  let cropperObj = null;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    // 1. Photo File Change Listener
+    const studentPhotoInput = document.getElementById('studentPhoto');
+    if (studentPhotoInput) {
+      studentPhotoInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('imageToCrop');
+          img.src = e.target.result;
+          document.getElementById('cropperModal').classList.remove('hidden');
+          if (cropperObj) cropperObj.destroy();
+          cropperObj = new Cropper(img, { aspectRatio: 1, viewMode: 1 });
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // 2. Cropper Modal Buttons
+    const cancelCropBtn = document.getElementById('cancelCropBtn');
+    if (cancelCropBtn) {
+      cancelCropBtn.addEventListener('click', () => {
+        document.getElementById('cropperModal').classList.add('hidden');
+        document.getElementById('studentPhoto').value = '';
+        if (cropperObj) cropperObj.destroy();
+      });
+    }
+
+    const confirmCropBtn = document.getElementById('confirmCropBtn');
+    if (confirmCropBtn) {
+      confirmCropBtn.addEventListener('click', () => {
+        if (!cropperObj) return;
+        const canvas = cropperObj.getCroppedCanvas({ width: 150, height: 150 }); // Optimized size to save memory
+        croppedBase64 = canvas.toDataURL('image/jpeg', 0.7); // Compressed quality
+        document.getElementById('photoPreview').src = croppedBase64;
+        document.getElementById('photoPreview').classList.remove('hidden');
+        document.getElementById('photoPlaceholder').classList.add('hidden');
+        document.getElementById('cropperModal').classList.add('hidden');
+        cropperObj.destroy();
+      });
+    }
+
+    // 3. Main Form Submit (Preview Trigger)
+    const admissionForm = document.getElementById('admissionForm');
+    if (admissionForm) {
+      admissionForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        if (!croppedBase64) {
+          Swal.fire({ icon: 'warning', title: 'ছবি আবশ্যক!', text: 'দয়া করে শিক্ষার্থীর ছবি আপলোড ও ক্রপ করুন।', confirmButtonColor: '#047857' });
+          return;
+        }
+
+        const birthRegVal = document.getElementById('birthReg').value.trim();
+        if (birthRegVal.length !== 17) {
+          Swal.fire({ icon: 'error', title: 'ভুল জন্ম নিবন্ধন নম্বর!', text: 'জন্ম নিবন্ধন নম্বর অবশ্যই অবিকল ১৭ ডিজিটের হতে হবে।', confirmButtonColor: '#047857' });
+          return;
+        }
+
+        let submittedRegNumbers = JSON.parse(localStorage.getItem('submitted_birth_regs')) || [];
+        if (submittedRegNumbers.includes(birthRegVal)) {
+          Swal.fire({ 
+            icon: 'error', 
+            title: 'ইতিমধ্যে আবেদন করা হয়েছে!', 
+            text: 'এই জন্ম নিবন্ধন নম্বরটি দিয়ে ইতিপূর্বে একটি আবেদন করা হয়েছে। একই নম্বর দিয়ে পুনরায় আবেদন করা যাবে না।', 
+            confirmButtonColor: '#047857' 
+          });
+          return;
+        }
+
+        // Assign data to preview modal
+        document.getElementById('prev_photo').src = croppedBase64;
+        document.getElementById('prev_nameBn').innerText = document.getElementById('nameBn').value.trim();
+        document.getElementById('prev_nameEn').innerText = document.getElementById('nameEn').value.trim();
+        document.getElementById('prev_class').innerText = document.getElementById('className').value;
+        document.getElementById('prev_fatherBn').innerText = document.getElementById('fatherBn').value.trim();
+        document.getElementById('prev_fatherEn').innerText = document.getElementById('fatherEn').value.trim();
+        document.getElementById('prev_motherBn').innerText = document.getElementById('motherBn').value.trim();
+        document.getElementById('prev_motherEn').innerText = document.getElementById('motherEn').value.trim();
+        document.getElementById('prev_dob').innerText = document.getElementById('dob').value;
+        document.getElementById('prev_birthReg').innerText = birthRegVal;
+        document.getElementById('prev_gender').innerText = document.getElementById('gender').value;
+        document.getElementById('prev_presentAddr').innerText = document.getElementById('presentAddr').value.trim();
+        document.getElementById('prev_permanentAddr').innerText = document.getElementById('permanentAddr').value.trim();
+        document.getElementById('prev_phone').innerText = document.getElementById('phone').value.trim();
+
+        document.getElementById('previewModal').classList.remove('hidden');
+      });
+    }
+
+    // 4. Preview Modal Close Button (Edit)
+    const closePreviewBtn = document.getElementById('closePreviewBtn');
+    if (closePreviewBtn) {
+      closePreviewBtn.addEventListener('click', () => {
+        document.getElementById('previewModal').classList.add('hidden');
+      });
+    }
+
+    // 5. Final Submit & Download Button Listener
+    const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+    if (finalSubmitBtn) {
+      finalSubmitBtn.addEventListener('click', async function() {
+        const termsCheck = document.getElementById('modalTermsCheck');
+        if (!termsCheck.checked) {
+          Swal.fire({ icon: 'warning', title: 'শর্তে সম্মতি প্রয়োজন!', text: 'চূড়ান্ত জমা দিতে হলে শর্তের ঘোষণায় টিক চিহ্ন দিন।', confirmButtonColor: '#047857' });
+          return;
+        }
+
+        const birthRegVal = document.getElementById('birthReg').value.trim();
+        
+        // Save in Duplicate Registry
+        let submittedRegNumbers = JSON.parse(localStorage.getItem('submitted_birth_regs')) || [];
+        submittedRegNumbers.push(birthRegVal);
+        localStorage.setItem('submitted_birth_regs', JSON.stringify(submittedRegNumbers));
+
+        // Create new applicant object with compressed photo data to prevent quota exceeded error
+        const newApplicant = {
+            id: 'BG-' + Math.floor(100000 + Math.random() * 900000),
+            studentName: document.getElementById('nameBn').value.trim(),
+            nameEn: document.getElementById('nameEn').value.trim(),
+            className: document.getElementById('className').value,
+            fatherName: document.getElementById('fatherBn').value.trim(),
+            fatherEn: document.getElementById('fatherEn').value.trim(),
+            motherName: document.getElementById('motherBn').value.trim(),
+            motherEn: document.getElementById('motherEn').value.trim(),
+            dob: document.getElementById('dob').value,
+            birthReg: birthRegVal,
+            gender: document.getElementById('gender').value,
+            presentAddr: document.getElementById('presentAddr').value.trim(),
+            permanentAddr: document.getElementById('permanentAddr').value.trim(),
+            mobile: document.getElementById('phone').value.trim(),
+            photo: croppedBase64,
+            status: 'পেন্ডিং',
+            date: new Date().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' })
+        };
+
+        // Save to LocalStorage with Quota Error Exception Handling
+        try {
+            let existingApps = JSON.parse(localStorage.getItem('siteAdmissionApplications')) || [];
+            existingApps.unshift(newApplicant);
+            localStorage.setItem('siteAdmissionApplications', JSON.stringify(existingApps));
+        } catch (storageErr) {
+            console.warn("Storage full, clearing old images to make space...");
+            // Clear old photos if quota is exceeded
+            let existingApps = JSON.parse(localStorage.getItem('siteAdmissionApplications')) || [];
+            existingApps.forEach(app => app.photo = ""); // Remove heavy base64 strings of previous records
+            existingApps.unshift(newApplicant);
+            try {
+                localStorage.setItem('siteAdmissionApplications', JSON.stringify(existingApps));
+            } catch(e) {
+                console.error("Critical storage error:", e);
+            }
+        }
+
+        // Attempt Backend API if running
+        try {
+            await fetch('http://localhost:5000/api/admin/admissions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newApplicant)
+            });
+        } catch (err) {
+            console.log("Backend offline, successfully saved locally.");
+        }
+
+        window.dispatchEvent(new Event('applicationSubmitted'));
+
+        // Hide Preview Modal
+        document.getElementById('previewModal').classList.add('hidden');
+
+        // Populate Print Area
+        document.getElementById('r_id').innerText = newApplicant.id;
+        document.getElementById('r_date').innerText = new Date().toLocaleDateString('bn-BD');
+        document.getElementById('r_photo').src = croppedBase64;
+        document.getElementById('r_nameBn').innerText = newApplicant.studentName;
+        document.getElementById('r_nameEn').innerText = newApplicant.nameEn;
+        document.getElementById('r_class').innerText = newApplicant.className;
+        document.getElementById('r_fatherBn').innerText = newApplicant.fatherName;
+        document.getElementById('r_fatherEn').innerText = newApplicant.fatherEn;
+        document.getElementById('r_motherBn').innerText = newApplicant.motherName;
+        document.getElementById('r_motherEn').innerText = newApplicant.motherEn;
+        document.getElementById('r_dob').innerText = newApplicant.dob;
+        document.getElementById('r_birthReg').innerText = birthRegVal;
+        document.getElementById('r_gender').innerText = newApplicant.gender;
+        document.getElementById('r_presentAddr').innerText = newApplicant.presentAddr;
+        document.getElementById('r_permanentAddr').innerText = newApplicant.permanentAddr;
+        document.getElementById('r_phone').innerText = newApplicant.mobile;
+
+        const printElement = document.getElementById('printArea');
+
+        const opt = {
+          margin:      5,
+          filename:    'Applicant_Copy_' + birthRegVal + '.pdf',
+          image:       { type: 'jpeg', quality: 0.95 },
+          html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+          jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        Swal.fire({
+          title: 'সফলভাবে জমা হয়েছে!',
+          text: 'আপনার অ্যাপ্লিকেন্টস কপি পিডিএফ ডাউনলোড হচ্ছে...',
+          allowOutsideClick: false,
+          didOpen: () => { Swal.showLoading(); }
+        });
+
+        setTimeout(() => {
+          html2pdf().set(opt).from(printElement).save().then(() => {
+            Swal.close();
+            Swal.fire({
+              icon: 'success',
+              title: 'ডাউনলোড সম্পন্ন!',
+              text: 'আপনার আবেদন সফলভাবে সম্পন্ন হয়েছে এবং অ্যাডমিন প্যানেলে জমা হয়ে গেছে।',
+              confirmButtonColor: '#047857'
+            }).then(() => {
+              location.reload();
+            });
+          }).catch(err => {
+            console.error(err);
+            Swal.close();
+            Swal.fire({ icon: 'error', title: 'ডাউনলোড ত্রুটি!', text: 'পিডিএফ তৈরি করতে সমস্যা হয়েছে। তবে আবেদনটি সফলভাবে সেভ হয়েছে।', confirmButtonColor: '#047857' });
+          });
+        }, 800);
+      });
+    }
+  });
+</script>
+
+
+  <!-- FOOTER -->
+  <footer class="bg-emerald-950 text-white mt-10 shadow-inner">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+              
+              <!-- ১. প্রতিষ্ঠানের অবস্থান ও ম্যাপ -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>🗺️</span> প্রতিষ্ঠানের অবস্থান
+                  </h3>
+                  <div class="rounded-xl overflow-hidden border border-amber-500/30 shadow-md">
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5357.967221678154!2d92.25207829498358!3d22.96056772557256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3752bd55e5422bfd%3A0x3a5f51cbe97c5be0!2z4Kas4KaX4Ka-4Kaa4Kak4KawIOCmrOCmvuCnn-CmpOCngeCmsiDgprngp4Hgpqbgpr4g4KaG4KaH4Kah4Ka_4Kef4Ka-4KayIOCmpuCmvuCmluCmv-CmsiDgpq7gpr7gpqbgp43gprDgpr7gprjgpr4!5e0!3m2!1sen!2sbd!4v1786909078940!5m2!1sen!2sbd" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                  </div>
+                  <p class="text-xs text-emerald-100 mt-3 flex items-start gap-2">
+                      <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      </svg>
+                      <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                          <span id="indexAddress">১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি</span>
+                      </a>
+                  </p>
+              </div>
+
+              <!-- ২. শিক্ষা বোর্ডসমূহ -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>🎓</span> সকল শিক্ষা বোর্ড
+                  </h3>
+                  <ul class="space-y-2.5 text-sm text-emerald-100">
+                      <li><a href="https://moedu.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• শিক্ষা মন্ত্রণালয়</a></li>
+                      <li><a href="https://bmeb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• বাংলাদেশ মাদ্রাসা শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://dhakaeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• ঢাকা শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://chittagongeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• চট্টগ্রাম শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://rajshahieducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• রাজশাহী শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://nctb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• এনসিটিবি (পাঠ্যপুস্তক)</a></li>
+                  </ul>
+              </div>
+
+              <!-- ৩. গুরুত্বপূর্ণ তথ্য -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>💡</span> গুরুত্বপূর্ণ তথ্য
+                  </h3>
+                  <ul class="space-y-2.5 text-sm text-emerald-100">
+                      <li><a href="admission.html" class="hover:text-amber-300 transition">• ভর্তি বিজ্ঞপ্তি</a></li>
+                      <li><a href="result.html" class="hover:text-amber-300 transition">• পরীক্ষার ফলাফল</a></li>
+                      <li><a href="noticeBord.html" class="hover:text-amber-300 transition">• ক্লাসরুটিন ও নোটিশ</a></li>
+                      <li><a href="teacher.html" class="hover:text-amber-300 transition">• শিক্ষক কর্মচারীদের তথ্য</a></li>
+                      <li><a href="library.html" class="hover:text-amber-300 transition">• বগাচতর আলোর ভুবন পাঠাগার</a></li>
+                      <li><a href="about.html" class="hover:text-amber-300 transition">• মাদ্রাসা পরিচিতি</a></li>
+                  </ul>
+              </div>
+
+              <!-- ৪. যোগাযোগ ও সোশ্যাল মিডিয়া -->
+              <div class="md:col-span-1 space-y-4">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>📞</span> যোগাযোগ
+                  </h3>
+                  <div class="space-y-3 text-sm">
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-location-dot text-amber-400"></i>
+                          <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                              <span id="indexAddressLinkText">১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি</span>
+                          </a>
+                      </p>
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-phone text-amber-400"></i>
+                          <span id="indexPhone">০১৭০০-০০০০০০</span>
+                      </p>
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-envelope text-amber-400"></i>
+                          <a id="indexEmailLink" href="mailto:info@madrasah.com" class="hover:text-amber-300 transition underline"><span id="indexEmail">info@madrasah.com</span></a>
+                      </p>
+
+                      <!-- সোশ্যাল মিডিয়া আইকনসমূহ -->
+                      <div class="flex items-center gap-3 pt-2">
+                          <a id="indexFacebook" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition shadow">
+                              <i class="fa-brands fa-facebook-f"></i>
+                          </a>
+                          <a id="indexWhatsapp" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition shadow">
+                              <i class="fa-brands fa-whatsapp"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+
+          <div class="mt-10 pt-6 border-t border-emerald-900 flex flex-col sm:flex-row justify-between items-center text-xs text-emerald-300 gap-2 text-center sm:text-left">
+              <p>&copy; ২০২৬ বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা। সর্বস্বত্ব সংরক্ষিত।</p>
+              <p>কারিগরি সহায়তায়: <span class="font-bold text-amber-300">Md Anamul Hoq</span></p>
+          </div>
+      </div>
+  </footer>
+
+  <!-- Script to load dynamic details from localStorage -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedContact = JSON.parse(localStorage.getItem('siteContactInfo'));
+      if (savedContact) {
+        if (document.getElementById('indexAddress') && savedContact.address) {
+          document.getElementById('indexAddress').innerText = savedContact.address;
+        }
+        if (document.getElementById('indexAddressLinkText') && savedContact.address) {
+          document.getElementById('indexAddressLinkText').innerText = savedContact.address;
+        }
+        if (document.getElementById('indexPhone') && savedContact.phone) {
+          document.getElementById('indexPhone').innerText = savedContact.phone;
+        }
+        if (document.getElementById('topBarPhone') && savedContact.phone) {
+          document.getElementById('topBarPhone').innerText = savedContact.phone;
+        }
+        if (document.getElementById('indexEmail') && savedContact.email) {
+          document.getElementById('indexEmail').innerText = savedContact.email;
+          const emailLinkEl = document.getElementById('indexEmailLink');
+          if(emailLinkEl) {
+            emailLinkEl.href = 'mailto:' + savedContact.email;
+          }
+        }
+        if (document.getElementById('topBarEiin') && savedContact.eiin) {
+          document.getElementById('topBarEiin').innerText = savedContact.eiin;
+        }
+        if (document.getElementById('topBarEstablished') && savedContact.established) {
+          document.getElementById('topBarEstablished').innerText = savedContact.established;
+        }
+
+        const fbEl = document.getElementById('indexFacebook');
+        if (fbEl && savedContact.facebook) {
+          fbEl.href = savedContact.facebook;
+          fbEl.style.display = 'flex';
+        } else if (fbEl) {
+          fbEl.style.display = 'none';
+        }
+
+        const waEl = document.getElementById('indexWhatsapp');
+        if (waEl && savedContact.whatsapp) {
+          waEl.href = savedContact.whatsapp;
+          waEl.style.display = 'flex';
+        } else if (waEl) {
+          waEl.style.display = 'none';
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

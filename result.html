@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পরীক্ষার ফলাফল - রেজাল্ট বোর্ড</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            color: #000000;
+            background-color: #f0f4f8;
+        }
+        .shirinam-title {
+            color: #000000;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+    
+    <header class="hero-pattern text-white py-10 px-4 shadow-2xl relative overflow-hidden mb-8 border-b-4 border-amber-400 bg-blue-900 rounded-2xl">
+      <div class="max-w-4xl mx-auto text-center space-y-3">
+        <span class="bg-amber-400 text-slate-900 text-xs px-4 py-1.5 rounded-full font-extrabold uppercase tracking-wide inline-block shadow-md">
+            🕌 বগাচতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসা
+        </span>
+        <h1 class="text-3xl font-extrabold text-white">পরীক্ষার ফলাফল প্রকাশ (শিশু - ৯ম শ্রেণী)</h1>
+      </div>
+    </header>
+
+    <!-- ================= Main Result Section ================= -->
+    <section class="max-w-5xl mx-auto bg-slate-50 p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200">
+        
+        <!-- Header with Title & Home Navigation -->
+        <div class="flex items-center justify-between mb-6 border-b pb-4">
+            <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <i class="fa-solid fa-square-poll-vertical text-blue-900"></i> পরীক্ষার ফলাফল
+            </h1>
+            <a href="index.html" class="inline-flex items-center gap-2 bg-blue-900 hover:bg-blue-800 text-white font-semibold px-4 py-1.5 rounded-lg text-xs md:text-sm shadow transition-all">
+                <i class="fa-solid fa-house"></i> হোমে যান
+            </a>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex flex-wrap gap-2 border-b border-blue-900/20 pb-4 mb-6" id="resultCategoryTabs">
+            <button onclick="filterResults('all', this)" class="res-tab-btn px-5 py-2 rounded-t-lg font-bold text-white bg-blue-900 shadow transition-all">সকল ফলাফল</button>
+            <button onclick="filterResults('board_exam', this)" class="res-tab-btn px-5 py-2 rounded-t-lg font-semibold text-slate-700 bg-white hover:bg-slate-200 transition-all border border-slate-200">বোর্ড পরীক্ষা</button>
+            <button onclick="filterResults('annual_exam', this)" class="res-tab-btn px-5 py-2 rounded-t-lg font-semibold text-slate-700 bg-white hover:bg-slate-200 transition-all border border-slate-200">বার্ষিক পরীক্ষা</button>
+            <button onclick="filterResults('term_exam', this)" class="res-tab-btn px-5 py-2 rounded-t-lg font-semibold text-slate-700 bg-white hover:bg-slate-200 transition-all border border-slate-200">সাময়িক পরীক্ষা</button>
+            <button onclick="filterResults('admission_test', this)" class="res-tab-btn px-5 py-2 rounded-t-lg font-semibold text-slate-700 bg-white hover:bg-slate-200 transition-all border border-slate-200">ভর্তি পরীক্ষা</button>
+        </div>
+
+        <!-- Loading Message -->
+        <div id="resultLoadingIndicator" class="py-8 text-center font-bold text-red-600 text-base bg-yellow-50 rounded-xl my-2 border border-yellow-200">
+            <i class="fa-solid fa-spinner fa-spin mr-2"></i> ফলাফল লোড হচ্ছে...
+        </div>
+
+        <!-- Result List Container -->
+        <div id="resultListContainer" class="space-y-3 hidden">
+            <!-- Dynamic Results will be injected here -->
+        </div>
+
+        <!-- Footer / See All Button -->
+        <div class="mt-8 flex justify-end">
+            <button onclick="showAllResults()" class="inline-flex items-center gap-2 border-2 border-slate-800 text-slate-900 font-bold px-6 py-1.5 rounded-full hover:bg-slate-900 hover:text-white transition-all">
+                সকল <i class="fa-solid fa-arrow-right text-sm"></i>
+            </button>
+        </div>
+
+    </section>
+
+    <!-- ================= Result View Modal ================= -->
+    <div id="resultModal" class="fixed inset-0 bg-black/70 hidden z-50 flex items-center justify-center p-2 md:p-4">
+        <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border">
+            
+            <div class="p-4 bg-slate-50 border-b flex justify-between items-start">
+                <div>
+                    <h3 id="modalResultTitle" class="text-lg font-bold text-black mb-1">---</h3>
+                    <div class="flex flex-wrap gap-2 text-xs font-medium text-black">
+                        <span id="modalResultDate" class="bg-slate-200 px-2.5 py-1 rounded">প্রকাশের তারিখ: --</span>
+                    </div>
+                </div>
+                <button onclick="closeResultModal()" class="text-black hover:text-red-600 text-2xl font-bold p-1">&times;</button>
+            </div>
+
+            <div class="p-3 bg-white border-b flex justify-between items-center">
+                <a id="modalResultDownloadBtn" href="#" download class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-1.5 rounded text-sm font-medium flex items-center gap-2 transition">
+                    ফাইল ডাউনলোড <i class="fa-solid fa-download"></i>
+                </a>
+                <button onclick="window.print()" class="text-black hover:text-blue-600 text-lg p-1">
+                    <i class="fa-solid fa-print"></i>
+                </button>
+            </div>
+
+            <div class="p-4 overflow-y-auto flex-1 bg-slate-200 flex justify-center items-center">
+                <div id="resultViewerContainer" class="w-full h-[60vh] bg-white rounded shadow flex items-center justify-center text-black">
+                </div>
+            </div>
+
+            <div class="p-3 bg-slate-100 text-right">
+                <button onclick="closeResultModal()" class="bg-slate-700 hover:bg-slate-800 text-white px-5 py-1.5 rounded text-sm font-semibold">
+                    বন্ধ করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= Logic Script ================= -->
+    <script>
+        const defaultResults = [
+            {
+                _id: "r1",
+                title: "দাখিল পরীক্ষা ২০২৬ এর সেরা ফলাফলের তালিকা",
+                category: "board_exam",
+                publishDate: "১৫-১০-২০২৬",
+                isNew: true,
+                fileUrl: ""
+            }
+        ];
+
+        let allPublishedResults = [];
+        let activeCategory = 'all';
+
+        // লোকালস্টোরেজ থেকে অ্যাডমিনের পাবলিশ করা রেজাল্ট ফেচ করা
+        function fetchResultsFromStorage() {
+            try {
+                // আপনার অ্যাডমিন প্যানেল যে কীতে ডেটা সেভ করে (সব সম্ভাব্য কী চেক করা হলো)
+                const stored = localStorage.getItem('madrasa_published_results') || 
+                               localStorage.getItem('site_published_results') || 
+                               localStorage.getItem('published_results');
+                
+                if (stored) {
+                    allPublishedResults = JSON.parse(stored);
+                } else {
+                    allPublishedResults = defaultResults;
+                    localStorage.setItem('madrasa_published_results', JSON.stringify(defaultResults));
+                }
+
+                filterResults(activeCategory);
+            } catch (err) {
+                console.error("Error fetching results:", err);
+                allPublishedResults = defaultResults;
+                renderResultList(allPublishedResults);
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('resultLoadingIndicator').style.display = 'block';
+            document.getElementById('resultListContainer').classList.add('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('resultLoadingIndicator').style.display = 'none';
+            document.getElementById('resultListContainer').classList.remove('hidden');
+        }
+
+        function filterResults(category, element) {
+            showLoading();
+            activeCategory = category;
+
+            if (element) {
+                document.querySelectorAll('.res-tab-btn').forEach(btn => {
+                    btn.classList.remove('bg-blue-900', 'text-white', 'shadow');
+                    btn.classList.add('bg-white', 'text-slate-700');
+                });
+                element.classList.add('bg-blue-900', 'text-white', 'shadow');
+                element.classList.remove('bg-white', 'text-slate-700');
+            }
+
+            setTimeout(() => {
+                let filtered = [];
+                if (category === 'all') {
+                    filtered = allPublishedResults;
+                } else {
+                    filtered = allPublishedResults.filter(r => (r.category === category || r.type === category || r.classGroup === category));
+                }
+                renderResultList(filtered);
+                hideLoading();
+            }, 200);
+        }
+
+        function renderResultList(results) {
+            const container = document.getElementById('resultListContainer');
+            
+            if (!results || results.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-black font-semibold">কোনো ফলাফল পাওয়া যায়নি।</div>`;
+                return;
+            }
+
+            container.innerHTML = results.map((item, index) => {
+                const titleText = item.title || item.shirinam || 'ফলাফল শিরোনাম';
+                const dateText = item.publishDate || item.date || '১৫-১০-২০২৬';
+                const isNewBadge = item.isNew !== false;
+
+                return `
+                    <div onclick="openResultModal('${item._id || index}')" 
+                         class="flex items-center justify-between p-3.5 rounded-xl hover:bg-blue-100/60 transition-all cursor-pointer border-b border-slate-200/80 bg-white/50">
+                        
+                        <div class="flex items-center gap-2 pr-4">
+                            <span class="shirinam-title text-black font-semibold text-sm md:text-base hover:text-blue-900 transition-colors">
+                                ${titleText}
+                            </span>
+                        </div>
+
+                        <div class="flex items-center gap-3 shrink-0">
+                            ${isNewBadge ? `<span class="bg-rose-600 text-white text-[11px] px-2.5 py-0.5 rounded-full font-bold">নতুন</span>` : ''}
+                            <i class="fa-solid fa-arrow-right text-slate-600 text-sm"></i>
+                            <span class="text-xs text-slate-500 font-semibold">${dateText}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function showAllResults() {
+            showLoading();
+            setTimeout(() => {
+                renderResultList(allPublishedResults);
+                hideLoading();
+            }, 200);
+        }
+
+        function openResultModal(id) {
+            const result = allPublishedResults.find((r, idx) => (r._id == id || idx == id));
+            if (!result) return;
+
+            document.getElementById('modalResultTitle').innerText = result.title || 'ফলাফল বিবরণ';
+            document.getElementById('modalResultDate').innerText = `প্রকাশের তারিখ: ${result.publishDate || result.date || 'N/A'}`;
+
+            const fileUrl = result.fileUrl || result.pdfUrl || result.file || '';
+            const downloadBtn = document.getElementById('modalResultDownloadBtn');
+
+            if (fileUrl) {
+                downloadBtn.href = fileUrl;
+                downloadBtn.style.display = 'inline-flex';
+            } else {
+                downloadBtn.style.display = 'none';
+            }
+
+            const viewer = document.getElementById('resultViewerContainer');
+            const isImg = fileUrl.match(/\.(jpg|jpeg|png|webp)$/i) || result.fileType === 'image' || fileUrl.startsWith('data:image/');
+
+            if (isImg) {
+                viewer.innerHTML = `<img src="${fileUrl}" class="max-h-full max-w-full rounded border">`;
+            } else if (fileUrl) {
+                viewer.innerHTML = `<iframe src="${fileUrl}" class="w-full h-full border-0"></iframe>`;
+            } else {
+                viewer.innerHTML = `
+                    <div class="text-center p-6 text-slate-800">
+                        <i class="fa-solid fa-file-pdf text-red-600 text-5xl mb-3"></i>
+                        <p class="font-bold text-base mb-1">${result.title}</p>
+                        <p class="text-xs text-slate-500">ফলাফলের বিস্তারিত সংরক্ষিত রয়েছে।</p>
+                    </div>
+                `;
+            }
+
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+
+        function closeResultModal() {
+            document.getElementById('resultModal').classList.add('hidden');
+        }
+
+        // রিয়েলটাইমে অ্যাডমিন প্যানেল থেকে ডাটা আপডেট ক্যাচ করার জন্য ইভেন্ট লিসেনার
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'madrasa_published_results' || e.key === 'site_published_results' || e.key === 'published_results') {
+                fetchResultsFromStorage();
+            }
+        });
+
+        // পেজ লোড হওয়ার সাথে সাথে ডাটা ফেচ করা
+        window.onload = fetchResultsFromStorage;
+    </script>
+</body>
+</html>
+
+    <!-- FOOTER -->
+    <footer class="bg-emerald-950 text-white mt-10 shadow-inner">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                
+                <!-- ১. প্রতিষ্ঠানের অবস্থান ও ম্যাপ -->
+                <div class="md:col-span-1">
+                    <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                        <span>🗺️</span> প্রতিষ্ঠানের অবস্থান
+                    </h3>
+                    <div class="rounded-xl overflow-hidden border border-amber-500/30 shadow-md">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5357.967221678154!2d92.25207829498358!3d22.96056772557256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3752bd55e5422bfd%3A0x3a5f51cbe97c5be0!2z4Kas4KaX4Ka-4Kaa4Kak4KawIOCmrOCmvuCnn-CmpOCngeCmsiDgprngp4Hgpqbgpr4g4KaG4KaH4Kah4Ka_4Kef4Ka-4KayIOCmpuCmvuCmluCmv-CmsiDgpq7gpr7gpqbgp43gprDgpr7gprjgpr4!5e0!3m2!1sen!2sbd!4v1786909078940!5m2!1sen!2sbd" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    </div>
+                    <p class="text-xs text-emerald-100 mt-3 flex items-start gap-2">
+                        <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                            <span id="indexAddress">১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙামাটি</span>
+                        </a>
+                    </p>
+                </div>
+
+                <!-- ২. শিক্ষা বোর্ডসমূহ -->
+                <div class="md:col-span-1">
+                    <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                        <span>🎓</span> সকল শিক্ষা বোর্ড
+                    </h3>
+                    <ul class="space-y-2.5 text-sm text-emerald-100">
+                        <li><a href="https://moedu.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">শিক্ষা মন্ত্রণালয়</a></li>
+                        <li><a href="https://bmeb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">বাংলাদেশ মাদ্রাসা শিক্ষা বোর্ড</a></li>
+                        <li><a href="https://dhakaeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">ঢাকা শিক্ষা বোর্ড</a></li>
+                        <li><a href="https://chittagongeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">চট্টগ্রাম শিক্ষা বোর্ড</a></li>
+                        <li><a href="https://rajshahieducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">রাজশাহী শিক্ষা বোর্ড</a></li>
+                        <li><a href="https://nctb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">এনসিটিবি (পাঠ্যপুস্তক)</a></li>
+                    </ul>
+                </div>
+
+                <!-- ৩. গুরুত্বপূর্ণ তথ্য -->
+                <div class="md:col-span-1">
+                    <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                        <span>💡</span> গুরুত্বপূর্ণ তথ্য
+                    </h3>
+                    <ul class="space-y-2.5 text-sm text-emerald-100">
+                        <li><a href="admission.html" class="hover:text-amber-300 transition">ভর্তি বিজ্ঞপ্তি</a></li>
+                        <li><a href="result.html" class="hover:text-amber-300 transition">পরীক্ষার ফলাফল</a></li>
+                        <li><a href="noticeBord.html" class="hover:text-amber-300 transition">ক্লাসরুটিন ও নোটিশ</a></li>
+                        <li><a href="teacher.html" class="hover:text-amber-300 transition">শিক্ষক কর্মচারীদের তথ্য</a></li>
+                        <li><a href="library.html" class="hover:text-amber-300 transition">বগাচতর আলোর ভুবন পাঠাগার</a></li>
+                        <li><a href="about.html" class="hover:text-amber-300 transition">মাদ্রাসা পরিচিতি</a></li>
+                    </ul>
+                </div>
+
+                <!-- ৪. যোগাযোগ ও সোশ্যাল মিডিয়া -->
+                <div class="md:col-span-1 space-y-4">
+                    <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                        <span>📞</span> যোগাযোগ
+                    </h3>
+                    <div class="space-y-3 text-sm">
+                        <p class="flex items-center gap-2 text-emerald-100">
+                            <i class="fa-solid fa-location-dot text-amber-400"></i>
+                            <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                                <span id="indexAddressLinkText">১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙামাটি</span>
+                            </a>
+                        </p>
+                        <p class="flex items-center gap-2 text-emerald-100">
+                            <i class="fa-solid fa-phone text-amber-400"></i>
+                            <span id="indexPhone">০১৭০০-০০০০০০</span>
+                        </p>
+                        <p class="flex items-center gap-2 text-emerald-100">
+                            <i class="fa-solid fa-envelope text-amber-400"></i>
+                            <a id="indexEmailLink" href="mailto:info@madrasah.com" class="hover:text-amber-300 transition underline"><span id="indexEmail">info@madrasah.com</span></a>
+                        </p>
+
+                        <!-- সোশ্যাল মিডিয়া আইকনসমূহ -->
+                        <div class="flex items-center gap-3 pt-2">
+                            <a id="indexFacebook" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition shadow">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                            <a id="indexWhatsapp" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition shadow">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-emerald-900 flex flex-col sm:flex-row justify-between items-center text-xs text-emerald-300 gap-2 text-center sm:text-left">
+                <p>&copy; ২০২৬ বগাচতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা। সর্বস্বত্ব সংরক্ষিত।</p>
+                <p>কারিগরি সহায়তায়: <span class="font-bold text-amber-300">Md Anamul Hoq</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script to load dynamic details from localStorage -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+          const savedContact = JSON.parse(localStorage.getItem('siteContactInfo'));
+          if (savedContact) {
+            if (document.getElementById('indexAddress') && savedContact.address) {
+              document.getElementById('indexAddress').innerText = savedContact.address;
+            }
+            if (document.getElementById('indexAddressLinkText') && savedContact.address) {
+              document.getElementById('indexAddressLinkText').innerText = savedContact.address;
+            }
+            if (document.getElementById('indexPhone') && savedContact.phone) {
+              document.getElementById('indexPhone').innerText = savedContact.phone;
+            }
+            if (document.getElementById('indexEmail') && savedContact.email) {
+              document.getElementById('indexEmail').innerText = savedContact.email;
+              const emailLinkEl = document.getElementById('indexEmailLink');
+              if(emailLinkEl) {
+                emailLinkEl.href = 'mailto:' + savedContact.email;
+              }
+            }
+
+            const fbEl = document.getElementById('indexFacebook');
+            if (fbEl && savedContact.facebook) {
+              fbEl.href = savedContact.facebook;
+              fbEl.style.display = 'flex';
+            } else if (fbEl) {
+              fbEl.style.display = 'none';
+            }
+
+            const waEl = document.getElementById('indexWhatsapp');
+            if (waEl && savedContact.whatsapp) {
+              waEl.href = savedContact.whatsapp;
+              waEl.style.display = 'flex';
+            } else if (waEl) {
+              waEl.style.display = 'none';
+            }
+          }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>হেড অ্যাডমিন প্যানেল - স্কুল ম্যানেজমেন্ট</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- ================= 1. LOGIN MODAL ================= -->
+    <div id="loginModal" class="fixed inset-0 bg-slate-950/90 z-50 flex items-center justify-center p-4 backdrop-blur-md">
+        <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl max-w-md w-full shadow-2xl space-y-6">
+            <div class="text-center space-y-2">
+                <div class="w-16 h-16 bg-indigo-600/20 text-indigo-400 rounded-2xl flex items-center justify-center text-2xl font-bold mx-auto border border-indigo-500/30">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h2 class="text-xl font-bold text-white">হেড অ্যাডমিন লগইন</h2>
+                <p class="text-xs text-slate-400">অ্যাডমিন প্যানেলে প্রবেশ করতে পাসওয়ার্ড প্রদান করুন</p>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1.5">পাসওয়ার্ড দিন:</label>
+                    <input type="password" id="adminPasswordInput" placeholder="••••••••" class="w-full bg-slate-900 border border-slate-700 px-4 py-3 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+                </div>
+
+                <button onclick="handleLogin()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 text-sm">
+                    <i class="fa-solid fa-right-to-bracket"></i> লগইন করুন
+                </button>
+                <div class="text-center">
+                    <a href="index.html" class="text-slate-400 hover:text-indigo-400 transition text-xs flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-house"></i> হোম পেজে ফিরে যান
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= 2. MAIN ADMIN DASHBOARD ================= -->
+    <div id="dashboardContent" class="hidden flex-col flex-1">
+        
+        <!-- Top Header Navigation -->
+        <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-40 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/30 text-lg">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-base sm:text-lg text-white">স্কুল হেড অ্যাডমিন প্যানেল</h1>
+                        <p class="text-[11px] text-indigo-400 font-semibold">কন্ট্রোল ড্যাশবোর্ড</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2.5 flex-wrap justify-end">
+                    <a href="index.html" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-semibold transition shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-house"></i> হোম পেজ
+                    </a>
+                    <button onclick="openChangePasswordModal()" class="px-3.5 py-2 bg-amber-600/20 hover:bg-amber-600 text-amber-400 hover:text-white border border-amber-500/30 rounded-xl text-xs font-semibold transition flex items-center gap-2">
+                        <i class="fa-solid fa-key"></i> পাসওয়ার্ড পরিবর্তন
+                    </button>
+                    <button onclick="handleLogout()" class="px-3.5 py-2 bg-rose-600/20 hover:bg-rose-600 text-rose-400 hover:text-white border border-rose-500/30 rounded-xl text-xs font-semibold transition flex items-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket"></i> লগআউট
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Content Section -->
+        <main class="max-w-7xl mx-auto px-4 py-12 flex-1 w-full flex items-center justify-center">
+            <div class="text-center bg-slate-800/40 border border-slate-700/60 p-8 rounded-2xl max-w-lg w-full space-y-3 shadow-inner">
+                <i class="fa-solid fa-layer-group text-4xl text-indigo-400 mb-2 block"></i>
+                <h3 class="text-base font-bold text-white">ড্যাশবোর্ড প্রস্তুত</h3>
+                <p class="text-xs text-slate-400">আপনার পরবর্তী ফিচারের কোড এখানে যুক্ত করা যাবে।</p>
+            </div>
+        </main>
+    </div>
+    <!-- ================= 3. CHANGE PASSWORD MODAL ================= -->
+    <div id="changePasswordModal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl max-w-sm w-full shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-key text-amber-400"></i> পাসওয়ার্ড পরিবর্তন করুন
+                </h3>
+                <button onclick="closeChangePasswordModal()" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1">বর্তমান পাসওয়ার্ড:</label>
+                    <input type="password" id="currentPass" placeholder="পুরোনো পাসওয়ার্ড দিন" class="w-full bg-slate-900 border border-slate-700 px-3.5 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1">নতুন পাসওয়ার্ড:</label>
+                    <input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড দিন" class="w-full bg-slate-900 border border-slate-700 px-3.5 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1">নতুন পাসওয়ার্ডটি পুনরায় লিখুন:</label>
+                    <input type="password" id="confirmPass" placeholder="পুনরায় নতুন পাসওয়ার্ড দিন" class="w-full bg-slate-900 border border-slate-700 px-3.5 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition">
+                </div>
+
+                <div class="pt-2 flex items-center gap-2">
+                    <button onclick="updatePassword()" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-md">
+                        পরিবর্তন করুন
+                    </button>
+                    <button onclick="closeChangePasswordModal()" class="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-xl transition">
+                        বাতিল
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Security & Password Logic Script -->
+    <script>
+        function getAdminPassword() {
+            return localStorage.getItem('school_admin_custom_password') || "admin123";
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // হোম পেজ থেকে ?action=login নিয়ে আসলে সেশন ক্লিয়ার করে পাসওয়ার্ড চাইবে
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('action') === 'login') {
+                sessionStorage.removeItem('head_admin_logged_in');
+            }
+
+            const isLoggedIn = sessionStorage.getItem('head_admin_logged_in');
+            
+            if (isLoggedIn === 'true') {
+                showDashboard();
+            } else {
+                showLoginModal();
+            }
+        });
+
+        function handleLogin() {
+            const passInput = document.getElementById('adminPasswordInput').value;
+            const currentAdminPass = getAdminPassword();
+            
+            if (passInput === currentAdminPass) {
+                sessionStorage.setItem('head_admin_logged_in', 'true');
+                showDashboard();
+            } else {
+                alert('ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড প্রদান করুন।');
+                document.getElementById('adminPasswordInput').value = '';
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('head_admin_logged_in');
+            showLoginModal();
+        }
+
+        function showDashboard() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.remove('hidden');
+            document.getElementById('dashboardContent').classList.add('flex');
+        }
+
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('dashboardContent').classList.add('hidden');
+            document.getElementById('dashboardContent').classList.remove('flex');
+            document.getElementById('adminPasswordInput').value = '';
+        }
+
+        function openChangePasswordModal() {
+            document.getElementById('currentPass').value = '';
+            document.getElementById('newPass').value = '';
+            document.getElementById('confirmPass').value = '';
+            document.getElementById('changePasswordModal').classList.remove('hidden');
+        }
+
+        function closeChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.add('hidden');
+        }
+
+        function updatePassword() {
+            const currentPass = document.getElementById('currentPass').value;
+            const newPass = document.getElementById('newPass').value;
+            const confirmPass = document.getElementById('confirmPass').value;
+            const savedPassword = getAdminPassword();
+
+            if (!currentPass || !newPass || !confirmPass) {
+                alert('দয়া করে সবকটি ফিল্ড পূরণ করুন!');
+                return;
+            }
+
+            if (currentPass !== savedPassword) {
+                alert('বর্তমান পাসওয়ার্ডটি সঠিক নয়!');
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                alert('নতুন পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড এক হয়নি!');
+                return;
+            }
+
+            if (newPass.length < 4) {
+                alert('নতুন পাসওয়ার্ড কমপক্ষে ৪ অক্ষরের হতে হবে!');
+                return;
+            }
+
+            localStorage.setItem('school_admin_custom_password', newPass);
+            alert('পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে!');
+            closeChangePasswordModal();
+        }
+    </script>
+
+<!-- Eiin , sal update -->
+<main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
+    <div class="max-w-2xl mx-auto bg-slate-800 border border-slate-700 p-6 sm:p-8 rounded-2xl shadow-xl space-y-6">
+        <div class="border-b border-slate-700 pb-4">
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-bullhorn text-indigo-400"></i> টপ বার ও সাধারণ তথ্য পরিবর্তন
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">মাদ্রাসার নাম/নোটিশ, EIIN এবং প্রতিষ্ঠার সাল পরিবর্তন করুন</p>
+        </div>
+
+        <div class="space-y-4 text-xs">
+            <div>
+                <label class="block text-slate-300 font-medium mb-1.5">চলমান নোটিশ/মারকি টেক্সট:</label>
+                <input type="text" id="adminMarqueeInput" placeholder="চলমান টেক্সট লিখুন..." class="w-full bg-slate-900 border border-slate-700 px-4 py-3 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1.5">ইআইআইএন (EIIN):</label>
+                    <input type="text" id="adminEiinInput" placeholder="EIIN নম্বর দিন" class="w-full bg-slate-900 border border-slate-700 px-4 py-3 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+                </div>
+                <div>
+                    <label class="block text-slate-300 font-medium mb-1.5">স্থাপিত সাল:</label>
+                    <input type="text" id="adminEstablishedInput" placeholder="যেমন: ২০১৫ ইং" class="w-full bg-slate-900 border border-slate-700 px-4 py-3 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+                </div>
+            </div>
+
+            <button onclick="saveTopBarData()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 text-sm mt-4">
+                <i class="fa-solid fa-floppy-disk"></i> পরিবর্তন সেভ করুন
+            </button>
+        </div>
+    </div>
+    <!-- Success Notification Toast -->
+<div id="successToast" class="hidden fixed bottom-5 right-5 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all transform duration-300">
+    <i class="fa-solid fa-circle-check text-lg"></i>
+    <div>
+        <h4 class="text-xs font-bold">সফল হয়েছে!</h4>
+        <p class="text-[11px] text-emerald-100">তথ্যগুলো সফলভাবে আপডেট করা হয়েছে।</p>
+    </div>
+</div>
+
+<script>
+    // ডেটা সেভ করার ফাংশন (Success Notification সহ)
+        function saveTopBarData() {
+            const marqueeText = document.getElementById('adminMarqueeInput').value;
+            const eiinText = document.getElementById('adminEiinInput').value;
+            const establishedText = document.getElementById('adminEstablishedInput').value;
+
+            if (!marqueeText || !eiinText || !establishedText) {
+                alert('দয়া করে সবকটি ফিল্ড পূরণ করুন!');
+                return;
+            }
+
+            // লোকালস্টোরেজে ডেটা সেভ করা
+            localStorage.setItem('school_marquee_text', marqueeText);
+            localStorage.setItem('school_eiin', eiinText);
+            localStorage.setItem('school_established', establishedText);
+
+            // Success Notification দেখানোর কোড
+            const toast = document.getElementById('successToast');
+            if (toast) {
+                toast.classList.remove('hidden');
+                // ৩ সেকেন্ড পর নোটিশটি অটো হাইড হয়ে যাবে
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 3000);
+            } else {
+                alert('সফলভাবে তথ্য আপডেট করা হয়েছে!');
+            }
+        }
+</script>
+
+<!-- ================= PHOTO GALLERY MANAGEMENT SECTION ================= -->
+<!-- ================= PHOTO GALLERY MANAGEMENT SECTION ================= -->
+<div class="max-w-2xl mx-auto bg-slate-800 border border-slate-700 p-4 sm:p-8 rounded-2xl shadow-xl space-y-6 mt-6">
+    <div class="border-b border-slate-700 pb-4 flex items-center justify-between">
+        <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-images text-indigo-400"></i> ফটো গ্যালারি ম্যানেজমেন্ট (Home)
+            </h3>
+        </div>
+    </div>
+
+    <!-- ছবি যোগ বা এডিট করার ফর্ম -->
+    <div class="space-y-4 text-xs bg-slate-900/60 p-4 rounded-xl border border-slate-700/60">
+        <h4 id="galleryFormTitle" class="font-bold text-slate-200 text-sm">নতুন ছবি যুক্ত করুন</h4>
+        <input type="hidden" id="editPhotoIndex" value="-1">
+        
+        <div>
+            <label class="block text-slate-300 font-medium mb-1">ছবির লিংক (Image URL):</label>
+            <input type="text" id="adminPhotoUrl" placeholder="https://example.com/image.jpg" class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+        </div>
+        <div>
+            <label class="block text-slate-300 font-medium mb-1">ছবির শিরোনাম (Title):</label>
+            <input type="text" id="adminPhotoTitle" placeholder="যেমন: বার্ষিক ক্রীড়া প্রতিযোগিতা" class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+            <button onclick="savePhotoData()" id="savePhotoBtn" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-md flex items-center justify-center gap-2 text-xs">
+                <i class="fa-solid fa-plus"></i> গ্যালারিতে যোগ করুন
+            </button>
+            <button onclick="resetPhotoForm()" id="cancelEditBtn" class="hidden px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-xl transition text-xs">
+                বাতিল
+            </button>
+        </div>
+    </div>
+
+    <!-- বিদ্যমান ছবিগুলোর তালিকা (মোবাইল ফ্রেন্ডলি ড্রপডাউন / অ্যাকর্ডিয়ন সেকশন) -->
+    <details class="group bg-slate-900/80 border border-slate-700/60 rounded-xl overflow-hidden transition-all">
+        <summary class="flex items-center justify-between p-3.5 cursor-pointer select-none bg-slate-900 hover:bg-slate-900/50 transition">
+            <div class="flex items-center gap-2.5">
+                <i class="fa-solid fa-list-ul text-indigo-400 text-xs"></i>
+                <h4 class="font-bold text-slate-200 text-xs sm:text-sm">গ্যালারির বিদ্যমান ছবিসমূহ দেখুন (ড্রপডাউন)</h4>
+            </div>
+            <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300 group-open:rotate-180"></i>
+        </summary>
+        
+        <!-- মোবাইল স্ক্রিনের জন্য হাইট ফ্লেক্সিবল এবং ওভারফ্লো স্মুথ করা হয়েছে -->
+        <div class="p-3 border-t border-slate-800 space-y-2 max-h-[400px] sm:max-h-60 overflow-y-auto pr-1">
+            <div id="adminPhotoListContainer" class="space-y-2.5">
+                <!-- জাভাস্ক্রিপ্ট দিয়ে ডাইনামিকালি লোড হবে -->
+            </div>
+        </div>
+    </details>
+</div>
+
+<script>
+    // ১. গ্যালারি ডেটা লোড ও লিস্ট রেন্ডার করা
+    function loadAdminGalleryList() {
+        const defaultPhotos = [
+            { url: "https://images.unsplash.com/photo-1542816417-0983cbe82752?q=80&w=600&auto=format&fit=crop", title: "কুরআন তিলওয়াত প্রতিযোগিতা" },
+            { url: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=600&auto=format&fit=crop", title: "আধুনিক সুসজ্জিত ক্লাসরুম" },
+            { url: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=600&auto=format&fit=crop", title: "বার্ষিক ক্রীড়া প্রতিযোগিতা" },
+            { url: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=600&auto=format&fit=crop", title: "কম্পিউটার ল্যাব" }
+        ];
+
+        let photos = JSON.parse(localStorage.getItem('sitePhotosList')) || JSON.parse(localStorage.getItem('sitePhotos')) || defaultPhotos;
+        const container = document.getElementById('adminPhotoListContainer');
+        if (!container) return;
+
+        container.innerHTML = '';
+        
+        if (photos.length === 0) {
+            container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">কোনো ছবি পাওয়া যায়নি।</p>`;
+            return;
+        }
+
+        photos.forEach((photo, index) => {
+            let pUrl = typeof photo === 'string' ? photo : (photo.url || '');
+            let pTitle = typeof photo === 'object' && photo.title ? photo.title : "মাদ্রাসা কার্যক্রম";
+
+            container.innerHTML += `
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-900 p-3 rounded-xl border border-slate-700/60 gap-3">
+                    <div class="flex items-center gap-3 overflow-hidden w-full sm:w-auto">
+                        <img src="${pUrl}" class="w-14 h-12 sm:w-12 sm:h-10 object-cover rounded-lg shrink-0" onerror="this.src='https://via.placeholder.com/100?text=Error'">
+                        <div class="truncate w-full">
+                            <p class="text-white font-medium text-xs sm:text-sm truncate">${pTitle}</p>
+                            <p class="text-[10px] text-slate-400 truncate">${pUrl}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                        <button onclick="editPhoto(${index})" class="px-3 py-1.5 bg-amber-600/20 hover:bg-amber-600 text-amber-400 hover:text-white rounded-lg transition text-xs flex items-center gap-1 border border-amber-500/30">
+                            <i class="fa-solid fa-pen"></i> এডিট
+                        </button>
+                        <button onclick="deletePhoto(${index})" class="px-3 py-1.5 bg-rose-600/20 hover:bg-rose-600 text-rose-400 hover:text-white rounded-lg transition text-xs flex items-center gap-1 border border-rose-500/30">
+                            <i class="fa-solid fa-trash"></i> ডিলিট
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // ২. নতুন ছবি যোগ বা আপডেট (Save/Update) করার ফাংশন
+    function savePhotoData() {
+        const url = document.getElementById('adminPhotoUrl').value.trim();
+        const title = document.getElementById('adminPhotoTitle').value.trim();
+        const editIndex = document.getElementById('editPhotoIndex').value;
+
+        if (!url) {
+            alert('দয়া করে অন্তত ছবির লিংক (URL) দিন!');
+            return;
+        }
+
+        const defaultPhotos = [
+            { url: "https://images.unsplash.com/photo-1542816417-0983cbe82752?q=80&w=600&auto=format&fit=crop", title: "কুরআন তিলওয়াত প্রতিযোগিতা" },
+            { url: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=600&auto=format&fit=crop", title: "আধুনিক সুসজ্জিত ক্লাসরুম" },
+            { url: "https://images.unsplash.com/photo-1562774053-701939374585?q=80&w=600&auto=format&fit=crop", title: "বার্ষিক ক্রীড়া প্রতিযোগিতা" },
+            { url: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=600&auto=format&fit=crop", title: "কম্পিউটার ল্যাব" }
+        ];
+
+        let photos = JSON.parse(localStorage.getItem('sitePhotosList')) || JSON.parse(localStorage.getItem('sitePhotos')) || defaultPhotos;
+        let successMessage = "";
+
+        if (editIndex === "-1") {
+            photos.push({ url: url, title: title || "মাদ্রাসা কার্যক্রম" });
+            successMessage = "নতুন ছবি সফলভাবে গ্যালারিতে যুক্ত করা হয়েছে!";
+        } else {
+            photos[editIndex] = { url: url, title: title || "মাদ্রাসা কার্যক্রম" };
+            successMessage = "ছবিটি সফলভাবে আপডেট করা হয়েছে!";
+            resetPhotoForm();
+        }
+
+        localStorage.setItem('sitePhotosList', JSON.stringify(photos));
+        document.getElementById('adminPhotoUrl').value = '';
+        document.getElementById('adminPhotoTitle').value = '';
+        loadAdminGalleryList();
+
+        showSuccessToast(successMessage);
+    }
+
+    // ৩. এডিট মোডে ডেটা ফর্মে নিয়ে আসার ফাংশন
+    function editPhoto(index) {
+        let photos = JSON.parse(localStorage.getItem('sitePhotosList')) || JSON.parse(localStorage.getItem('sitePhotos')) || [];
+        const photo = photos[index];
+
+        if (!photo) return;
+
+        document.getElementById('adminPhotoUrl').value = typeof photo === 'string' ? photo : (photo.url || '');
+        document.getElementById('adminPhotoTitle').value = typeof photo === 'object' && photo.title ? photo.title : '';
+        document.getElementById('editPhotoIndex').value = index;
+
+        document.getElementById('galleryFormTitle').innerText = 'ছবি এডিট করুন';
+        document.getElementById('savePhotoBtn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> আপডেট করুন';
+        document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+        document.getElementById('adminPhotoUrl').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ৪. এডিট মোড রিসেট করা
+    function resetPhotoForm() {
+        document.getElementById('adminPhotoUrl').value = '';
+        document.getElementById('adminPhotoTitle').value = '';
+        document.getElementById('editPhotoIndex').value = "-1";
+
+        document.getElementById('galleryFormTitle').innerText = 'নতুন ছবি যুক্ত করুন';
+        document.getElementById('savePhotoBtn').innerHTML = '<i class="fa-solid fa-plus"></i> গ্যালারিতে যোগ করুন';
+        document.getElementById('cancelEditBtn').classList.add('hidden');
+    }
+
+    // ৫. ছবি ডিলিট করার ফাংশন
+    function deletePhoto(index) {
+        if (!confirm('আপনি কি নিশ্চিতভাবে এই ছবিটি ডিলিট করতে চান?')) return;
+
+        let photos = JSON.parse(localStorage.getItem('sitePhotosList')) || JSON.parse(localStorage.getItem('sitePhotos')) || [];
+        photos.splice(index, 1);
+
+        localStorage.setItem('sitePhotosList', JSON.stringify(photos));
+        loadAdminGalleryList();
+        showSuccessToast('ছবিটি সফলভাবে ডিলিট করা হয়েছে!');
+    }
+
+    // ৬. Success Toast নোটিফিকেশন হেল্পার
+    function showSuccessToast(message) {
+        let toast = document.getElementById('successToast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'successToast';
+            toast.className = 'hidden fixed bottom-5 right-5 z-50 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 transition-all transform duration-300';
+            toast.innerHTML = `
+                <i class="fa-solid fa-circle-check text-lg"></i>
+                <div>
+                    <h4 class="text-xs font-bold">সফল হয়েছে!</h4>
+                    <p id="toastMessage" class="text-[11px] text-emerald-100"></p>
+                </div>
+            `;
+            document.body.appendChild(toast);
+        }
+
+        document.getElementById('toastMessage').innerText = message;
+        toast.classList.remove('hidden');
+
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 3000);
+    }
+
+    // পেজ লোড হওয়ার পর গ্যালারি তালিকা লোড করার জন্য
+    window.addEventListener('DOMContentLoaded', () => {
+        loadAdminGalleryList();
+    });
+</script>
+<!-- ================= VIDEO GALLERY MANAGEMENT SECTION ================= -->
+<!-- ================= VIDEO GALLERY MANAGEMENT SECTION ================= -->
+<div class="max-w-2xl mx-auto bg-slate-800 border border-slate-700 p-4 sm:p-8 rounded-2xl shadow-xl space-y-6 mt-6">
+    <div class="border-b border-slate-700 pb-4 flex items-center justify-between">
+        <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-video text-indigo-400"></i> ভিডিও গ্যালারি ম্যানেজমেন্ট
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">ভিডিও লিংক যোগ, এডিট বা ডিলিট করুন</p>
+        </div>
+    </div>
+
+    <!-- ভিডিও যোগ বা এডিট করার ফর্ম -->
+    <div class="space-y-4 text-xs bg-slate-900/60 p-4 rounded-xl border border-slate-700/60">
+        <h4 id="videoFormTitle" class="font-bold text-slate-200 text-sm">নতুন ভিডিও যুক্ত করুন</h4>
+        <input type="hidden" id="editVideoIndex" value="-1">
+        
+        <div>
+            <label class="block text-slate-300 font-medium mb-1">ইউটিউব ভিডিও লিংক (URL):</label>
+            <input type="text" id="adminVideoUrl" placeholder="যেমন: https://www.youtube.com/watch?v=xxxxx বা embed লিংক" class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+        </div>
+        <div>
+            <label class="block text-slate-300 font-medium mb-1">ভিডিওর শিরোনাম (Title):</label>
+            <input type="text" id="adminVideoTitle" placeholder="যেমন: বার্ষিক ওয়াজ মাহফিল" class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+            <button onclick="saveVideoData()" id="saveVideoBtn" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-md flex items-center justify-center gap-2 text-xs">
+                <i class="fa-solid fa-plus"></i> ভিডিও গ্যালারিতে যোগ করুন
+            </button>
+            <button onclick="resetVideoForm()" id="cancelVideoEditBtn" class="hidden px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-xl transition text-xs">
+                বাতিল
+            </button>
+        </div>
+    </div>
+
+    <!-- বিদ্যমান ভিডিওগুলোর তালিকা (মোবাইল ফ্রেন্ডলি ড্রপডাউন / অ্যাকর্ডিয়ন সেকশন) -->
+    <details class="group bg-slate-900/80 border border-slate-700/60 rounded-xl overflow-hidden transition-all">
+        <summary class="flex items-center justify-between p-3.5 cursor-pointer select-none bg-slate-900 hover:bg-slate-900/50 transition">
+            <div class="flex items-center gap-2.5">
+                <i class="fa-solid fa-list-ul text-indigo-400 text-xs"></i>
+                <h4 class="font-bold text-slate-200 text-xs sm:text-sm">গ্যালারির বিদ্যমান ভিডিওসমূহ দেখুন (ড্রপডাউন)</h4>
+            </div>
+            <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300 group-open:rotate-180"></i>
+        </summary>
+        
+        <!-- মোবাইল স্ক্রিনের জন্য ফ্লেক্সিবল হাইট ও স্মুথ স্ক্রোলিং যুক্ত করা হয়েছে -->
+        <div class="p-3 border-t border-slate-800 space-y-2.5 max-h-[400px] sm:max-h-60 overflow-y-auto pr-1">
+            <div id="adminVideoListContainer" class="space-y-2.5">
+                <!-- জাভাস্ক্রিপ্ট দিয়ে ডাইনামিকালি লোড হবে -->
+            </div>
+        </div>
+    </details>
+</div>
+
+<script>
+    // ১. ভিডিও তালিকা লোড ও রেন্ডার করার ফাংশন
+    function loadAdminVideoList() {
+        const defaultVideos = [
+            { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "বার্ষিক ওয়াজ মাহফিল" },
+            { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "দাখিল পরীক্ষার্থীদের বিদায় সংবর্ধনা" },
+            { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "বার্ষিক ক্রীড়া প্রতিযোগিতা" },
+            { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "মাদ্রাসার অভ্যন্তরীণ কার্যক্রম" }
+        ];
+
+        let videos = JSON.parse(localStorage.getItem('siteVideosList')) || JSON.parse(localStorage.getItem('siteVideos')) || defaultVideos;
+        const container = document.getElementById('adminVideoListContainer');
+        if (!container) return;
+
+        container.innerHTML = '';
+        
+        if (videos.length === 0) {
+            container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">কোনো ভিডিও পাওয়া যায়নি।</p>`;
+            return;
+        }
+
+        videos.forEach((video, index) => {
+            let vUrl = typeof video === 'string' ? video : (video.url || '');
+            let vTitle = typeof video === 'object' && video.title ? video.title : `ভিডিও ক্লিপ ${index + 1}`;
+
+            container.innerHTML += `
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between bg-slate-900 p-3 rounded-xl border border-slate-700/60 gap-3">
+                    <div class="flex items-center gap-3 overflow-hidden w-full sm:w-auto">
+                        <div class="w-12 h-9 bg-slate-800 rounded-lg shrink-0 flex items-center justify-center text-indigo-400 text-xs">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <div class="truncate w-full">
+                            <p class="text-white font-medium text-xs sm:text-sm truncate">${vTitle}</p>
+                            <p class="text-[10px] text-slate-400 truncate">${vUrl}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                        <button onclick="editVideo(${index})" class="px-3 py-1.5 bg-amber-600/20 hover:bg-amber-600 text-amber-400 hover:text-white rounded-lg transition text-xs flex items-center gap-1 border border-amber-500/30">
+                            <i class="fa-solid fa-pen"></i> এডিট
+                        </button>
+                        <button onclick="deleteVideo(${index})" class="px-3 py-1.5 bg-rose-600/20 hover:bg-rose-600 text-rose-400 hover:text-white rounded-lg transition text-xs flex items-center gap-1 border border-rose-500/30">
+                            <i class="fa-solid fa-trash"></i> ডিলিট
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // ২. নতুন ভিডিও যোগ বা আপডেট করার ফাংশন
+    function saveVideoData() {
+        const url = document.getElementById('adminVideoUrl').value.trim();
+        const title = document.getElementById('adminVideoTitle').value.trim();
+        const editIndex = document.getElementById('editVideoIndex').value;
+
+        if (!url) {
+            alert('দয়া করে অন্তত ইউটিউব ভিডিওর লিংক দিন!');
+            return;
+        }
+
+        const defaultVideos = [
+            { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "বার্ষিক ওয়াজ মাহফিল" },
+            { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "দাখিল পরীক্ষার্থীদের বিদায় সংবর্ধনা" },
+            { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "বার্ষিক ক্রীড়া প্রতিযোগিতা" },
+            { url: "https://www.youtube.com/embed/tgbNymZ7vqY", title: "মাদ্রাসা কার্যক্রম" }
+        ];
+
+        let videos = JSON.parse(localStorage.getItem('siteVideosList')) || JSON.parse(localStorage.getItem('siteVideos')) || defaultVideos;
+        let successMessage = "";
+
+        if (editIndex === "-1") {
+            videos.push({ url: url, title: title || "মাদ্রাসা কার্যক্রম" });
+            successMessage = "নতুন ভিডিও সফলভাবে গ্যালারিতে যুক্ত করা হয়েছে!";
+        } else {
+            videos[editIndex] = { url: url, title: title || "মাদ্রাসা কার্যক্রম" };
+            successMessage = "ভিডিওটি সফলভাবে আপডেট করা হয়েছে!";
+            resetVideoForm();
+        }
+
+        localStorage.setItem('siteVideosList', JSON.stringify(videos));
+        document.getElementById('adminVideoUrl').value = '';
+        document.getElementById('adminVideoTitle').value = '';
+        loadAdminVideoList();
+
+        if (typeof showSuccessToast === 'function') {
+            showSuccessToast(successMessage);
+        } else {
+            alert(successMessage);
+        }
+    }
+
+    // ৩. এডিট মোডে ফর্মে ডেটা নিয়ে আসা
+    function editVideo(index) {
+        let videos = JSON.parse(localStorage.getItem('siteVideosList')) || JSON.parse(localStorage.getItem('siteVideos')) || [];
+        const video = videos[index];
+
+        if (!video) return;
+
+        document.getElementById('adminVideoUrl').value = typeof video === 'string' ? video : (video.url || '');
+        document.getElementById('adminVideoTitle').value = typeof video === 'object' && video.title ? video.title : '';
+        document.getElementById('editVideoIndex').value = index;
+
+        document.getElementById('videoFormTitle').innerText = 'ভিডিও এডিট করুন';
+        document.getElementById('saveVideoBtn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> আপডেট করুন';
+        document.getElementById('cancelVideoEditBtn').classList.remove('hidden');
+
+        document.getElementById('adminVideoUrl').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ৪. এডিট ফর্ম রিসেট করা
+    function resetVideoForm() {
+        document.getElementById('adminVideoUrl').value = '';
+        document.getElementById('adminVideoTitle').value = '';
+        document.getElementById('editVideoIndex').value = "-1";
+
+        document.getElementById('videoFormTitle').innerText = 'নতুন ভিডিও যুক্ত করুন';
+        document.getElementById('saveVideoBtn').innerHTML = '<i class="fa-solid fa-plus"></i> ভিডিও গ্যালারিতে যোগ করুন';
+        document.getElementById('cancelVideoEditBtn').classList.add('hidden');
+    }
+
+    // ৫. ভিডিও ডিলিট করার ফাংশন
+    function deleteVideo(index) {
+        if (!confirm('আপনি কি নিশ্চিতভাবে এই ভিডিওটি ডিলিট করতে চান?')) return;
+
+        let videos = JSON.parse(localStorage.getItem('siteVideosList')) || JSON.parse(localStorage.getItem('siteVideos')) || [];
+        videos.splice(index, 1);
+
+        localStorage.setItem('siteVideosList', JSON.stringify(videos));
+        loadAdminVideoList();
+
+        if (typeof showSuccessToast === 'function') {
+            showSuccessToast('ভিডিওটি সফলভাবে ডিলিট করা হয়েছে!');
+        }
+    }
+
+    // পেজ লোড হলে ভিডিও তালিকা লোড করা
+    window.addEventListener('DOMContentLoaded', () => {
+        loadAdminVideoList();
+    });
+</script>
+
+<!-- ================= admission list update ================= -->
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> ভর্তি আবেদন তালিকা</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body class="bg-slate-100 py-6 px-4 font-sans">
+
+<div class="max-w-7xl mx-auto space-y-6">
+    
+    <!-- Top Header -->
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-xl flex items-center justify-center text-xl font-bold">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div>
+                <h1 class="text-xl sm:text-2xl font-black text-emerald-900">ভর্তি আবেদন তালিকা- ড্যাশবোর্ড</h1>
+                <p class="text-xs text-slate-500">বগাছতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসা</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl transition">
+                <i class="fa-solid fa-home mr-1"></i> হোম পেজ
+            </a>
+            <button onclick="clearAllData()" class="px-4 py-2 bg-rose-100 hover:bg-rose-200 text-rose-700 text-xs font-bold rounded-xl transition">
+                <i class="fa-solid fa-trash-can mr-1"></i> সব ডেটা মুছুন
+            </button>
+        </div>
+    </div>
+
+    <!-- Controls & Filters Bar -->
+    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-3 w-full md:w-auto">
+            <div class="text-xs font-bold text-slate-700 shrink-0">শ্রেণি ফিল্টার:</div>
+            <select id="classFilter" onchange="filterApplications()" class="w-full md:w-64 px-4 py-2 rounded-xl border border-slate-300 text-xs bg-white font-medium focus:outline-emerald-600">
+                <option value="">সকল শ্রেণি (All Classes)</option>
+                <option value="শিশু শ্রেণি (Nurani)">শিশু শ্রেণি (Nurani)</option>
+                <option value="১ম শ্রেণি">১ম শ্রেণি</option>
+                <option value="২য় শ্রেণি">২য় শ্রেণি</option>
+                <option value="৩য় শ্রেণি">৩য় শ্রেণি</option>
+                <option value="৪র্থ শ্রেণি">৪র্থ শ্রেণি</option>
+                <option value="৫ম শ্রেণি">৫ম শ্রেণি</option>
+                <option value="৬ষ্ঠ শ্রেণি">৬ষ্ঠ শ্রেণি</option>
+                <option value="৭ম শ্রেণি">৭ম শ্রেণি</option>
+                <option value="৮ম শ্রেণি">৮ম শ্রেণি</option>
+                <option value="৯ম শ্রেণি">৯ম শ্রেণি</option>
+                <option value="দশম শ্রেণি">দশম শ্রেণি</option>
+            </select>
+        </div>
+        <div class="w-full md:w-auto flex items-center gap-3">
+            <div class="relative w-full md:w-72">
+                <input type="text" id="searchInput" onkeyup="filterApplications()" placeholder="নাম, আইডি বা জন্ম নিবন্ধন দিয়ে খুঁজুন..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs focus:outline-emerald-600">
+                <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-xs"></i>
+            </div>
+            <div class="text-xs font-bold bg-emerald-50 text-emerald-800 px-3 py-2 rounded-xl border border-emerald-200 shrink-0">
+                মোট আবেদন: <span id="totalCount">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Applications Table -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                    <tr class="bg-emerald-900 text-white font-bold">
+                        <th class="p-3.5">ছবি</th>
+                        <th class="p-3.5">আইডি ও তারিখ</th>
+                        <th class="p-3.5">শিক্ষার্থীর নাম</th>
+                        <th class="p-3.5">শ্রেণি</th>
+                        <th class="p-3.5">পিতা ও মাতার নাম</th>
+                        <th class="p-3.5">মোবাইল ও জন্ম নিবন্ধন</th>
+                        <th class="p-3.5 text-center">স্ট্যাটাস</th>
+                        <th class="p-3.5 text-center">কার্যক্রম</th>
+                    </tr>
+                </thead>
+                <tbody id="appTableBody" class="divide-y divide-slate-100 text-slate-700 font-medium">
+                    <!-- Dynamic Rows Will Inject Here -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-12 space-y-3">
+            <i class="fa-solid fa-folder-open text-4xl text-slate-300"></i>
+            <p class="text-slate-500 text-xs font-bold">কোনো আবেদন পাওয়া যায়নি!</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- DETAILS MODAL -->
+<div id="detailsModal" class="fixed inset-0 bg-slate-900/85 z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white p-6 rounded-2xl max-w-lg w-full space-y-4 shadow-2xl my-8 relative">
+        <div class="flex justify-between items-center border-b pb-3">
+            <h3 class="text-sm font-black text-emerald-900"><i class="fa-solid fa-id-card text-emerald-600 mr-1"></i> শিক্ষার্থীর বিস্তারিত তথ্য</h3>
+            <button onclick="closeDetailsModal()" class="text-slate-400 hover:text-slate-700 text-sm font-bold"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="flex items-center gap-4 bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+            <img id="m_photo" src="" class="w-16 h-16 object-cover rounded-xl border-2 border-emerald-600 shadow-sm" />
+            <div>
+                <p class="text-xs text-slate-500">আবেদন আইডি: <span id="m_id" class="font-bold text-emerald-800"></span></p>
+                <p class="text-xs text-slate-500">তারিখ: <span id="m_date" class="font-bold"></span></p>
+            </div>
+        </div>
+
+        <div class="space-y-2 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200 max-h-60 overflow-y-auto">
+            <p><b>বাংলা নাম:</b> <span id="m_nameBn"></span></p>
+            <p><b>ইংরেজি নাম:</b> <span id="m_nameEn"></span></p>
+            <p><b>শ্রেণি:</b> <span id="m_class"></span></p>
+            <p><b>পিতার নাম:</b> <span id="m_fatherBn"></span> (<span id="m_fatherEn"></span>)</p>
+            <p><b>মাতার নাম:</b> <span id="m_motherBn"></span> (<span id="m_motherEn"></span>)</p>
+            <p><b>জন্ম তারিখ:</b> <span id="m_dob"></span></p>
+            <p><b>জন্ম নিবন্ধন নম্বর:</b> <span id="m_birthReg" class="font-bold text-emerald-700"></span></p>
+            <p><b>লিঙ্গ:</b> <span id="m_gender"></span></p>
+            <p><b>বর্তমান ঠিকানা:</b> <span id="m_presentAddr"></span></p>
+            <p><b>স্থায়ী ঠিকানা:</b> <span id="m_permanentAddr"></span></p>
+            <p><b>মোবাইল নম্বর:</b> <span id="m_mobile"></span></p>
+        </div>
+
+        <div class="flex justify-end pt-2">
+            <button onclick="closeDetailsModal()" class="px-5 py-2 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs font-bold rounded-xl transition">বন্ধ করুন</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let allApplications = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadApplications();
+        
+        // Listen to storage event to sync if user applies from another tab
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'siteAdmissionApplications') {
+                loadApplications();
+            }
+        });
+    });
+
+    function loadApplications() {
+        try {
+            allApplications = JSON.parse(localStorage.getItem('siteAdmissionApplications')) || [];
+        } catch (e) {
+            allApplications = [];
+        }
+        renderTable(allApplications);
+    }
+
+    function renderTable(data) {
+        const tableBody = document.getElementById('appTableBody');
+        const emptyState = document.getElementById('emptyState');
+        document.getElementById('totalCount').innerText = data.length;
+
+        tableBody.innerHTML = '';
+
+        if (data.length === 0) {
+            emptyState.classList.remove('hidden');
+            return;
+        } else {
+            emptyState.classList.add('hidden');
+        }
+
+        data.forEach((app, index) => {
+            const row = document.createElement('tr');
+            row.className = "hover:bg-slate-50 transition";
+            row.innerHTML = `
+                <td class="p-3">
+                    <img src="${app.photo || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}" class="w-10 h-10 object-cover rounded-lg border border-slate-200 shadow-sm" />
+                </td>
+                <td class="p-3">
+                    <span class="font-bold text-emerald-800 block">${app.id || 'N/A'}</span>
+                    <span class="text-[10px] text-slate-400">${app.date || ''}</span>
+                </td>
+                <td class="p-3">
+                    <span class="font-bold text-slate-900 block">${app.studentName}</span>
+                    <span class="text-[10px] text-slate-500 uppercase">${app.nameEn || ''}</span>
+                </td>
+                <td class="p-3 font-semibold text-emerald-700">${app.className}</td>
+                <td class="p-3">
+                    <span class="block">পিতা: ${app.fatherName}</span>
+                    <span class="text-[10px] text-slate-500">মাতা: ${app.motherName}</span>
+                </td>
+                <td class="p-3">
+                    <span class="block font-medium">${app.mobile}</span>
+                    <span class="text-[10px] text-slate-500">জন্ম নি: ${app.birthReg}</span>
+                </td>
+                <td class="p-3 text-center">
+                    <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">${app.status || 'পেন্ডিং'}</span>
+                </td>
+                <td class="p-3 text-center space-x-1">
+                    <button onclick='viewDetails(${JSON.stringify(app)})' title="বিস্তারিত দেখুন" class="w-7 h-7 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition"><i class="fa-solid fa-eye text-[11px]"></i></button>
+                    <button onclick='deleteApplication("${app.birthReg}")' title="ডিলিট করুন" class="w-7 h-7 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-lg transition"><i class="fa-solid fa-trash text-[11px]"></i></button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function filterApplications() {
+        const classVal = document.getElementById('classFilter').value;
+        const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+
+        let filtered = allApplications.filter(app => {
+            const matchesClass = classVal === "" || app.className === classVal;
+            const matchesSearch = (app.studentName && app.studentName.toLowerCase().includes(searchVal)) ||
+                                  (app.nameEn && app.nameEn.toLowerCase().includes(searchVal)) ||
+                                  (app.id && app.id.toLowerCase().includes(searchVal)) ||
+                                  (app.birthReg && app.birthReg.includes(searchVal)) ||
+                                  (app.mobile && app.mobile.includes(searchVal));
+            return matchesClass && matchesSearch;
+        });
+
+        renderTable(filtered);
+    }
+
+    function viewDetails(app) {
+        document.getElementById('m_id').innerText = app.id || 'N/A';
+        document.getElementById('m_date').innerText = app.date || 'N/A';
+        document.getElementById('m_photo').src = app.photo || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+        document.getElementById('m_nameBn').innerText = app.studentName || '';
+        document.getElementById('m_nameEn').innerText = app.nameEn || '';
+        document.getElementById('m_class').innerText = app.className || '';
+        document.getElementById('m_fatherBn').innerText = app.fatherName || '';
+        document.getElementById('m_fatherEn').innerText = app.fatherEn || '';
+        document.getElementById('m_motherBn').innerText = app.motherName || '';
+        document.getElementById('m_motherEn').innerText = app.motherEn || '';
+        document.getElementById('m_dob').innerText = app.dob || '';
+        document.getElementById('m_birthReg').innerText = app.birthReg || '';
+        document.getElementById('m_gender').innerText = app.gender || '';
+        document.getElementById('m_presentAddr').innerText = app.presentAddr || '';
+        document.getElementById('m_permanentAddr').innerText = app.permanentAddr || '';
+        document.getElementById('m_mobile').innerText = app.mobile || '';
+
+        document.getElementById('detailsModal').classList.remove('hidden');
+    }
+
+    function closeDetailsModal() {
+        document.getElementById('detailsModal').classList.add('hidden');
+    }
+
+    function deleteApplication(birthReg) {
+        Swal.fire({
+            title: 'আপনি কি নিশ্চিত?',
+            text: "এই আবেদনটি মুছে ফেলা হবে এবং জন্ম নিবন্ধন নম্বরটির ব্লক লিস্টও রিমুভ হয়ে যাবে!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#047857',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'হ্যাঁ, ডিলিট করুন',
+            cancelButtonText: 'বাতিল'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // 1. Remove from main apps list
+                allApplications = allApplications.filter(app => app.birthReg !== birthReg);
+                localStorage.setItem('siteAdmissionApplications', JSON.stringify(allApplications));
+
+                // 2. Remove from duplicate birth reg check list so they can apply again if needed
+                let submittedRegNumbers = JSON.parse(localStorage.getItem('submitted_birth_regs')) || [];
+                submittedRegNumbers = submittedRegNumbers.filter(reg => reg !== birthReg);
+                localStorage.setItem('submitted_birth_regs', JSON.stringify(submittedRegNumbers));
+
+                loadApplications();
+                Swal.fire({ icon: 'success', title: 'ডিলিট সফল!', text: 'আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।', confirmButtonColor: '#047857' });
+            }
+        });
+    }
+
+    function clearAllData() {
+        Swal.fire({
+            title: 'সতর্কতা!',
+            text: "সকল আবেদন এবং ডুপ্লিকেট চেকিং ডেটা চিরতরে মুছে যাবে!",
+            icon: 'error',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'সব মুছে ফেলুন',
+            cancelButtonText: 'বাতিল'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.removeItem('siteAdmissionApplications');
+                localStorage.removeItem('submitted_birth_regs');
+                loadApplications();
+                Swal.fire({ icon: 'success', title: 'পরিষ্কার করা হয়েছে!', text: 'সকল ডেটা সফলভাবে মুছে ফেলা হয়েছে।', confirmButtonColor: '#047857' });
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
+
+
+
+
+<!-- ================= Result update ================= -->
+<section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-6 mt-8">
+    <div class="border-b pb-3 flex justify-between items-center">
+        <h2 id="resultFormHeading" class="text-xl font-bold text-black flex items-center gap-2">
+            <i class="fa-solid fa-square-poll-vertical text-blue-900"></i> নতুন পরীক্ষার ফলাফল প্রকাশ করুন
+        </h2>
+        <button id="cancelResultEditBtn" onclick="resetResultForm()" class="hidden text-xs bg-gray-200 hover:bg-gray-300 text-black font-semibold px-3 py-1.5 rounded-lg transition">
+            এডিট বাতিল করুন
+        </button>
+    </div>
+
+    <!-- রেজাল্ট প্রকাশের ইনপুট ফরম -->
+    <form id="resultAdminForm" onsubmit="handleResultFormSubmit(event)" class="space-y-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+        <input type="hidden" id="adminResultId">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- শিরোনাম -->
+            <div class="md:col-span-2">
+                <label class="block text-xs font-bold text-black mb-1">📌 ফলাফলের শিরোনাম *</label>
+                <input type="text" id="adminResultTitle" required placeholder="উদাহরণ: দাখিল পরীক্ষা ২০২৬ এর সেরা ফলাফলের তালিকা..." class="w-full bg-white text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+            </div>
+
+            <!-- ক্যাটাগরি -->
+            <div>
+                <label class="block text-xs font-bold text-black mb-1">📂 ফলাফলের ক্যাটাগরি *</label>
+                <select id="adminResultCategory" required class="w-full bg-white text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    <option value="board_exam">বোর্ড পরীক্ষা</option>
+                    <option value="annual_exam">বার্ষিক পরীক্ষা</option>
+                    <option value="term_exam">সাময়িক পরীক্ষা</option>
+                    <option value="admission_test">ভর্তি পরীক্ষা</option>
+                </select>
+            </div>
+
+            <!-- ফাইল / পিডিএফ / পিকচার আপলোড -->
+            <div>
+                <label class="block text-xs font-bold text-black mb-1">📎 ফলাফল ফাইল বা ছবি আপলোড করুন (PDF/JPG/PNG)</label>
+                <input type="file" id="adminResultFile" accept=".pdf,image/*" onchange="previewSelectedResultFile(event)" class="w-full bg-white text-black border border-slate-300 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <p id="adminResultFileStatus" class="text-[11px] text-gray-600 mt-1"></p>
+            </div>
+
+            <!-- প্রকাশের তারিখ -->
+            <div>
+                <label class="block text-xs font-bold text-black mb-1">📅 প্রকাশের তারিখ *</label>
+                <input type="text" id="adminResultDate" required placeholder="উদাহরণ: ১৫-১০-২০২৬" class="w-full bg-white text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+            </div>
+
+            <!-- নতুন ব্যাজ টিকমার্ক -->
+            <div class="flex items-center gap-2 pt-6">
+                <input type="checkbox" id="adminResultIsNew" checked class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                <label for="adminResultIsNew" class="text-xs font-bold text-black cursor-pointer">'নতুন' (New) ব্যাজ প্রদর্শন করুন</label>
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-3 border-t">
+            <button type="button" onclick="resetResultForm()" class="bg-gray-200 hover:bg-gray-300 text-black font-semibold px-4 py-2 rounded-lg text-xs transition">
+                রিসেট
+            </button>
+            <button type="submit" id="submitResultBtn" class="bg-blue-900 hover:bg-blue-800 text-white font-bold px-6 py-2 rounded-lg text-xs transition flex items-center gap-2 shadow">
+                <i class="fa-solid fa-paper-plane"></i> <span id="submitResultBtnText">পাবলিশ করুন</span>
+            </button>
+        </div>
+    </form>
+
+    <!-- প্রকাশিত ফলাফলের তালিকা (ড্রপডাউন অ্যাকর্ডিয়ন) -->
+    <div class="border border-slate-200 rounded-xl overflow-hidden">
+        <button onclick="toggleResultDropdown()" class="w-full p-4 flex justify-between items-center bg-slate-100 hover:bg-slate-200 transition text-left focus:outline-none">
+            <div class="flex items-center gap-3">
+                <h3 class="text-md font-bold text-black flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-black"></i> প্রকাশিত ফলাফলের তালিকা
+                </h3>
+                <span id="adminResultCountBadge" class="bg-blue-100 text-blue-900 font-bold px-3 py-0.5 rounded-full text-xs">
+                    মোট: ০ টি
+                </span>
+            </div>
+            <i id="resultDropdownArrow" class="fa-solid fa-chevron-down text-base text-blue-900 transition-transform duration-300"></i>
+        </button>
+
+        <div id="adminResultDropdownContent" class="p-4 pt-0 border-t border-slate-200">
+            <div class="overflow-x-auto pt-3">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 text-black text-xs uppercase tracking-wider border-b border-slate-200">
+                            <th class="py-3 px-4">শিরোনাম</th>
+                            <th class="py-3 px-4">ক্যাটাগরি</th>
+                            <th class="py-3 px-4">তারিখ</th>
+                            <th class="py-3 px-4 text-center">স্ট্যাটাস</th>
+                            <th class="py-3 px-4 text-center">অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminResultTableBody" class="divide-y divide-slate-200 text-sm">
+                        <!-- ডাইনামিক রেজাল্ট ডাটা লোড হবে -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// ক্যাটাগরি বাংলা ম্যাপ
+const resultCategoryMap = {
+    'board_exam': 'বোর্ড পরীক্ষা',
+    'annual_exam': 'বার্ষিক পরীক্ষা',
+    'term_exam': 'সাময়িক পরীক্ষা',
+    'admission_test': 'ভর্তি পরীক্ষা'
+};
+
+let adminResultList = [];
+let uploadedResultBase64 = "";
+let uploadedResultFileType = "";
+
+// ১. ড্রপডাউন টগল
+function toggleResultDropdown() {
+    const content = document.getElementById('adminResultDropdownContent');
+    const arrow = document.getElementById('resultDropdownArrow');
+    if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        arrow.classList.remove('rotate-180');
+    } else {
+        content.classList.add('hidden');
+        arrow.classList.add('rotate-180');
+    }
+}
+
+// ২. LocalStorage থেকে ডাটা লোড (সবগুলো সম্ভাব্য কী একসাথে সিঙ্ক করা হয়েছে)
+function loadAdminResultData() {
+    const stored = localStorage.getItem('site_published_results') || 
+                   localStorage.getItem('published_results') || 
+                   localStorage.getItem('madrasa_published_results');
+                   
+    if (stored) {
+        try {
+            adminResultList = JSON.parse(stored);
+        } catch(e) {
+            adminResultList = [];
+        }
+    } else {
+        adminResultList = [
+            { _id: "r1", title: "দাখিল পরীক্ষা ২০২৬ এর সেরা ফলাফলের তালিকা", category: "board_exam", publishDate: "১৫-১০-২০২৬", isNew: true, fileUrl: "" },
+            { _id: "r2", title: "বার্ষিক মূল্যায়ন ও প্রথম সাময়িক পরীক্ষার ফলাফল ঘোষণা", category: "annual_exam", publishDate: "১৫-১০-২০২৬", isNew: true, fileUrl: "" }
+        ];
+        saveAllKeys(adminResultList);
+    }
+    renderAdminResultTable();
+}
+
+// সেন্ট্রালাইজড সেভ ফাংশন যাতে সবকটি কী-তে একসাথে ডেটা সেভ হয় (কোনো মিসিং না থাকে)
+function saveAllKeys(dataList) {
+    const jsonStr = JSON.stringify(dataList);
+    localStorage.setItem('site_published_results', jsonStr);
+    localStorage.setItem('published_results', jsonStr);
+    localStorage.setItem('madrasa_published_results', jsonStr);
+}
+
+// ৩. টেবিল রেন্ডার করা
+function renderAdminResultTable() {
+    const tbody = document.getElementById('adminResultTableBody');
+    const badge = document.getElementById('adminResultCountBadge');
+
+    if (!tbody) return;
+    badge.innerText = `মোট: ${adminResultList.length} টি`;
+    tbody.innerHTML = '';
+
+    if (adminResultList.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-gray-500 font-medium">কোনো ফলাফল পাওয়া যায়নি। নতুন ফলাফল প্রকাশ করুন।</td></tr>`;
+        return;
+    }
+
+    adminResultList.forEach((item) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+            <td class="py-3 px-4 font-semibold text-black max-w-xs truncate">${item.title}</td>
+            <td class="py-3 px-4 text-xs font-medium text-black">
+                <span class="bg-slate-200 px-2.5 py-1 rounded-md">
+                    ${resultCategoryMap[item.category] || item.category}
+                </span>
+            </td>
+            <td class="py-3 px-4 text-xs text-black whitespace-nowrap">${item.publishDate}</td>
+            <td class="py-3 px-4 text-center whitespace-nowrap">
+                ${item.isNew !== false ? `<span class="bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">নতুন</span>` : `<span class="text-gray-500 text-xs">সাধারণ</span>`}
+            </td>
+            <td class="py-3 px-4 text-center whitespace-nowrap space-x-1">
+                <button type="button" onclick="editAdminResult('${item._id}')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2 rounded-lg text-xs transition" title="সম্পাদনা">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button type="button" onclick="deleteAdminResult('${item._id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-2 rounded-lg text-xs transition" title="মুছে ফেলুন">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// ৪. ফাইল প্রিভিউ এবং রিড
+function previewSelectedResultFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        uploadedResultBase64 = event.target.result;
+        uploadedResultFileType = file.type.includes('pdf') ? 'pdf' : 'image';
+        document.getElementById('adminResultFileStatus').innerText = `সিলেক্টেড ফাইল: ${file.name}`;
+    };
+    reader.readAsDataURL(file);
+}
+
+// ৫. ফলাফল সেভ বা আপডেট করা
+function handleResultFormSubmit(e) {
+    e.preventDefault();
+
+    const resultId = document.getElementById('adminResultId').value;
+    const title = document.getElementById('adminResultTitle').value.trim();
+    const category = document.getElementById('adminResultCategory').value;
+    const publishDate = document.getElementById('adminResultDate').value.trim();
+    const isNew = document.getElementById('adminResultIsNew').checked;
+
+    if (resultId) {
+        // এডিট/আপডেট
+        const index = adminResultList.findIndex(r => r._id === resultId);
+        if (index !== -1) {
+            adminResultList[index].title = title;
+            adminResultList[index].category = category;
+            adminResultList[index].publishDate = publishDate;
+            adminResultList[index].isNew = isNew;
+
+            if (uploadedResultBase64) {
+                adminResultList[index].fileUrl = uploadedResultBase64;
+                adminResultList[index].fileType = uploadedResultFileType;
+            }
+        }
+    } else {
+        // নতুন যোগ করা
+        const newResult = {
+            _id: 'r_' + Date.now().toString(),
+            title,
+            category,
+            publishDate,
+            isNew,
+            fileUrl: uploadedResultBase64,
+            fileType: uploadedResultFileType || 'pdf'
+        };
+        adminResultList.unshift(newResult);
+    }
+
+    // সবগুলো সম্ভাব্য কীতে একসাথে সেভ করা হলো যাতে result.html যেকোনো কি থেকে খুঁজলেই পেয়ে যায়
+    saveAllKeys(adminResultList);
+
+    renderAdminResultTable();
+    resetResultForm();
+    alert('পরীক্ষার ফলাফল সফলভাবে প্রকাশিত হয়েছে!');
+}
+
+// ৬. এডিট মোডে আনা
+function editAdminResult(id) {
+    const result = adminResultList.find(r => r._id === id);
+    if (!result) return;
+
+    document.getElementById('adminResultId').value = result._id;
+    document.getElementById('adminResultTitle').value = result.title;
+    document.getElementById('adminResultCategory').value = result.category;
+    document.getElementById('adminResultDate').value = result.publishDate;
+    document.getElementById('adminResultIsNew').checked = result.isNew !== false;
+
+    document.getElementById('resultFormHeading').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-600"></i> ফলাফলের তথ্য সম্পাদনা করুন`;
+    document.getElementById('submitResultBtnText').innerText = "আপডেট করুন";
+    document.getElementById('cancelResultEditBtn').classList.remove('hidden');
+
+    if (result.fileUrl) {
+        document.getElementById('adminResultFileStatus').innerText = "পূর্ববর্তী ফাইল সংযুক্ত রয়েছে। নতুন ফাইল আপলোড না করলে এটিই থাকবে।";
+    } else {
+        document.getElementById('adminResultFileStatus').innerText = "";
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ৭. ডিলিট করা
+function deleteAdminResult(id) {
+    if (confirm('আপনি কি নিশ্চিত যে এই ফলাফলের তথ্যটি মুছে ফেলতে চান?')) {
+        adminResultList = adminResultList.filter(r => r._id !== id);
+        saveAllKeys(adminResultList);
+        renderAdminResultTable();
+    }
+}
+
+// ৮. ফরম রিসেট
+function resetResultForm() {
+    document.getElementById('resultAdminForm').reset();
+    document.getElementById('adminResultId').value = '';
+    uploadedResultBase64 = '';
+    uploadedResultFileType = '';
+    document.getElementById('adminResultFileStatus').innerText = '';
+    document.getElementById('resultFormHeading').innerHTML = `<i class="fa-solid fa-square-poll-vertical text-blue-900"></i> নতুন পরীক্ষার ফলাফল প্রকাশ করুন`;
+    document.getElementById('submitResultBtnText').innerText = "পাবলিশ করুন";
+    document.getElementById('cancelResultEditBtn').classList.add('hidden');
+}
+
+// পেজ লোড হলে কল হবে
+window.addEventListener('DOMContentLoaded', () => {
+    loadAdminResultData();
+});
+</script>
+<!-- ================= Staff Management Section ================= -->
+<section id="admin-staff-section" class="pt-[40px] pb-12 px-4 bg-slate-100 min-h-screen">
+    <!-- প্রধান গ্রিড কন্টেইনার (মোবাইলে ১ কলাম, বড় স্ক্রিনে ৩ কলাম) -->
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        
+        <!-- বাম পাশ: শিক্ষক বা স্টাফ যোগ/এডিট করার ফর্ম -->
+        <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4 md:col-span-2 lg:col-span-1 h-fit lg:sticky lg:top-20">
+            <div class="border-b pb-3 flex justify-between items-center">
+                <h3 id="staffFormTitle" class="text-sm font-bold text-emerald-900 flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus text-emerald-600"></i> নতুন শিক্ষক বা স্টাফ যুক্ত করুন
+                </h3>
+                <button type="button" id="staffResetBtn" class="hidden text-xs text-rose-600 hover:underline">বাতিল</button>
+            </div>
+
+            <form id="staffForm" class="space-y-3 text-xs">
+                <input type="hidden" id="editStaffIndex" value="">
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">ক্যাটেগরি নির্বাচন করুন *</label>
+                    <select id="staffCategory" required class="w-full bg-black text-white border border-slate-700 rounded-lg px-3 py-2 focus:outline-emerald-600 font-medium">
+                        <option value="teacher">সম্মানিত শিক্ষক (Teacher)</option>
+                        <option value="staff">অফিস ও সহযোগী স্টাফ (Staff)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">নাম *</label>
+                    <input type="text" id="staffName" required placeholder="যেমন: মাওলানা আব্দুল্লাহ" class="w-full bg-black text-white border border-slate-700 rounded-lg px-3 py-2 focus:outline-emerald-600 font-medium placeholder-slate-400">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">পদবী (Designation) *</label>
+                    <input type="text" id="staffDesignation" required placeholder="যেমন: সহঃ শিক্ষক (গণিত)" class="w-full bg-black text-white border border-slate-700 rounded-lg px-3 py-2 focus:outline-emerald-600 font-medium placeholder-slate-400">
+                </div>
+
+                <div id="mobileFieldWrapper">
+                    <label class="block font-bold text-slate-700 mb-1">মোবাইল নম্বর (শুধু শিক্ষকদের জন্য)</label>
+                    <input type="text" id="staffMobile" placeholder="যেমন: ০১৫৭৫৬৪৩৪১৬" class="w-full bg-black text-white border border-slate-700 rounded-lg px-3 py-2 focus:outline-emerald-600 font-medium placeholder-slate-400">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">ছবির লিংক (Image URL / Optional)</label>
+                    <input type="text" id="staffImage" placeholder="https://example.com/photo.jpg" class="w-full bg-black text-white border border-slate-700 rounded-lg px-3 py-2 focus:outline-emerald-600 font-medium placeholder-slate-400">
+                    <p class="text-[10px] text-slate-400 mt-1">ফাঁка রাখলে ডিফল্ট ছবি সেট হবে।</p>
+                </div>
+
+                <button type="submit" id="staffSubmitBtn" class="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition shadow">
+                    🚀 তথ্য সংরক্ষণ করুন
+                </button>
+            </form>
+        </div>
+
+        <!-- ডান পাশ: শিক্ষক ও স্টাফদের ড্রপডাউন লিস্ট ম্যানেজমেন্ট -->
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm md:col-span-2 lg:col-span-2 overflow-hidden h-fit space-y-6 p-4 md:p-5">
+            
+            <!-- ১. শিক্ষক তালিকা ড্রপডাউন -->
+            <div class="border border-slate-200 rounded-xl overflow-hidden">
+                <div id="teacherDropdownHeader" class="bg-emerald-900 text-white p-4 flex justify-between items-center cursor-pointer select-none">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-amber-300"></i>
+                        <h3 class="text-sm font-bold">শিক্ষকমণ্ডলীর তালিকা (ম্যানেজমেন্ট)</h3>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="totalTeacherAdminCount" class="bg-white/20 text-white px-2.5 py-0.5 rounded-full text-xs font-bold">মোট: ০ টি</span>
+                        <i id="teacherDropdownIcon" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div id="teacherDropdownContent" class="p-4 space-y-3">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs min-w-[450px]">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 font-bold border-b">
+                                    <th class="p-3">নাম ও ছবি</th>
+                                    <th class="p-3">পদবী</th>
+                                    <th class="p-3">মোবাইল</th>
+                                    <th class="p-3 text-center">কার্যক্রম</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTeacherTableBody" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ২. অফিস স্টাফ তালিকা ড্রপডাউন -->
+            <div class="border border-slate-200 rounded-xl overflow-hidden">
+                <div id="staffDropdownHeader" class="bg-emerald-900 text-white p-4 flex justify-between items-center cursor-pointer select-none">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-users-gear text-amber-300"></i>
+                        <h3 class="text-sm font-bold">অফিস ও সহযোগী স্টাফ তালিকা (ম্যানেজমেন্ট)</h3>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="totalStaffAdminCount" class="bg-white/20 text-white px-2.5 py-0.5 rounded-full text-xs font-bold">মোট: ০ টি</span>
+                        <i id="staffDropdownIcon" class="fa-solid fa-chevron-down transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div id="staffDropdownContent" class="p-4 space-y-3">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs min-w-[400px]">
+                            <thead>
+                                <tr class="bg-slate-100 text-slate-700 font-bold border-b">
+                                    <th class="p-3">নাম ও ছবি</th>
+                                    <th class="p-3">পদবী</th>
+                                    <th class="p-3 text-center">কার্যক্রম</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminStaffTableBody" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- জাভাস্ক্রিপ্ট লজিক -->
+    <script>
+        (function() {
+            let teachersList = [];
+            let staffList = [];
+
+            function loadData() {
+                try {
+                    teachersList = JSON.parse(localStorage.getItem('siteTeachersList')) || [];
+                    staffList = JSON.parse(localStorage.getItem('siteStaffList')) || [];
+                } catch (e) {
+                    teachersList = [];
+                    staffList = [];
+                }
+                renderTables();
+            }
+
+            function renderTables() {
+                const tBody = document.getElementById('adminTeacherTableBody');
+                const sBody = document.getElementById('adminStaffTableBody');
+                const tCount = document.getElementById('totalTeacherAdminCount');
+                const sCount = document.getElementById('totalStaffAdminCount');
+
+                if(tCount) tCount.innerText = `মোট: ${teachersList.length} টি`;
+                if(sCount) sCount.innerText = `মোট: ${staffList.length} টি`;
+
+                if(tBody) {
+                    tBody.innerHTML = teachersList.length === 0 ? `<tr><td colspan="4" class="text-center p-4 text-slate-400">কোনো শিক্ষক যুক্ত করা হয়নি।</td></tr>` : '';
+                    teachersList.forEach((tch, index) => {
+                        tBody.innerHTML += `
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 flex items-center gap-2 font-bold text-slate-900">
+                                    <img src="${tch.imageUrl || 'https://via.placeholder.com/150'}" class="w-8 h-8 rounded-full object-cover border flex-shrink-0">
+                                    <span class="truncate max-w-[120px] sm:max-w-none">${tch.name}</span>
+                                </td>
+                                <td class="p-3">${tch.designation}</td>
+                                <td class="p-3">${tch.mobile || 'N/A'}</td>
+                                <td class="p-3 text-center space-x-1">
+                                    <button type="button" onclick="window.editStaffItem('teacher', ${index})" class="w-7 h-7 bg-amber-100 text-amber-800 rounded-lg inline-flex items-center justify-center"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                    <button type="button" onclick="window.deleteStaffItem('teacher', ${index})" class="w-7 h-7 bg-rose-100 text-rose-700 rounded-lg inline-flex items-center justify-center"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+
+                if(sBody) {
+                    sBody.innerHTML = staffList.length === 0 ? `<tr><td colspan="3" class="text-center p-4 text-slate-400">কোনো স্টাফ যুক্ত করা হয়নি।</td></tr>` : '';
+                    staffList.forEach((stf, index) => {
+                        sBody.innerHTML += `
+                            <tr class="hover:bg-slate-50">
+                                <td class="p-3 flex items-center gap-2 font-bold text-slate-900">
+                                    <img src="${stf.imageUrl || 'https://via.placeholder.com/150'}" class="w-8 h-8 rounded-full object-cover border flex-shrink-0">
+                                    <span class="truncate max-w-[120px] sm:max-w-none">${stf.name}</span>
+                                </td>
+                                <td class="p-3">${stf.designation}</td>
+                                <td class="p-3 text-center space-x-1">
+                                    <button type="button" onclick="window.editStaffItem('staff', ${index})" class="w-7 h-7 bg-amber-100 text-amber-800 rounded-lg inline-flex items-center justify-center"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                                    <button type="button" onclick="window.deleteStaffItem('staff', ${index})" class="w-7 h-7 bg-rose-100 text-rose-700 rounded-lg inline-flex items-center justify-center"><i class="fa-solid fa-trash text-[10px]"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+
+            // ড্রপডাউন টগল হ্যান্ডলার
+            document.getElementById('teacherDropdownHeader').addEventListener('click', () => {
+                document.getElementById('teacherDropdownContent').classList.toggle('hidden');
+                document.getElementById('teacherDropdownIcon').classList.toggle('rotate-180');
+            });
+            document.getElementById('staffDropdownHeader').addEventListener('click', () => {
+                document.getElementById('staffDropdownContent').classList.toggle('hidden');
+                document.getElementById('staffDropdownIcon').classList.toggle('rotate-180');
+            });
+
+            // ক্যাটেগরি চেঞ্জ করলে মোবাইল ফিল্ড লুকানো বা দেখানো
+            document.getElementById('staffCategory').addEventListener('change', function() {
+                const mobileWrapper = document.getElementById('mobileFieldWrapper');
+                if(this.value === 'staff') {
+                    mobileWrapper.style.display = 'none';
+                } else {
+                    mobileWrapper.style.display = 'block';
+                }
+            });
+
+            // ফর্ম সাবমিট (Add / Update)
+            document.getElementById('staffForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const category = document.getElementById('staffCategory').value;
+                const editIndex = document.getElementById('editStaffIndex').value;
+                const name = document.getElementById('staffName').value.trim();
+                const designation = document.getElementById('staffDesignation').value.trim();
+                const mobile = document.getElementById('staffMobile').value.trim();
+                const imageUrl = document.getElementById('staffImage').value.trim();
+
+                const newData = { name, designation, mobile, imageUrl };
+
+                if(category === 'teacher') {
+                    if(editIndex === "") {
+                        teachersList.push(newData);
+                    } else {
+                        teachersList[editIndex] = newData;
+                    }
+                    localStorage.setItem('siteTeachersList', JSON.stringify(teachersList));
+                } else {
+                    if(editIndex === "") {
+                        staffList.push(newData);
+                    } else {
+                        staffList[editIndex] = newData;
+                    }
+                    localStorage.setItem('siteStaffList', JSON.stringify(staffList));
+                }
+
+                loadData();
+                resetStaffForm();
+
+                if(typeof Swal !== 'undefined') {
+                    Swal.fire({ icon: 'success', title: 'সফলভাবে প্রকাশ করা হয়েছে!', text: 'ডেটা আপডেট করা হয়েছে।', timer: 1500, showConfirmButton: false });
+                } else {
+                    alert('সফলভাবে সেভ হয়েছে!');
+                }
+            });
+
+            window.editStaffItem = function(type, index) {
+                document.getElementById('staffCategory').value = type;
+                document.getElementById('editStaffIndex').value = index;
+                const item = type === 'teacher' ? teachersList[index] : staffList[index];
+
+                document.getElementById('staffName').value = item.name;
+                document.getElementById('staffDesignation').value = item.designation;
+                document.getElementById('staffMobile').value = item.mobile || '';
+                document.getElementById('staffImage').value = item.imageUrl || '';
+
+                if(type === 'staff') {
+                    document.getElementById('mobileFieldWrapper').style.display = 'none';
+                } else {
+                    document.getElementById('mobileFieldWrapper').style.display = 'block';
+                }
+
+                document.getElementById('staffFormTitle').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-600"></i> তথ্য এডিট করুন`;
+                document.getElementById('staffSubmitBtn').innerText = '🔄 আপডেট করুন';
+                document.getElementById('staffResetBtn').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            window.deleteStaffItem = function(type, index) {
+                if(confirm('আপনি কি নিশ্চিত এই তথ্যটি ডিলিট করতে চান?')) {
+                    if(type === 'teacher') {
+                        teachersList.splice(index, 1);
+                        localStorage.setItem('siteTeachersList', JSON.stringify(teachersList));
+                    } else {
+                        staffList.splice(index, 1);
+                        localStorage.setItem('siteStaffList', JSON.stringify(staffList));
+                    }
+                    loadData();
+                    resetStaffForm();
+                }
+            };
+
+            function resetStaffForm() {
+                document.getElementById('staffForm').reset();
+                document.getElementById('editStaffIndex').value = "";
+                document.getElementById('staffFormTitle').innerHTML = `<i class="fa-solid fa-user-plus text-emerald-600"></i> নতুন শিক্ষক বা স্টাফ যুক্ত করুন`;
+                document.getElementById('staffSubmitBtn').innerText = '🚀 তথ্য সংরক্ষণ করুন';
+                document.getElementById('staffResetBtn').classList.add('hidden');
+                document.getElementById('mobileFieldWrapper').style.display = 'block';
+            }
+
+            document.getElementById('staffResetBtn').addEventListener('click', resetStaffForm);
+
+            loadData();
+        })();
+    </script>
+</section>
+
+<!-- ================= admission.inf section ================= -->
+<!-- শ্রেণীভিত্তিক আসন ও ফি ব্যবস্থাপনা সেকশন -->
+<section class="bg-white rounded-2xl p-6 mb-[100px] shadow-sm border-black-5 border-slate-200 space-y-6 mt-8">
+  <div class="border-b pb-3 flex justify-between items-center">
+    <h2 class="text-lg font-bold text-black flex items-center gap-2">
+      <i class="fa-solid fa-graduation-cap text-emerald-600"></i> শ্রেণীভিত্তিক আসন ও ফি ব্যবস্থাপনা
+    </h2>
+    <span id="classCountBadge" class="bg-emerald-100 text-emerald-900 font-bold px-3 py-1 rounded-full text-xs">
+      মোট শ্রেণী: ০ টি
+    </span>
+  </div>
+
+  <!-- তথ্য যুক্ত/এডিট করার ইনপুট ফরম -->
+  <form id="admissionFeeForm" onsubmit="saveClassAdmissionFee(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
+    <input type="hidden" id="editClassIndex" value="-1">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <div>
+        <label class="block text-xs font-bold text-black mb-1">🏫 শ্রেণীর নাম *</label>
+        <input type="text" id="adminClassName" required placeholder="উদাহরণ: ১ম শ্রেণী" class="w-full bg-white text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-black mb-1">🪑 সর্বমোট আসন *</label>
+        <input type="text" id="adminTotalSeats" required placeholder="উদাহরণ: ৫০টি" class="w-full bg-white text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-black mb-1">💰 ভর্তি ফি *</label>
+        <input type="text" id="adminAdmissionFee" required placeholder="উদাহরণ: ৫০০ টাকা" class="w-full bg-white text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-black mb-1">📅 মাসিক বেতন *</label>
+        <input type="text" id="adminMonthlyFee" required placeholder="উদাহরণ: ২৫০ টাকা" class="w-full bg-white text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600">
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3 pt-2">
+      <button type="button" onclick="resetClassForm()" class="bg-gray-200 hover:bg-gray-300 text-black font-semibold px-4 py-1.5 rounded-lg text-xs transition">
+        বাতিল করুন
+      </button>
+      <button type="submit" id="saveClassBtn" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-1.5 rounded-lg text-xs transition flex items-center gap-1 shadow">
+        <i class="fa-solid fa-plus"></i> <span id="saveClassBtnText">যুক্ত করুন</span>
+      </button>
+    </div>
+  </form>
+
+  <!-- বিদ্যমান সকল শ্রেণীর টেবিল -->
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse">
+      <thead>
+        <tr class="bg-slate-100 text-black text-xs uppercase tracking-wider border-b border-slate-200">
+          <th class="py-3 px-4">শ্রেণীর নাম</th>
+          <th class="py-3 px-4">সর্বমোট আসন</th>
+          <th class="py-3 px-4">ভর্তি ফি</th>
+          <th class="py-3 px-4">মাসিক বেতন</th>
+          <th class="py-3 px-4 text-center">অ্যাকশন</th>
+        </tr>
+      </thead>
+      <tbody id="adminClassFeeTableBody" class="divide-y divide-slate-200 text-sm">
+        <!-- জাভাস্ক্রিপ্ট দিয়ে ডাইনামিক ডেটা আসবে -->
+      </tbody>
+    </table>
+  </div>
+</section>
+<script>
+    let adminClassDataList = [];
+
+// LocalStorage থেকে ডেটা লোড করার ফাংশন
+function loadAdminAdmissionFees() {
+  const savedData = JSON.parse(localStorage.getItem('siteAdmissionFeesData'));
+  
+  if (savedData) {
+    adminClassDataList = savedData;
+  } else {
+    // প্রাথমিক ডিফল্ট ডেটা
+    adminClassDataList = [
+      { className: 'শিশু শ্রেণী', totalSeats: '৪০টি', admissionFee: '৫০০ টাকা', monthlyFee: '২০০ টাকা' },
+      { className: '১ম শ্রেণী', totalSeats: '৪৫টি', admissionFee: '৬০০ টাকা', monthlyFee: '২৫০ টাকা' },
+      { className: '২য় শ্রেণী', totalSeats: '৪৫টি', admissionFee: '৬০০ টাকা', monthlyFee: '২৫০ টাকা' },
+      { className: '৩য় শ্রেণী', totalSeats: '৫০টি', admissionFee: '৭০টি টাকা', monthlyFee: '৩০০ টাকা' }
+    ];
+    localStorage.setItem('siteAdmissionFeesData', JSON.stringify(adminClassDataList));
+  }
+  
+  renderAdminClassTable();
+}
+
+// অ্যাডমিন টেবিল রেন্ডার করার ফাংশন
+function renderAdminClassTable() {
+  const tbody = document.getElementById('adminClassFeeTableBody');
+  const countBadge = document.getElementById('classCountBadge');
+  
+  if (!tbody) return;
+  
+  countBadge.innerText = `মোট শ্রেণী: ${adminClassDataList.length} টি`;
+  tbody.innerHTML = '';
+
+  if (adminClassDataList.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500">কোনো তথ্য পাওয়া যায়নি। নতুন শ্রেণী যুক্ত করুন।</td></tr>`;
+    return;
+  }
+
+  adminClassDataList.forEach((item, index) => {
+    const tr = document.createElement('tr');
+    tr.className = 'hover:bg-slate-50 transition';
+    tr.innerHTML = `
+      <td class="py-3 px-4 font-bold text-black">${item.className}</td>
+      <td class="py-3 px-4 text-slate-700">${item.totalSeats}</td>
+      <td class="py-3 px-4 text-emerald-800 font-medium">${item.admissionFee}</td>
+      <td class="py-3 px-4 text-emerald-800 font-medium">${item.monthlyFee}</td>
+      <td class="py-3 px-4 text-center space-x-1">
+        <button onclick="editClassFee(${index})" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-1.5 rounded-lg text-xs transition" title="সম্পাদনা">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button onclick="deleteClassFee(${index})" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-1.5 rounded-lg text-xs transition" title="মুছে ফেলুন">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// তথ্য সেভ বা আপডেট করার ফাংশন
+function saveClassAdmissionFee(event) {
+  event.preventDefault();
+
+  const index = parseInt(document.getElementById('editClassIndex').value);
+  const className = document.getElementById('adminClassName').value.trim();
+  const totalSeats = document.getElementById('adminTotalSeats').value.trim();
+  const admissionFee = document.getElementById('adminAdmissionFee').value.trim();
+  const monthlyFee = document.getElementById('adminMonthlyFee').value.trim();
+
+  const classObj = { className, totalSeats, admissionFee, monthlyFee };
+
+  if (index >= 0) {
+    // এডিট করা হচ্ছে
+    adminClassDataList[index] = classObj;
+  } else {
+    // নতুন যুক্ত করা হচ্ছে
+    adminClassDataList.push(classObj);
+  }
+
+  // LocalStorage-এ সংরক্ষণ
+  localStorage.setItem('siteAdmissionFeesData', JSON.stringify(adminClassDataList));
+  
+  renderAdminClassTable();
+  resetClassForm();
+  alert('আসন ও ফির তথ্য সফলভাবে সংরক্ষিত হয়েছে!');
+}
+
+// তথ্য এডিট মোডে নেওয়া
+function editClassFee(index) {
+  const item = adminClassDataList[index];
+  if (!item) return;
+
+  document.getElementById('editClassIndex').value = index;
+  document.getElementById('adminClassName').value = item.className;
+  document.getElementById('adminTotalSeats').value = item.totalSeats;
+  document.getElementById('adminAdmissionFee').value = item.admissionFee;
+  document.getElementById('adminMonthlyFee').value = item.monthlyFee;
+
+  document.getElementById('saveClassBtnText').innerText = 'আপডেট করুন';
+}
+
+// তথ্য ডিলিট করা
+function deleteClassFee(index) {
+  if (confirm('আপনি কি নিশ্চিত যে এই শ্রেণীটির তথ্য মুছে ফেলতে চান?')) {
+    adminClassDataList.splice(index, 1);
+    localStorage.setItem('siteAdmissionFeesData', JSON.stringify(adminClassDataList));
+    renderAdminClassTable();
+  }
+}
+
+// ফরম রিসেট করা
+function resetClassForm() {
+  document.getElementById('admissionFeeForm').reset();
+  document.getElementById('editClassIndex').value = '-1';
+  document.getElementById('saveClassBtnText').innerText = 'যুক্ত করুন';
+}
+
+// অ্যাডমিন পেজ লোড হলে ফাংশনটি রান করা
+window.addEventListener('DOMContentLoaded', () => {
+  loadAdminAdmissionFees();
+});
+</script>
+
+
+
+
+
+<!------noticeBord section----->
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>নোটিশ বোর্ড অ্যাডমিন প্যানেল</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Hind Siliguri', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-100 text-black min-h-screen">
+
+    <!-- অ্যাডমিন হেডার -->
+    <header class="bg-blue-900 text-white py-4 px-6 shadow-md flex justify-between items-center sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-user-shield text-2xl text-amber-400"></i>
+            <div>
+                <h1 class="text-lg font-bold text-amber-300">নোটিশ প্যানেল অ্যাডমিন ম্যানেজমেন্ট</h1>
+                <p class="text-xs text-blue-200">নোটিশ প্রকাশ, সম্পাদনা ও ব্যবস্থাপনা</p>
+            </div>
+        </div>
+        <a href="index.html" target="_blank" class="bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-4 py-2 rounded-lg text-xs md:text-sm flex items-center gap-2 transition shadow">
+            <i class="fa-solid fa-eye"></i> নোটিশ বোর্ড দেখুন
+        </a>
+    </header>
+
+    <main class="max-w-6xl mx-auto p-4 md:p-8 space-y-8">
+        
+        <!-- ১. নোটিশ যুক্ত/সম্পাদনার ফরম -->
+        <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+            <div class="border-b pb-3 mb-5 flex justify-between items-center">
+                <h2 id="formHeading" class="text-xl font-bold text-black flex items-center gap-2">
+                    <i class="fa-solid fa-file-circle-plus text-blue-900"></i> নতুন নোটিশ যুক্ত করুন
+                </h2>
+                <button id="cancelEditBtn" onclick="resetForm()" class="hidden text-xs bg-gray-200 hover:bg-gray-300 text-black font-semibold px-3 py-1.5 rounded-lg transition">
+                    এডিট বাতিল করুন
+                </button>
+            </div>
+
+            <form id="noticeForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                <input type="hidden" id="noticeId">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- শিরোনাম -->
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-black mb-1">📌 নোটিশের শিরোনাম *</label>
+                        <input type="text" id="title" required placeholder="উদাহরণ: নিয়োগ পরীক্ষার চূড়ান্ত ফলাফল..." class="w-full bg-slate-50 text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+
+                    <!-- ক্যাটাগরি -->
+                    <div>
+                        <label class="block text-xs font-bold text-black mb-1">📂 নোটিশের ক্যাটাগরি *</label>
+                        <select id="category" required class="w-full bg-slate-50 text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+                            <option value="office_order">অফিস আদেশ</option>
+                            <option value="news">খবর</option>
+                            <option value="tender">টেন্ডার</option>
+                            <option value="job">চাকরি কর্নার</option>
+                        </select>
+                    </div>
+
+                    <!-- ফাইল আপলোড (PDF / Image) -->
+                    <div>
+                        <label class="block text-xs font-bold text-black mb-1">📎 ফাইল বা ছবি আপলোড করুন (PDF/JPG/PNG)</label>
+                        <input type="file" id="fileInput" accept=".pdf,image/*" onchange="previewSelectedFile(event)" class="w-full bg-slate-50 text-black border border-slate-300 rounded-lg px-2 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        <p id="currentFileStatus" class="text-[11px] text-gray-700 mt-1"></p>
+                    </div>
+
+                    <!-- প্রকাশের তারিখ -->
+                    <div>
+                        <label class="block text-xs font-bold text-black mb-1">📅 প্রকাশের তারিখ *</label>
+                        <input type="text" id="publishDate" required placeholder="উদাহরণ: ১৫-১০-২০২৬" class="w-full bg-slate-50 text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+
+                    <!-- আর্কাইভ তারিখ -->
+                    <div>
+                        <label class="block text-xs font-bold text-black mb-1">🗓️ আর্কাইভ তারিখ (ঐচ্ছিক)</label>
+                        <input type="text" id="archiveDate" placeholder="উদাহরণ: ৩০-১২-২০২৬" class="w-full bg-slate-50 text-black border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 pt-2">
+                    <input type="checkbox" id="isNew" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500">
+                    <label for="isNew" class="text-xs font-bold text-black cursor-pointer">'নতুন' (New) ব্যাজ প্রদর্শন করুন</label>
+                </div>
+
+                <div class="flex justify-end gap-3 pt-4 border-t">
+                    <button type="button" onclick="resetForm()" class="bg-gray-100 hover:bg-gray-200 text-black font-semibold px-5 py-2 rounded-lg text-sm transition">
+                        রিসেট
+                    </button>
+                    <button type="submit" id="submitBtn" class="bg-blue-900 hover:bg-blue-800 text-white font-bold px-6 py-2 rounded-lg text-sm transition flex items-center gap-2 shadow">
+                        <i class="fa-solid fa-paper-plane"></i> <span id="submitBtnText">পাবলিশ করুন</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <!-- ২. প্রকাশিত নোটিশের তালিকা (ড্রপডাউন / অ্যাকর্ডিয়ন আকারে) -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <!-- ড্রপডাউন হেডার বাটন -->
+            <button onclick="toggleNoticeListDropdown()" class="w-full p-6 flex justify-between items-center bg-white hover:bg-slate-50 transition cursor-pointer text-left focus:outline-none">
+                <div class="flex items-center gap-3">
+                    <h3 class="text-lg font-bold text-black flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-black"></i> প্রকাশিত নোটিশ তালিকা
+                    </h3>
+                    <span id="noticeCountBadge" class="bg-blue-100 text-black font-bold px-3 py-1 rounded-full text-xs">
+                        মোট: ০ টি
+                    </span>
+                </div>
+                
+                <div class="flex items-center gap-2 text-slate-600 font-semibold text-sm">
+                    <span id="dropdownToggleText" class="hidden sm:inline">তালিকা দেখুন / বন্ধ করুন</span>
+                    <i id="dropdownArrow" class="fa-solid fa-chevron-down text-lg text-blue-900 transition-transform duration-300"></i>
+                </div>
+            </button>
+
+            <!-- ড্রপডাউন কনটেন্ট বডি (ডিফল্টভাবে খোলা থাকবে, ক্লিক করলে টগল হবে) -->
+            <div id="noticeListDropdownContent" class="p-6 pt-0 border-t border-slate-100">
+                <div class="overflow-x-auto pt-3">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-black text-xs uppercase tracking-wider border-b border-slate-200">
+                                <th class="py-3 px-4">শিরোনাম</th>
+                                <th class="py-3 px-4">ক্যাটাগরি</th>
+                                <th class="py-3 px-4">তারিখ</th>
+                                <th class="py-3 px-4 text-center">স্ট্যাটাস</th>
+                                <th class="py-3 px-4 text-center">অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminNoticeTable" class="divide-y divide-slate-200 text-sm">
+                            <!-- জাভাস্ক্রিপ্ট ডাইনামিক রো লোড করবে -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const categoryMap = {
+            'office_order': 'অফিস আদেশ',
+            'news': 'খবর',
+            'tender': 'টেন্ডার',
+            'job': 'চাকরি কর্নার'
+        };
+
+        // ডিফল্ট ডেমো ডেটা
+        const defaultNotices = [
+            {
+                _id: "1",
+                title: "নিয়োগ পরীক্ষার চূড়ান্ত ফলাফল",
+                category: "office_order",
+                publishDate: "১৫-১০-২০২৬",
+                archiveDate: "৩০-১২-২০২৬",
+                isNew: true,
+                fileUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                fileType: "pdf"
+            },
+            {
+                _id: "2",
+                title: "তথ্য অধিকার আইন, ২০০৯ বাস্তবায়নে অবিক্ষণ ও পরিবীক্ষণ কমিটির সভা",
+                category: "office_order",
+                publishDate: "১৫-১০-২০২৬",
+                archiveDate: "৩০-১১-২০২৬",
+                isNew: true,
+                fileUrl: "",
+                fileType: ""
+            }
+        ];
+
+        let noticesList = [];
+        let uploadedBase64 = "";
+        let uploadedFileType = "";
+
+        // ড্রপডাউন টগল ফাংশন
+        function toggleNoticeListDropdown() {
+            const content = document.getElementById('noticeListDropdownContent');
+            const arrow = document.getElementById('dropdownArrow');
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                arrow.classList.remove('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                arrow.classList.add('rotate-180');
+            }
+        }
+
+        // ব্রাউজার স্টোরেজ থেকে ডাটা লোড
+        function loadAdminNotices() {
+            const stored = localStorage.getItem('site_published_notices');
+            if (stored) {
+                try {
+                    noticesList = JSON.parse(stored);
+                } catch(e) {
+                    noticesList = defaultNotices;
+                }
+            } else {
+                noticesList = defaultNotices;
+                localStorage.setItem('site_published_notices', JSON.stringify(noticesList));
+            }
+            renderAdminTable();
+        }
+
+        // টেবিল রেন্ডার
+        function renderAdminTable() {
+            const tableBody = document.getElementById('adminNoticeTable');
+            const countBadge = document.getElementById('noticeCountBadge');
+            
+            countBadge.innerText = `মোট: ${noticesList.length} টি`;
+            tableBody.innerHTML = '';
+
+            if (noticesList.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-8 text-center text-black font-medium">
+                            কোনো নোটিশ পাওয়া যায়নি। নতুন নোটিশ যুক্ত করুন।
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            noticesList.forEach((item) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-semibold text-black max-w-xs truncate">
+                        ${item.title}
+                    </td>
+                    <td class="py-3 px-4 text-xs font-medium text-black">
+                        <span class="bg-slate-200 px-2.5 py-1 rounded-md">
+                            ${categoryMap[item.category] || item.category}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-xs text-black whitespace-nowrap">
+                        ${item.publishDate}
+                    </td>
+                    <td class="py-3 px-4 text-center whitespace-nowrap">
+                        ${item.isNew ? `<span class="bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">নতুন</span>` : `<span class="text-gray-500 text-xs">সাধারণ</span>`}
+                    </td>
+                    <td class="py-3 px-4 text-center whitespace-nowrap space-x-1">
+                        <button onclick="editNotice('${item._id}')" class="bg-amber-100 hover:bg-amber-200 text-amber-900 p-2 rounded-lg text-xs transition" title="সম্পাদনা করুন">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button onclick="deleteNotice('${item._id}')" class="bg-rose-100 hover:bg-rose-200 text-rose-800 p-2 rounded-lg text-xs transition" title="মুছে ফেলুন">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // ফাইল ড্রপ বা সিলেক্টের সময় রিড করা
+        function previewSelectedFile(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                uploadedBase64 = event.target.result;
+                uploadedFileType = file.type.includes('pdf') ? 'pdf' : 'image';
+                document.getElementById('currentFileStatus').innerText = `সিলেক্টেড ফাইল: ${file.name}`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ফরম সাবমিশন সেভ/আপডেট
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const noticeId = document.getElementById('noticeId').value;
+            const title = document.getElementById('title').value.trim();
+            const category = document.getElementById('category').value;
+            const publishDate = document.getElementById('publishDate').value.trim();
+            const archiveDate = document.getElementById('archiveDate').value.trim();
+            const isNew = document.getElementById('isNew').checked;
+
+            if (noticeId) {
+                // আপডেট অপশন
+                const index = noticesList.findIndex(n => n._id === noticeId);
+                if (index !== -1) {
+                    noticesList[index].title = title;
+                    noticesList[index].category = category;
+                    noticesList[index].publishDate = publishDate;
+                    noticesList[index].archiveDate = archiveDate;
+                    noticesList[index].isNew = isNew;
+
+                    if (uploadedBase64) {
+                        noticesList[index].fileUrl = uploadedBase64;
+                        noticesList[index].fileType = uploadedFileType;
+                    }
+                }
+            } else {
+                // নতুন তৈরি অপশন
+                const newNotice = {
+                    _id: Date.now().toString(),
+                    title,
+                    category,
+                    publishDate,
+                    archiveDate,
+                    isNew,
+                    fileUrl: uploadedBase64,
+                    fileType: uploadedFileType || 'pdf'
+                };
+                noticesList.unshift(newNotice);
+            }
+
+            // স্টোরেজ আপডেট
+            localStorage.setItem('site_published_notices', JSON.stringify(noticesList));
+            
+            // রেন্ডার ও ফরম রিসেট
+            renderAdminTable();
+            resetForm();
+            alert('নোটিশ সফলভাবে সংরক্ষিত হয়েছে!');
+        }
+
+        // এডিট নোটিশ
+        function editNotice(id) {
+            const notice = noticesList.find(n => n._id === id);
+            if (!notice) return;
+
+            document.getElementById('noticeId').value = notice._id;
+            document.getElementById('title').value = notice.title;
+            document.getElementById('category').value = notice.category;
+            document.getElementById('publishDate').value = notice.publishDate;
+            document.getElementById('archiveDate').value = notice.archiveDate || '';
+            document.getElementById('isNew').checked = notice.isNew;
+
+            document.getElementById('formHeading').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-600"></i> নোটিশ সম্পাদনা করুন`;
+            document.getElementById('submitBtnText').innerText = "আপডেট করুন";
+            document.getElementById('cancelEditBtn').classList.remove('hidden');
+
+            if (notice.fileUrl) {
+                document.getElementById('currentFileStatus').innerText = "পূর্ববর্তী ফাইল রয়েছে। নতুন ফাইল আপলোড না করলে আগের ফাইলটি থাকবে।";
+            } else {
+                document.getElementById('currentFileStatus').innerText = "";
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ডিলিট নোটিশ
+        function deleteNotice(id) {
+            if (confirm('আপনি কি নিশ্চিত যে এই নোটিশটি মুছে ফেলতে চান?')) {
+                noticesList = noticesList.filter(n => n._id !== id);
+                localStorage.setItem('site_published_notices', JSON.stringify(noticesList));
+                renderAdminTable();
+            }
+        }
+
+        // ফরম রিসেট
+        function resetForm() {
+            document.getElementById('noticeForm').reset();
+            document.getElementById('noticeId').value = '';
+            uploadedBase64 = '';
+            uploadedFileType = '';
+            document.getElementById('currentFileStatus').innerText = '';
+            document.getElementById('formHeading').innerHTML = `<i class="fa-solid fa-file-circle-plus text-blue-900"></i> নতুন নোটিশ যুক্ত করুন`;
+            document.getElementById('submitBtnText').innerText = "পাবলিশ করুন";
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+        }
+
+        window.onload = loadAdminNotices;
+    </script>
+</body>
+</html>
+
+<!-- ================= CONTACT & FOOTER INFORMATION MANAGEMENT SECTION ================= -->
+<div class="max-w-4xl mx-auto bg-slate-800 border border-slate-700 p-4 sm:p-6 md:p-8 rounded-2xl shadow-xl space-y-6 mt-6">
+    <div class="border-b border-slate-700 pb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-address-book text-indigo-400"></i> কন্টাক্ট ও ফুটার ইনফো ম্যানেজমেন্ট
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">মাদ্রাসার ঠিকানা, ফোন, ইমেইল ও সোশ্যাল লিংক আপডেট করুন</p>
+        </div>
+    </div>
+
+    <!-- কন্টাক্ট ইনফো এডিট ফর্ম -->
+    <div class="space-y-4 text-xs bg-slate-900/60 p-4 sm:p-5 rounded-xl border border-slate-700/60">
+        <h4 class="font-bold text-slate-200 text-sm">তথ্য আপডেট করুন</h4>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-slate-300 font-medium mb-1">প্রতিষ্ঠানের ঠিকানা (Address):</label>
+                <input type="text" id="adminContactAddress" placeholder="যেমন: ১ নং রাঙ্গীপাড়া, লংগদু, রাঙ্গামাটি" class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+            </div>
+            <div>
+                <label class="block text-slate-300 font-medium mb-1">ফোন নম্বর (Phone):</label>
+                <input type="text" id="adminContactPhone" placeholder="যেমন: ০১৫-৭৫৬৪৩৪১৬" class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-slate-300 font-medium mb-1">ইমেইল ঠিকানা (Email):</label>
+                <input type="email" id="adminContactEmail" placeholder="info@madrasah.com" class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+            </div>
+            <div>
+                <label class="block text-slate-300 font-medium mb-1">EIIN নম্বর (যদি থাকে):</label>
+                <input type="text" id="adminContactEiin" placeholder="যেমন: ১৩৫০৮৫" class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label class="block text-slate-300 font-medium mb-1">ফেসবুক পেজ/গ্রুপ লিংক (Facebook URL):</label>
+                <input type="text" id="adminContactFacebook" placeholder="https://facebook.com/..." class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+            </div>
+            <div>
+                <label class="block text-slate-300 font-medium mb-1">হোয়াটসঅ্যাপ লিংক (WhatsApp URL):</label>
+                <input type="text" id="adminContactWhatsapp" placeholder="https://wa.me/..." class="w-full bg-slate-900 border border-slate-700 px-4 py-2.5 rounded-xl text-white outline-none focus:border-indigo-500 transition text-sm">
+            </div>
+        </div>
+
+        <div class="pt-2">
+            <button onclick="saveContactInfoData()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-xl transition shadow-md flex items-center justify-center gap-2 text-xs sm:text-sm">
+                <i class="fa-solid fa-floppy-disk"></i> তথ্য আপডেট ও সেভ করুন
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ১. সেভ করা কন্টাক্ট ডেটা অ্যাডমিন ফর্মে লোড করার ফাংশন
+    function loadAdminContactInfo() {
+        const defaultContact = {
+            address: "১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি",
+            phone: "০১৫-৭৫৬৪৩৪১৬",
+            email: "info@madrasah.com",
+            eiin: "১৩৫০৮৫",
+            established: "২০১৫",
+            facebook: "#",
+            whatsapp: "#"
+        };
+
+        let contact = JSON.parse(localStorage.getItem('siteContactInfo')) || defaultContact;
+
+        if (document.getElementById('adminContactAddress')) document.getElementById('adminContactAddress').value = contact.address || '';
+        if (document.getElementById('adminContactPhone')) document.getElementById('adminContactPhone').value = contact.phone || '';
+        if (document.getElementById('adminContactEmail')) document.getElementById('adminContactEmail').value = contact.email || '';
+        if (document.getElementById('adminContactEiin')) document.getElementById('adminContactEiin').value = contact.eiin || '';
+        if (document.getElementById('adminContactFacebook')) document.getElementById('adminContactFacebook').value = contact.facebook || '';
+        if (document.getElementById('adminContactWhatsapp')) document.getElementById('adminContactWhatsapp').value = contact.whatsapp || '';
+    }
+
+    // ২. কন্টাক্ট ইনফো আপডেট ও লোকালস্টোরেজে সেভ করার ফাংশন
+    function saveContactInfoData() {
+        const address = document.getElementById('adminContactAddress').value.trim();
+        const phone = document.getElementById('adminContactPhone').value.trim();
+        const email = document.getElementById('adminContactEmail').value.trim();
+        const eiin = document.getElementById('adminContactEiin').value.trim();
+        const facebook = document.getElementById('adminContactFacebook').value.trim();
+        const whatsapp = document.getElementById('adminContactWhatsapp').value.trim();
+
+        const contactData = {
+            address: address || "১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি",
+            phone: phone || "০১৫-৭৫৬৪৩৪১৬",
+            email: email || "info@madrasah.com",
+            eiin: eiin || "১৩৫০৮৫",
+            established: "২০১৫",
+            facebook: facebook || "#",
+            whatsapp: whatsapp || "#"
+        };
+
+        localStorage.setItem('siteContactInfo', JSON.stringify(contactData));
+        loadAdminContactInfo();
+
+        // সাকসেস মেসেজ ট্রিগার
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'success',
+                title: 'সফলভাবে আপডেট হয়েছে!',
+                text: 'যোগাযোগ ও ফুটারের তথ্য সফলভাবে সংরক্ষণ করা হয়েছে।',
+                confirmButtonColor: '#4f46e5',
+                timer: 2000
+            });
+        } else if (typeof showSuccessToast === 'function') {
+            showSuccessToast('যোগাযোগ ও ফুটারের তথ্য সফলভাবে আপডেট করা হয়েছে!');
+        } else {
+            alert('তথ্য সফলভাবে আপডেট করা হয়েছে!');
+        }
+    }
+
+    // পেজ লোড হওয়ার সাথে সাথে ডাটা লোড করার জন্য
+    document.addEventListener("DOMContentLoaded", function() {
+        loadAdminContactInfo();
+    });
+</script>
+</main>
+</body>
+</html>

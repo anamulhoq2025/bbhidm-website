@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ফটো ও ভিডিও গ্যালারি - বগাছতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Font (Hind Siliguri) -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body { font-family: 'Hind Siliguri', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased py-10 px-4">
+
+  <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+    
+    <!-- HEADER -->
+    <div class="bg-emerald-900 text-white p-6 sm:p-10 text-center space-y-3">
+      <div class="w-16 h-16 mx-auto rounded-full bg-emerald-700/80 text-white flex items-center justify-center text-3xl font-bold shadow-inner">
+        🎥
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold">বগাছতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা</h1>
+      <p class="text-emerald-200 text-sm sm:text-base">আমাদের ক্যাম্পাস, ভিডিও ক্লিপ এবং ফটো গ্যালারি</p>
+    </div>
+
+    <div class="p-6 sm:p-10 space-y-12">
+
+      <!-- ================= VIDEO SECTION ================= -->
+      <div class="space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-center border-b border-slate-200 pb-4 gap-2">
+          <h2 class="text-xl font-bold text-emerald-900 flex items-center gap-2">
+            <span>📹</span> ভিডিও গ্যালারি
+          </h2>
+          <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+            মাদ্রাসা সম্পর্কিত বিভিন্ন অনুষ্ঠান ও ক্লাসের ভিডিও
+          </span>
+        </div>
+
+        <!-- Video Grid -->
+        <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+          <!-- ডাইনামিকালি লোড হবে -->
+        </div>
+      </div>
+
+      <!-- ================= PHOTO SECTION ================= -->
+      <div class="space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-center border-b border-slate-200 pb-4 gap-2">
+          <h2 class="text-xl font-bold text-emerald-900 flex items-center gap-2">
+            <span>📸</span> ফটো গ্যালারি
+          </h2>
+          <span class="text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+            ছবিগুলোর ওপর মাউস আনলে জুম হয়ে সুন্দর দেখাবে
+          </span>
+        </div>
+
+        <!-- Photo Grid -->
+        <div id="photoGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+          <!-- ডাইনামিকালি লোড হবে -->
+        </div>
+      </div>
+
+      <!-- FOOTER NAVIGATION -->
+      <div class="pt-6 border-t border-slate-200 flex justify-between items-center">
+        <a href="index.html" class="px-5 py-2.5 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs sm:text-sm transition">
+          ⬅️ মূল পেজে ফিরুন
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ডিফল্ট ডেটা (যদি লোকালস্টোরেজে কিছু না থাকে)
+    const defaultPhotos = [
+      { url: "https://images.unsplash.com/photo-1542816417-0983cbe82752?q=80&w=600&auto=format&fit=crop", title: "কুরআন তিলওয়াত প্রতিযোগিতা" },
+      { url: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=600&auto=format&fit=crop", title: "আধুনিক সুসজ্জিত ক্লাসরুম" }
+    ];
+
+    const defaultVideos = [
+      { url: "https://www.youtube.com/embed/dQw4w9WgXcQ", title: "বার্ষিক ওয়াজ মাহফিল ২০২৬" }
+    ];
+
+    // পেজ লোড হওয়ার সাথে সাথে গ্যালারি রেন্ডার করা
+    window.addEventListener('DOMContentLoaded', () => {
+      loadGalleryContent();
+    });
+
+    // ইউটিউব লিংক পার্স করার ফাংশন
+    function convertToEmbedUrl(url) {
+      if (!url) return '';
+      if (url.includes('embed')) return url;
+      
+      let videoId = '';
+      if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1]?.split('?')[0];
+      } else if (url.includes('watch?v=')) {
+        videoId = url.split('watch?v=')[1]?.split('&')[0];
+      }
+      
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+    }
+
+    function loadGalleryContent() {
+      // ১. অ্যাডমিন প্যানেলের 'sitePhotosList' এবং পূর্বের 'sitePhotos' চেক করে ফটো লোড করা
+      let photos = JSON.parse(localStorage.getItem('sitePhotosList')) || JSON.parse(localStorage.getItem('sitePhotos')) || defaultPhotos;
+      if (!Array.isArray(photos) || photos.length === 0) photos = defaultPhotos;
+
+      const photoGrid = document.getElementById('photoGrid');
+      if (photoGrid) {
+        photoGrid.innerHTML = '';
+        photos.forEach(photo => {
+          let pUrl = photo.url || '';
+          let pTitle = photo.title || "ছবির শিরোনাম";
+          photoGrid.innerHTML += `
+            <div class="group relative overflow-hidden rounded-xl border border-slate-200 shadow-sm bg-slate-100">
+              <img src="${pUrl}" alt="${pTitle}" class="w-full h-52 object-cover group-hover:scale-110 transition duration-500" onerror="this.src='https://via.placeholder.com/600x400?text=Invalid+Image'" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition duration-300 flex items-end p-3">
+                <p class="text-xs text-white font-medium">${pTitle}</p>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      // ২. অ্যাডমিন প্যানেলের 'siteVideosList' এবং পূর্বের 'siteVideos' চেক করে ভিডিও লোড করা
+      let videos = JSON.parse(localStorage.getItem('siteVideosList')) || JSON.parse(localStorage.getItem('siteVideos')) || defaultVideos;
+      if (!Array.isArray(videos) || videos.length === 0) videos = defaultVideos;
+
+      const videoGrid = document.getElementById('videoGrid');
+      if (videoGrid) {
+        videoGrid.innerHTML = '';
+        videos.forEach(video => {
+          let vUrl = convertToEmbedUrl(video.url || '');
+          let vTitle = video.title || "ভিডিওর শিরোনাম";
+
+          videoGrid.innerHTML += `
+            <div class="rounded-xl border border-slate-200 shadow-sm bg-slate-100 overflow-hidden flex flex-col">
+              <div class="relative h-44 w-full bg-black">
+                <iframe src="${vUrl}" title="${vTitle}" class="w-full h-full border-0" allowfullscreen></iframe>
+              </div>
+              <div class="p-3 bg-white">
+                <p class="text-xs font-bold text-emerald-900 truncate">${vTitle}</p>
+              </div>
+            </div>
+          `;
+        });
+      }
+    }
+  </script>
+
+
+  <!-- FOOTER -->
+  <footer class="bg-emerald-950 text-white mt-10 shadow-inner">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 py-12">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+              
+              <!-- ১. প্রতিষ্ঠানের অবস্থান ও ম্যাপ -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>🗺️</span> প্রতিষ্ঠানের অবস্থান
+                  </h3>
+                  <div class="rounded-xl overflow-hidden border border-amber-500/30 shadow-md">
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5357.967221678154!2d92.25207829498358!3d22.96056772557256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3752bd55e5422bfd%3A0x3a5f51cbe97c5be0!2z4Kas4KaX4Ka-4Kaa4Kak4KawIOCmrOCmvuCnn-CmpOCngeCmsiDgprngp4Hgpqbgpr4g4KaG4KaH4Kah4Ka_4Kef4Ka-4KayIOCmpuCmvuCmluCmv-CmsiDgpq7gpr7gpqbgp43gprDgpr7gprjgpr4!5e0!3m2!1sen!2sbd!4v1786909078940!5m2!1sen!2sbd" width="100%" height="180" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                  </div>
+                  <p class="text-xs text-emerald-100 mt-3 flex items-start gap-2">
+                      <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      </svg>
+                      <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                          <span id="indexAddress">১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি</span>
+                      </a>
+                  </p>
+              </div>
+
+              <!-- ২. শিক্ষা বোর্ডসমূহ -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>🎓</span> সকল শিক্ষা বোর্ড
+                  </h3>
+                  <ul class="space-y-2.5 text-sm text-emerald-100">
+                      <li><a href="https://moedu.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• শিক্ষা মন্ত্রণালয়</a></li>
+                      <li><a href="https://bmeb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• বাংলাদেশ মাদ্রাসা শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://dhakaeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• ঢাকা শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://chittagongeducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• চট্টগ্রাম শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://rajshahieducationboard.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• রাজশাহী শিক্ষা বোর্ড</a></li>
+                      <li><a href="https://nctb.gov.bd/" target="_blank" class="hover:text-amber-300 transition flex items-center gap-2">• এনসিটিবি (পাঠ্যপুস্তক)</a></li>
+                  </ul>
+              </div>
+
+              <!-- ৩. গুরুত্বপূর্ণ তথ্য -->
+              <div class="md:col-span-1">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>💡</span> গুরুত্বপূর্ণ তথ্য
+                  </h3>
+                  <ul class="space-y-2.5 text-sm text-emerald-100">
+                      <li><a href="admission.html" class="hover:text-amber-300 transition">• ভর্তি বিজ্ঞপ্তি</a></li>
+                      <li><a href="result.html" class="hover:text-amber-300 transition">• পরীক্ষার ফলাফল</a></li>
+                      <li><a href="noticeBord.html" class="hover:text-amber-300 transition">• ক্লাসরুটিন ও নোটিশ</a></li>
+                      <li><a href="teacher.html" class="hover:text-amber-300 transition">• শিক্ষক কর্মচারীদের তথ্য</a></li>
+                      <li><a href="library.html" class="hover:text-amber-300 transition">• বগাচতর আলোর ভুবন পাঠাগার</a></li>
+                      <li><a href="about.html" class="hover:text-amber-300 transition">• মাদ্রাসা পরিচিতি</a></li>
+                  </ul>
+              </div>
+
+              <!-- ৪. যোগাযোগ ও সোশ্যাল মিডিয়া -->
+              <div class="md:col-span-1 space-y-4">
+                  <h3 class="text-xl font-bold text-amber-300 border-b border-amber-500/30 pb-2 mb-4 flex items-center gap-2">
+                      <span>📞</span> যোগাযোগ
+                  </h3>
+                  <div class="space-y-3 text-sm">
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-location-dot text-amber-400"></i>
+                          <a href="https://maps.app.goo.gl/YourMapLinkHere" target="_blank" class="hover:text-amber-300 transition underline">
+                              <span id="indexAddressLinkText">১ নং রাঙ্গীপাড়া, বগাচতর, লংগদু, রাঙ্গামাটি</span>
+                          </a>
+                      </p>
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-phone text-amber-400"></i>
+                          <span id="indexPhone">০১৭০০-০০০০০০</span>
+                      </p>
+                      <p class="flex items-center gap-2 text-emerald-100">
+                          <i class="fa-solid fa-envelope text-amber-400"></i>
+                          <a id="indexEmailLink" href="mailto:info@madrasah.com" class="hover:text-amber-300 transition underline"><span id="indexEmail">info@madrasah.com</span></a>
+                      </p>
+
+                      <!-- সোশ্যাল মিডিয়া আইকনসমূহ -->
+                      <div class="flex items-center gap-3 pt-2">
+                          <a id="indexFacebook" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center transition shadow">
+                              <i class="fa-brands fa-facebook-f"></i>
+                          </a>
+                          <a id="indexWhatsapp" href="#" target="_blank" class="w-9 h-9 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white flex items-center justify-center transition shadow">
+                              <i class="fa-brands fa-whatsapp"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+
+          <div class="mt-10 pt-6 border-t border-emerald-900 flex flex-col sm:flex-row justify-between items-center text-xs text-emerald-300 gap-2 text-center sm:text-left">
+              <p>&copy; ২০২৬ বগাছতর বাইতুল হুদা আইডিয়াল দাখিল মাদ্রাসা। সর্বস্বত্ব সংরক্ষিত।</p>
+              <p>কারিগরি সহায়তায়: <span class="font-bold text-amber-300">Md Anamul Hoq</span></p>
+          </div>
+      </div>
+  </footer>
+
+  <!-- Script to load dynamic details from localStorage -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedContact = JSON.parse(localStorage.getItem('siteContactInfo'));
+      if (savedContact) {
+        if (document.getElementById('indexAddress') && savedContact.address) {
+          document.getElementById('indexAddress').innerText = savedContact.address;
+        }
+        if (document.getElementById('indexAddressLinkText') && savedContact.address) {
+          document.getElementById('indexAddressLinkText').innerText = savedContact.address;
+        }
+        if (document.getElementById('indexPhone') && savedContact.phone) {
+          document.getElementById('indexPhone').innerText = savedContact.phone;
+        }
+        if (document.getElementById('topBarPhone') && savedContact.phone) {
+          document.getElementById('topBarPhone').innerText = savedContact.phone;
+        }
+        if (document.getElementById('indexEmail') && savedContact.email) {
+          document.getElementById('indexEmail').innerText = savedContact.email;
+          const emailLinkEl = document.getElementById('indexEmailLink');
+          if(emailLinkEl) {
+            emailLinkEl.href = 'mailto:' + savedContact.email;
+          }
+        }
+        if (document.getElementById('topBarEiin') && savedContact.eiin) {
+          document.getElementById('topBarEiin').innerText = savedContact.eiin;
+        }
+        if (document.getElementById('topBarEstablished') && savedContact.established) {
+          document.getElementById('topBarEstablished').innerText = savedContact.established;
+        }
+
+        const fbEl = document.getElementById('indexFacebook');
+        if (fbEl && savedContact.facebook) {
+          fbEl.href = savedContact.facebook;
+          fbEl.style.display = 'flex';
+        } else if (fbEl) {
+          fbEl.style.display = 'none';
+        }
+
+        const waEl = document.getElementById('indexWhatsapp');
+        if (waEl && savedContact.whatsapp) {
+          waEl.href = savedContact.whatsapp;
+          waEl.style.display = 'flex';
+        } else if (waEl) {
+          waEl.style.display = 'none';
+        }
+      }
+    });
+  </script>
+
+
+
+</body>
+</html>
