@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- html2pdf.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- html2pdf.js CDN (এটি যোগ করা হয়েছে যাতে পিডিএফ সরাসরি ডাউনলোড হয়) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body class="bg-slate-100 py-8 px-4 font-sans">
 
@@ -42,7 +42,7 @@
       <div class="w-full space-y-1">
         <label class="block text-xs font-bold text-slate-700">শিক্ষার্থীর ছবি (পাসপোর্ট সাইজ) <span class="text-rose-500">*</span></label>
         <input type="file" id="studentPhoto" accept="image/*" class="w-full text-xs text-slate-500 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer" />
-        <span class="text-[10px] text-slate-500 block">ফাইল থেকে ছবি সিলেক্ট করার সাথে সাথেই সেভ হয়ে যাবে।</span>
+        <span class="text-[10px] text-slate-500 block">ফাইল থেকে ছবি সিলেক্ট করার সাথে সাথেই সেভ হয়ে যাবে।</span>
       </div>
     </div>
 
@@ -242,7 +242,7 @@
         <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_motherEn"></td>
       </tr>
       <tr>
-        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">जन्म তারিখ:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">জন্ম তারিখ:</td>
         <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_dob"></td>
       </tr>
       <tr>
@@ -467,6 +467,17 @@
         });
 
         setTimeout(() => {
+          if (typeof html2pdf === 'undefined') {
+            Swal.close();
+            Swal.fire({ 
+              icon: 'error', 
+              title: 'নেটওয়ার্ক ত্রুটি!', 
+              text: 'পিডিএফ লাইব্রেরি লোড হয়নি। দয়া করে ইন্টারনেট কানেকশন চেক করুন।', 
+              confirmButtonColor: '#047857' 
+            });
+            return;
+          }
+
           html2pdf().set(opt).from(printElement).save().then(() => {
             Swal.close();
             Swal.fire({
