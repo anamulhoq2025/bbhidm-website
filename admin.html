@@ -694,20 +694,21 @@
         loadAdminVideoList();
     });
 </script>
-
 <!-- ================= admission list update ================= -->
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> ভর্তি আবেদন তালিকা</title>
+    <title>ভর্তি আবেদন তালিকা</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- html2pdf.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body class="bg-slate-100 py-6 px-4 font-sans">
 
@@ -721,7 +722,7 @@
             </div>
             <div>
                 <h1 class="text-xl sm:text-2xl font-black text-emerald-900">ভর্তি আবেদন তালিকা- ড্যাশবোর্ড</h1>
-                <p class="text-xs text-slate-500">বগাছতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসা</p>
+                <p class="text-xs text-slate-500">বগাচতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসা</p>
             </div>
         </div>
         <div class="flex items-center gap-3">
@@ -755,7 +756,7 @@
         </div>
         <div class="w-full md:w-auto flex items-center gap-3">
             <div class="relative w-full md:w-72">
-                <input type="text" id="searchInput" onkeyup="filterApplications()" placeholder="নাম, আইডি বা জন্ম নিবন্ধন দিয়ে খুঁজুন..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs focus:outline-emerald-600">
+                <input type="text" id="searchInput" onkeyup="filterApplications()" placeholder="নাম, আইডি বা জন্ম নিবন্ধন দিয়ে খুঁজুন..." class="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs focus:outline-emerald-600">
                 <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-xs"></i>
             </div>
             <div class="text-xs font-bold bg-emerald-50 text-emerald-800 px-3 py-2 rounded-xl border border-emerald-200 shrink-0">
@@ -788,7 +789,7 @@
         <!-- Empty State -->
         <div id="emptyState" class="hidden text-center py-12 space-y-3">
             <i class="fa-solid fa-folder-open text-4xl text-slate-300"></i>
-            <p class="text-slate-500 text-xs font-bold">কোনো আবেদন পাওয়া যায়নি!</p>
+            <p class="text-slate-500 text-xs font-bold">কোনো আবেদন পাওয়া যায়নি!</p>
         </div>
     </div>
 
@@ -805,29 +806,130 @@
         <div class="flex items-center gap-4 bg-emerald-50 p-3 rounded-xl border border-emerald-100">
             <img id="m_photo" src="" class="w-16 h-16 object-cover rounded-xl border-2 border-emerald-600 shadow-sm" />
             <div>
-                <p class="text-xs text-slate-500">আবেদন আইডি: <span id="m_id" class="font-bold text-emerald-800"></span></p>
-                <p class="text-xs text-slate-500">তারিখ: <span id="m_date" class="font-bold"></span></p>
+                <p class="text-xs text-slate-700">আবেদন আইডি: <span id="m_id" class="font-bold text-emerald-800"></span></p>
+                <p class="text-xs text-slate-700">তারিখ: <span id="m_date" class="font-bold text-slate-900"></span></p>
             </div>
         </div>
 
-        <div class="space-y-2 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200 max-h-60 overflow-y-auto">
-            <p><b>বাংলা নাম:</b> <span id="m_nameBn"></span></p>
-            <p><b>ইংরেজি নাম:</b> <span id="m_nameEn"></span></p>
-            <p><b>শ্রেণি:</b> <span id="m_class"></span></p>
-            <p><b>পিতার নাম:</b> <span id="m_fatherBn"></span> (<span id="m_fatherEn"></span>)</p>
-            <p><b>মাতার নাম:</b> <span id="m_motherBn"></span> (<span id="m_motherEn"></span>)</p>
-            <p><b>জন্ম তারিখ:</b> <span id="m_dob"></span></p>
-            <p><b>জন্ম নিবন্ধন নম্বর:</b> <span id="m_birthReg" class="font-bold text-emerald-700"></span></p>
-            <p><b>লিঙ্গ:</b> <span id="m_gender"></span></p>
-            <p><b>বর্তমান ঠিকানা:</b> <span id="m_presentAddr"></span></p>
-            <p><b>স্থায়ী ঠিকানা:</b> <span id="m_permanentAddr"></span></p>
-            <p><b>মোবাইল নম্বর:</b> <span id="m_mobile"></span></p>
+        <div class="space-y-2 text-xs bg-slate-50 p-4 rounded-xl border border-slate-200 max-h-72 overflow-y-auto text-slate-900">
+            <p><b class="text-black">বাংলা নাম:</b> <span id="m_nameBn" class="font-bold"></span></p>
+            <p><b class="text-black">ইংরেজি নাম:</b> <span id="m_nameEn" class="font-bold"></span></p>
+            <p><b class="text-black">ভর্তির শ্রেণি:</b> <span id="m_class" class="font-bold text-emerald-700"></span></p>
+            <p id="m_prevSchoolRow" class="hidden"><b class="text-black">পূর্বের প্রতিষ্ঠান ও শ্রেণি:</b> <span id="m_prevSchoolDetails" class="font-bold text-slate-900"></span></p>
+            <p><b class="text-black">পিতার নাম (বাংলা):</b> <span id="m_fatherBn"></span></p>
+            <p><b class="text-black">পিতার নাম (ইংরেজি):</b> <span id="m_fatherEn"></span></p>
+            <p><b class="text-black">মাতার নাম (বাংলা):</b> <span id="m_motherBn"></span></p>
+            <p><b class="text-black">মাতার নাম (ইংরেজি):</b> <span id="m_motherEn"></span></p>
+            <p><b class="text-black">জন্ম তারিখ:</b> <span id="m_dob"></span></p>
+            <p><b class="text-black">জন্ম নিবন্ধন নম্বর:</b> <span id="m_birthReg" class="font-bold text-emerald-800"></span></p>
+            <p><b class="text-black">লিঙ্গ:</b> <span id="m_gender"></span></p>
+            <p><b class="text-black">বর্তমান ঠিকানা:</b> <span id="m_presentAddr"></span></p>
+            <p><b class="text-black">স্থায়ী ঠিকানা:</b> <span id="m_permanentAddr"></span></p>
+            <p><b class="text-black">মোবাইল নম্বর:</b> <span id="m_mobile" class="font-bold"></span></p>
         </div>
 
         <div class="flex justify-end pt-2">
-            <button onclick="closeDetailsModal()" class="px-5 py-2 bg-slate-300 hover:bg-slate-400 text-slate-800 text-xs font-bold rounded-xl transition">বন্ধ করুন</button>
+            <button onclick="closeDetailsModal()" class="px-5 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl transition">বন্ধ করুন</button>
         </div>
     </div>
+</div>
+
+<!-- HIDDEN PRINT AREA FOR APPLICANT COPY PDF GENERATION -->
+<div id="printAreaContainer" style="position: fixed; top: 0; left: 0; z-index: -9999; opacity: 0; pointer-events: none;">
+  <div id="printArea" style="width: 700px; background: #ffffff; padding: 25px; font-family: Arial, sans-serif; color: #0f172a;">
+    
+    <div style="display: flex; align-items: center; gap: 15px; border-bottom: 3px solid #047857; padding-bottom: 10px; margin-bottom: 15px;">
+      <img src="logo.jpg" style="width: 60px; height: 60px; object-fit: contain; background: transparent;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3135/3135715.png'" />
+      <div>
+        <h2 style="color: #047857; margin: 0; font-size: 20px; font-weight: 800;">বগাছতর বায়তুল হুদা আইডিয়াল দাখিল মাদ্রাসা</h2>
+        <p style="margin: 3px 0 0; font-size: 12px; color: #334155; font-weight: bold;">অনলাইন ভর্তি আবেদন কপি (Applicant Copy)</p>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #f0fdf4; padding: 10px 15px; border-radius: 8px; border: 1px solid #bbf7d0;">
+      <div>
+        <p style="margin: 0; font-size: 12px;"><b>আবেদন আইডি:</b> <span id="r_id" style="color: #047857; font-weight: bold;"></span></p>
+        <p style="margin: 4px 0 0; font-size: 12px;"><b>আবেদনের তারিখ:</b> <span id="r_date"></span></p>
+      </div>
+      <div>
+        <img id="r_photo" src="" style="width: 70px; height: 70px; object-fit: cover; border-radius: 6px; border: 2px solid #047857;" />
+      </div>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; font-size: 11px; color: #000000;">
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; width: 35%; font-weight: bold;">শিক্ষার্থীর নাম (বাংলা):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_nameBn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">শিক্ষার্থীর নাম (ইংরেজি):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_nameEn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">যে শ্রেণিতে ভর্তি ইচ্ছুক:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_class"></td>
+      </tr>
+      <tr id="r_prevRow" style="display: none;">
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">পূর্বের প্রতিষ্ঠান ও শ্রেণি:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_prevSchoolText"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">পিতার নাম (বাংলা):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_fatherBn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">পিতার নাম (ইংরেজি):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_fatherEn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">মাতার নাম (বাংলা):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_motherBn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">মাতার নাম (ইংরেজি):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_motherEn"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">জন্ম তারিখ:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_dob"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">জন্ম নিবন্ধন নম্বর:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; font-weight: bold; color: #047857;" id="r_birthReg"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">লিঙ্গ (Gender):</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_gender"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">বর্তমান ঠিকানা:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_presentAddr"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">স্থায়ী ঠিকানা:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_permanentAddr"></td>
+      </tr>
+      <tr>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">মোবাইল নম্বর:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_phone"></td>
+      </tr>
+    </table>
+
+    <div style="margin-top: 25px; display: flex; justify-content: space-between; align-items: flex-end; font-size: 10px; color: #475569;">
+      <p style="margin: 0; max-width: 250px; line-height: 1.3;">বিঃ দ্রঃ এই কপিটি প্রিন্ট করে সংরক্ষণ করুন। ভর্তি পরীক্ষার সময় এটি প্রদর্শন করতে হবে।</p>
+      
+      <div style="display: flex; gap: 20px; text-align: center;">
+        <div>
+          <div style="border-bottom: 1px solid #0f172a; width: 130px; height: 20px; margin-bottom: 2px;"></div>
+          <div style="font-weight: bold; color: #0f172a;">শিক্ষার্থীর স্বাক্ষর</div>
+        </div>
+        <div>
+          <div style="border-bottom: 1px solid #0f172a; width: 130px; height: 20px; margin-bottom: 2px;"></div>
+          <div style="font-weight: bold; color: #0f172a;">প্রধান শিক্ষকের স্বাক্ষর</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -836,7 +938,6 @@
     document.addEventListener("DOMContentLoaded", () => {
         loadApplications();
         
-        // Listen to storage event to sync if user applies from another tab
         window.addEventListener('storage', (e) => {
             if (e.key === 'siteAdmissionApplications') {
                 loadApplications();
@@ -879,23 +980,24 @@
                     <span class="text-[10px] text-slate-400">${app.date || ''}</span>
                 </td>
                 <td class="p-3">
-                    <span class="font-bold text-slate-900 block">${app.studentName}</span>
+                    <span class="font-bold text-slate-900 block">${app.studentName || app.nameBn || ''}</span>
                     <span class="text-[10px] text-slate-500 uppercase">${app.nameEn || ''}</span>
                 </td>
-                <td class="p-3 font-semibold text-emerald-700">${app.className}</td>
+                <td class="p-3 font-semibold text-emerald-700">${app.className || ''}</td>
                 <td class="p-3">
-                    <span class="block">পিতা: ${app.fatherName}</span>
-                    <span class="text-[10px] text-slate-500">মাতা: ${app.motherName}</span>
+                    <span class="block">পিতা: ${app.fatherName || app.fatherBn || ''}</span>
+                    <span class="text-[10px] text-slate-500">মাতা: ${app.motherName || app.motherBn || ''}</span>
                 </td>
                 <td class="p-3">
-                    <span class="block font-medium">${app.mobile}</span>
-                    <span class="text-[10px] text-slate-500">জন্ম নি: ${app.birthReg}</span>
+                    <span class="block font-medium">${app.mobile || app.phone || ''}</span>
+                    <span class="text-[10px] text-slate-500">জন্ম নি: ${app.birthReg || ''}</span>
                 </td>
                 <td class="p-3 text-center">
                     <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">${app.status || 'পেন্ডিং'}</span>
                 </td>
                 <td class="p-3 text-center space-x-1">
                     <button onclick='viewDetails(${JSON.stringify(app)})' title="বিস্তারিত দেখুন" class="w-7 h-7 bg-emerald-100 hover:bg-emerald-200 text-emerald-700 rounded-lg transition"><i class="fa-solid fa-eye text-[11px]"></i></button>
+                    <button onclick='downloadPDF(${JSON.stringify(app)})' title="অ্যাপ্লিকেন্টস কপি ডাউনলোড" class="w-7 h-7 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg transition"><i class="fa-solid fa-download text-[11px]"></i></button>
                     <button onclick='deleteApplication("${app.birthReg}")' title="ডিলিট করুন" class="w-7 h-7 bg-rose-100 hover:bg-rose-200 text-rose-700 rounded-lg transition"><i class="fa-solid fa-trash text-[11px]"></i></button>
                 </td>
             `;
@@ -909,11 +1011,17 @@
 
         let filtered = allApplications.filter(app => {
             const matchesClass = classVal === "" || app.className === classVal;
-            const matchesSearch = (app.studentName && app.studentName.toLowerCase().includes(searchVal)) ||
-                                  (app.nameEn && app.nameEn.toLowerCase().includes(searchVal)) ||
-                                  (app.id && app.id.toLowerCase().includes(searchVal)) ||
-                                  (app.birthReg && app.birthReg.includes(searchVal)) ||
-                                  (app.mobile && app.mobile.includes(searchVal));
+            const name = (app.studentName || app.nameBn || '').toLowerCase();
+            const nameE = (app.nameEn || '').toLowerCase();
+            const appId = (app.id || '').toLowerCase();
+            const bReg = app.birthReg || '';
+            const mob = app.mobile || app.phone || '';
+
+            const matchesSearch = name.includes(searchVal) ||
+                                  nameE.includes(searchVal) ||
+                                  appId.includes(searchVal) ||
+                                  bReg.includes(searchVal) ||
+                                  mob.includes(searchVal);
             return matchesClass && matchesSearch;
         });
 
@@ -924,19 +1032,28 @@
         document.getElementById('m_id').innerText = app.id || 'N/A';
         document.getElementById('m_date').innerText = app.date || 'N/A';
         document.getElementById('m_photo').src = app.photo || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
-        document.getElementById('m_nameBn').innerText = app.studentName || '';
+        document.getElementById('m_nameBn').innerText = app.studentName || app.nameBn || '';
         document.getElementById('m_nameEn').innerText = app.nameEn || '';
         document.getElementById('m_class').innerText = app.className || '';
-        document.getElementById('m_fatherBn').innerText = app.fatherName || '';
+
+        // Previous school info handling in modal
+        if (app.hasPrevSchool === "হ্যাঁ") {
+            document.getElementById('m_prevSchoolDetails').innerText = (app.prevSchoolName || '') + " (শ্রেণি: " + (app.prevSchoolClass || '') + ")";
+            document.getElementById('m_prevSchoolRow').classList.remove('hidden');
+        } else {
+            document.getElementById('m_prevSchoolRow').classList.add('hidden');
+        }
+
+        document.getElementById('m_fatherBn').innerText = app.fatherName || app.fatherBn || '';
         document.getElementById('m_fatherEn').innerText = app.fatherEn || '';
-        document.getElementById('m_motherBn').innerText = app.motherName || '';
+        document.getElementById('m_motherBn').innerText = app.motherName || app.motherBn || '';
         document.getElementById('m_motherEn').innerText = app.motherEn || '';
         document.getElementById('m_dob').innerText = app.dob || '';
         document.getElementById('m_birthReg').innerText = app.birthReg || '';
         document.getElementById('m_gender').innerText = app.gender || '';
         document.getElementById('m_presentAddr').innerText = app.presentAddr || '';
         document.getElementById('m_permanentAddr').innerText = app.permanentAddr || '';
-        document.getElementById('m_mobile').innerText = app.mobile || '';
+        document.getElementById('m_mobile').innerText = app.mobile || app.phone || '';
 
         document.getElementById('detailsModal').classList.remove('hidden');
     }
@@ -945,10 +1062,73 @@
         document.getElementById('detailsModal').classList.add('hidden');
     }
 
+    function downloadPDF(app) {
+        // Populate hidden printable template with student details
+        document.getElementById('r_id').innerText = app.id || 'BG-' + Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('r_date').innerText = app.date || new Date().toLocaleDateString('bn-BD');
+        document.getElementById('r_photo').src = app.photo || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+        document.getElementById('r_nameBn').innerText = app.studentName || app.nameBn || '';
+        document.getElementById('r_nameEn').innerText = app.nameEn || '';
+        document.getElementById('r_class').innerText = app.className || '';
+
+        if (app.hasPrevSchool === "হ্যাঁ") {
+            document.getElementById('r_prevRow').style.display = 'table-row';
+            document.getElementById('r_prevSchoolText').innerText = (app.prevSchoolName || '') + " (শ্রেণি: " + (app.prevSchoolClass || '') + ")";
+        } else {
+            document.getElementById('r_prevRow').style.display = 'none';
+        }
+
+        document.getElementById('r_fatherBn').innerText = app.fatherName || app.fatherBn || '';
+        document.getElementById('r_fatherEn').innerText = app.fatherEn || '';
+        document.getElementById('r_motherBn').innerText = app.motherName || app.motherBn || '';
+        document.getElementById('r_motherEn').innerText = app.motherEn || '';
+        document.getElementById('r_dob').innerText = app.dob || '';
+        document.getElementById('r_birthReg').innerText = app.birthReg || '';
+        document.getElementById('r_gender').innerText = app.gender || '';
+        document.getElementById('r_presentAddr').innerText = app.presentAddr || '';
+        document.getElementById('r_permanentAddr').innerText = app.permanentAddr || '';
+        document.getElementById('r_phone').innerText = app.mobile || app.phone || '';
+
+        const printElement = document.getElementById('printArea');
+        const opt = {
+          margin:      5,
+          filename:    'Applicant_Copy_' + (app.birthReg || 'PDF') + '.pdf',
+          image:       { type: 'jpeg', quality: 0.95 },
+          html2canvas:  { scale: 2, useCORS: true, scrollY: 0 },
+          jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        if (typeof html2pdf === 'undefined') {
+          Swal.fire({ icon: 'error', title: 'নেটওয়ার্ক ত্রুটি!', text: 'পিডিএফ লাইব্রেরি লোড হয়নি।', confirmButtonColor: '#047857' });
+          return;
+        }
+
+        Swal.fire({
+          title: 'পিডিএফ তৈরি হচ্ছে...',
+          text: 'দয়া করে একটু অপেক্ষা করুন।',
+          allowOutsideClick: false,
+          didOpen: () => { Swal.showLoading(); }
+        });
+
+        html2pdf().set(opt).from(printElement).save().then(() => {
+          Swal.close();
+          Swal.fire({
+            icon: 'success',
+            title: 'ডাউনলোড সম্পন্ন!',
+            text: 'অ্যাপ্লিকেন্টস কপিটি সফলভাবে ডাউনলোড করা হয়েছে।',
+            confirmButtonColor: '#047857'
+          });
+        }).catch(err => {
+          console.error(err);
+          Swal.close();
+          Swal.fire({ icon: 'error', title: 'ত্রুটি!', text: 'পিডিএফ তৈরি করতে সমস্যা হয়েছে।', confirmButtonColor: '#047857' });
+        });
+    }
+
     function deleteApplication(birthReg) {
         Swal.fire({
             title: 'আপনি কি নিশ্চিত?',
-            text: "এই আবেদনটি মুছে ফেলা হবে এবং জন্ম নিবন্ধন নম্বরটির ব্লক লিস্টও রিমুভ হয়ে যাবে!",
+            text: "এই আবেদনটি মুছে ফেলা হবে এবং জন্ম নিবন্ধন নম্বরটির ব্লক লিস্টও রিমুভ হয়ে যাবে!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#047857',
@@ -957,17 +1137,15 @@
             cancelButtonText: 'বাতিল'
         }).then((result) => {
             if (result.isConfirmed) {
-                // 1. Remove from main apps list
                 allApplications = allApplications.filter(app => app.birthReg !== birthReg);
                 localStorage.setItem('siteAdmissionApplications', JSON.stringify(allApplications));
 
-                // 2. Remove from duplicate birth reg check list so they can apply again if needed
                 let submittedRegNumbers = JSON.parse(localStorage.getItem('submitted_birth_regs')) || [];
                 submittedRegNumbers = submittedRegNumbers.filter(reg => reg !== birthReg);
                 localStorage.setItem('submitted_birth_regs', JSON.stringify(submittedRegNumbers));
 
                 loadApplications();
-                Swal.fire({ icon: 'success', title: 'ডিলিট সফল!', text: 'আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।', confirmButtonColor: '#047857' });
+                Swal.fire({ icon: 'success', title: 'ডিলিট সফল!', text: 'আবেদনটি সফলভাবে মুছে ফেলা হয়েছে।', confirmButtonColor: '#047857' });
             }
         });
     }
@@ -987,7 +1165,7 @@
                 localStorage.removeItem('siteAdmissionApplications');
                 localStorage.removeItem('submitted_birth_regs');
                 loadApplications();
-                Swal.fire({ icon: 'success', title: 'পরিষ্কার করা হয়েছে!', text: 'সকল ডেটা সফলভাবে মুছে ফেলা হয়েছে।', confirmButtonColor: '#047857' });
+                Swal.fire({ icon: 'success', title: 'পরিষ্কার করা হয়েছে!', text: 'সকল ডেটা সফলভাবে মুছে ফেলা হয়েছে।', confirmButtonColor: '#047857' });
             }
         });
     }
@@ -995,8 +1173,6 @@
 
 </body>
 </html>
-
-
 
 
 <!-- ================= Result update ================= -->

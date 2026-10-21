@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- html2pdf.js CDN (এটি যোগ করা হয়েছে যাতে পিডিএফ সরাসরি ডাউনলোড হয়) -->
+    <!-- html2pdf.js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body class="bg-slate-100 py-8 px-4 font-sans">
@@ -76,6 +76,31 @@
       </select>
     </div>
 
+    <!-- Previous School Question -->
+    <div class="bg-slate-50 p-4 rounded-xl border border-emerald-200 space-y-3">
+      <label class="block text-xs font-bold text-slate-700">পূর্বে কি অন্য কোনো প্রতিষ্ঠানে পড়াশোনা করেছে? <span class="text-rose-500">*</span></label>
+      <div class="flex items-center gap-6">
+        <label class="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+          <input type="radio" name="hasPrevSchool" value="হ্যাঁ" id="prevYes" class="w-4 h-4 text-emerald-600 focus:ring-emerald-500 cursor-pointer"> হ্যাঁ
+        </label>
+        <label class="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+          <input type="radio" name="hasPrevSchool" value="না" id="prevNo" checked class="w-4 h-4 text-emerald-600 focus:ring-emerald-500 cursor-pointer"> না
+        </label>
+      </div>
+
+      <!-- Hidden/Conditional Fields for Previous School Details -->
+      <div id="prevSchoolDetails" class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 hidden">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">পূর্বে যে প্রতিষ্ঠানে পড়েছে সেই প্রতিষ্ঠানে নাম</label>
+          <input type="text" id="prevSchoolName" placeholder="প্রতিষ্ঠানের নাম লিখুন" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm bg-white" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">পূর্বে কোন শ্রেণিতে পড়ত?</label>
+          <input type="text" id="prevSchoolClass" placeholder="যেমন: ৫ম শ্রেণি / চতুর্থ শ্রেণি" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm bg-white" />
+        </div>
+      </div>
+    </div>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">পিতার নাম (বাংলায়) <span class="text-rose-500">*</span></label>
@@ -105,7 +130,7 @@
       </div>
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">জন্ম নিবন্ধন নম্বর (১৭ ডিজিট) <span class="text-rose-500">*</span></label>
-        <input type="text" id="birthReg" required placeholder="১৭ ডিজিটের জন্ম নিবন্ধন নম্বর" maxlength="17" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
+        <input type="text" id="birthReg" required placeholder="১৭ ডিজিটের জন্ম নিবন্ধন নম্বর" maxlength="17" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
       </div>
       <div>
         <label class="block text-xs font-bold text-slate-700 mb-1">লিঙ্গ (Gender) <span class="text-rose-500">*</span></label>
@@ -130,7 +155,7 @@
 
     <div>
       <label class="block text-xs font-bold text-slate-700 mb-1">অভিভাবকের মোবাইল নম্বর <span class="text-rose-500">*</span></label>
-      <input type="tel" id="phone" required placeholder="01700000000" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
+      <input type="tel" id="phone" required placeholder="01700000000" maxlength="11" oninput="this.value = this.value.replace(/[^0-9০-৯]/g, '')" class="w-full px-4 py-2.5 rounded-xl border border-emerald-300 text-sm" />
     </div>
 
     <div class="pt-2">
@@ -157,6 +182,7 @@
       <p><b>শিক্ষার্থীর নাম (বাংলা):</b> <span id="prev_nameBn"></span></p>
       <p><b>শিক্ষার্থীর নাম (ইংরেজি):</b> <span id="prev_nameEn"></span></p>
       <p><b>শ্রেণি:</b> <span id="prev_class"></span></p>
+      <p id="prev_schoolInfoBox" class="hidden"><b>পূর্বের প্রতিষ্ঠান ও শ্রেণি:</b> <span id="prev_schoolDetailsText"></span></p>
       <p><b>পিতার নাম (বাংলা):</b> <span id="prev_fatherBn"></span></p>
       <p><b>পিতার নাম (ইংরেজি):</b> <span id="prev_fatherEn"></span></p>
       <p><b>মাতার নাম (বাংলা):</b> <span id="prev_motherBn"></span></p>
@@ -225,6 +251,10 @@
         <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">যে শ্রেণিতে ভর্তি ইচ্ছুক:</td>
         <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_class"></td>
       </tr>
+      <tr id="r_prevRow" style="display: none;">
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">পূর্বের প্রতিষ্ঠান ও শ্রেণি:</td>
+        <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_prevSchoolText"></td>
+      </tr>
       <tr>
         <td style="padding: 5px 8px; border: 1px solid #cbd5e1; background: #f8fafc; font-weight: bold;">পিতার নাম (বাংলা):</td>
         <td style="padding: 5px 8px; border: 1px solid #cbd5e1;" id="r_fatherBn"></td>
@@ -289,7 +319,27 @@
   let croppedBase64 = "";
 
   document.addEventListener("DOMContentLoaded", () => {
-    // Direct Photo Upload Listener without Cropping
+    // Toggle Previous School Details Inputs
+    const prevYes = document.getElementById('prevYes');
+    const prevNo = document.getElementById('prevNo');
+    const prevSchoolDetails = document.getElementById('prevSchoolDetails');
+
+    function togglePrevSchoolFields() {
+      if (prevYes.checked) {
+        prevSchoolDetails.classList.remove('hidden');
+        document.getElementById('prevSchoolName').setAttribute('required', 'true');
+        document.getElementById('prevSchoolClass').setAttribute('required', 'true');
+      } else {
+        prevSchoolDetails.classList.add('hidden');
+        document.getElementById('prevSchoolName').removeAttribute('required');
+        document.getElementById('prevSchoolClass').removeAttribute('required');
+      }
+    }
+
+    prevYes.addEventListener('change', togglePrevSchoolFields);
+    prevNo.addEventListener('change', togglePrevSchoolFields);
+
+    // Direct Photo Upload Listener
     const studentPhotoInput = document.getElementById('studentPhoto');
     if (studentPhotoInput) {
       studentPhotoInput.addEventListener('change', function(event) {
@@ -298,10 +348,7 @@
 
         const reader = new FileReader();
         reader.onload = function(e) {
-          // Directly store image base64 data
           croppedBase64 = e.target.result;
-          
-          // Show photo preview
           const photoPreview = document.getElementById('photoPreview');
           photoPreview.src = croppedBase64;
           photoPreview.classList.remove('hidden');
@@ -344,6 +391,17 @@
         document.getElementById('prev_nameBn').innerText = document.getElementById('nameBn').value.trim();
         document.getElementById('prev_nameEn').innerText = document.getElementById('nameEn').value.trim();
         document.getElementById('prev_class').innerText = document.getElementById('className').value;
+
+        // Previous school info preview
+        if (prevYes.checked) {
+          const pName = document.getElementById('prevSchoolName').value.trim();
+          const pClass = document.getElementById('prevSchoolClass').value.trim();
+          document.getElementById('prev_schoolDetailsText').innerText = pName + " (শ্রেণি: " + pClass + ")";
+          document.getElementById('prev_schoolInfoBox').classList.remove('hidden');
+        } else {
+          document.getElementById('prev_schoolInfoBox').classList.add('hidden');
+        }
+
         document.getElementById('prev_fatherBn').innerText = document.getElementById('fatherBn').value.trim();
         document.getElementById('prev_fatherEn').innerText = document.getElementById('fatherEn').value.trim();
         document.getElementById('prev_motherBn').innerText = document.getElementById('motherBn').value.trim();
@@ -367,7 +425,7 @@
       });
     }
 
-    // Final Submit & Download Button Listener
+    // Final Submit & Download Option Trigger
     const finalSubmitBtn = document.getElementById('finalSubmitBtn');
     if (finalSubmitBtn) {
       finalSubmitBtn.addEventListener('click', async function() {
@@ -378,16 +436,19 @@
         }
 
         const birthRegVal = document.getElementById('birthReg').value.trim();
-        
         let submittedRegNumbers = JSON.parse(localStorage.getItem('submitted_birth_regs')) || [];
         submittedRegNumbers.push(birthRegVal);
         localStorage.setItem('submitted_birth_regs', JSON.stringify(submittedRegNumbers));
 
+        const hasPrev = document.getElementById('prevYes').checked ? "হ্যাঁ" : "না";
         const newApplicant = {
             id: 'BG-' + Math.floor(100000 + Math.random() * 900000),
             studentName: document.getElementById('nameBn').value.trim(),
             nameEn: document.getElementById('nameEn').value.trim(),
             className: document.getElementById('className').value,
+            hasPrevSchool: hasPrev,
+            prevSchoolName: hasPrev === "হ্যাঁ" ? document.getElementById('prevSchoolName').value.trim() : "প্রযোজ্য নয়",
+            prevSchoolClass: hasPrev === "হ্যাঁ" ? document.getElementById('prevSchoolClass').value.trim() : "প্রযোজ্য নয়",
             fatherName: document.getElementById('fatherBn').value.trim(),
             fatherEn: document.getElementById('fatherEn').value.trim(),
             motherName: document.getElementById('motherBn').value.trim(),
@@ -411,11 +472,7 @@
             let existingApps = JSON.parse(localStorage.getItem('siteAdmissionApplications')) || [];
             existingApps.forEach(app => app.photo = ""); 
             existingApps.unshift(newApplicant);
-            try {
-                localStorage.setItem('siteAdmissionApplications', JSON.stringify(existingApps));
-            } catch(e) {
-                console.error("Critical storage error:", e);
-            }
+            localStorage.setItem('siteAdmissionApplications', JSON.stringify(existingApps));
         }
 
         try {
@@ -429,15 +486,23 @@
         }
 
         window.dispatchEvent(new Event('applicationSubmitted'));
-
         document.getElementById('previewModal').classList.add('hidden');
 
+        // Fill Print Area Template
         document.getElementById('r_id').innerText = newApplicant.id;
         document.getElementById('r_date').innerText = new Date().toLocaleDateString('bn-BD');
         document.getElementById('r_photo').src = croppedBase64;
         document.getElementById('r_nameBn').innerText = newApplicant.studentName;
         document.getElementById('r_nameEn').innerText = newApplicant.nameEn;
         document.getElementById('r_class').innerText = newApplicant.className;
+
+        if (newApplicant.hasPrevSchool === "হ্যাঁ") {
+            document.getElementById('r_prevRow').style.display = 'table-row';
+            document.getElementById('r_prevSchoolText').innerText = newApplicant.prevSchoolName + " (শ্রেণি: " + newApplicant.prevSchoolClass + ")";
+        } else {
+            document.getElementById('r_prevRow').style.display = 'none';
+        }
+
         document.getElementById('r_fatherBn').innerText = newApplicant.fatherName;
         document.getElementById('r_fatherEn').innerText = newApplicant.fatherEn;
         document.getElementById('r_motherBn').innerText = newApplicant.motherName;
@@ -450,7 +515,6 @@
         document.getElementById('r_phone').innerText = newApplicant.mobile;
 
         const printElement = document.getElementById('printArea');
-
         const opt = {
           margin:      5,
           filename:    'Applicant_Copy_' + birthRegVal + '.pdf',
@@ -459,45 +523,55 @@
           jsPDF:       { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
+        if (typeof html2pdf === 'undefined') {
+          Swal.fire({ icon: 'error', title: 'নেটওয়ার্ক ত্রুটি!', text: 'পিডিএফ লাইব্রেরি লোড হয়নি।', confirmButtonColor: '#047857' });
+          return;
+        }
+
+        // Prompting user with download option popup
         Swal.fire({
-          title: 'সফলভাবে জমা হয়েছে!',
-          text: 'আপনার অ্যাপ্লিকেন্টস কপি পিডিএফ ডাউনলোড হচ্ছে...',
-          allowOutsideClick: false,
-          didOpen: () => { Swal.showLoading(); }
-        });
-
-        setTimeout(() => {
-          if (typeof html2pdf === 'undefined') {
-            Swal.close();
-            Swal.fire({ 
-              icon: 'error', 
-              title: 'নেটওয়ার্ক ত্রুটি!', 
-              text: 'পিডিএফ লাইব্রেরি লোড হয়নি। দয়া করে ইন্টারনেট কানেকশন চেক করুন।', 
-              confirmButtonColor: '#047857' 
-            });
-            return;
-          }
-
-          html2pdf().set(opt).from(printElement).save().then(() => {
-            Swal.close();
+          title: 'আবেদন সফলভাবে জমা হয়েছে!',
+          text: 'আপনার অ্যাপ্লিকেন্টস কপিটি এখন ডাউনলোড করতে পারবেন।',
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonText: '<i class="fa-solid fa-download"></i> পিডিএফ ডাউনলোড করুন',
+          cancelButtonText: 'পরে ডাউনলোড করুন',
+          confirmButtonColor: '#047857',
+          cancelButtonColor: '#64748b',
+          allowOutsideClick: false
+        }).then((result) => {
+          if (result.isConfirmed) {
             Swal.fire({
-              icon: 'success',
-              title: 'ডাউনলোড সম্পন্ন!',
-              text: 'আপনার আবেদন সফলভাবে সম্পন্ন হয়েছে এবং অ্যাডমিন প্যানেলে জমা হয়ে গেছে।',
-              confirmButtonColor: '#047857'
-            }).then(() => {
-              location.reload();
+              title: 'ডাউনলোড হচ্ছে...',
+              text: 'দয়া করে একটু অপেক্ষা করুন।',
+              allowOutsideClick: false,
+              didOpen: () => { Swal.showLoading(); }
             });
-          }).catch(err => {
-            console.error(err);
-            Swal.close();
-            Swal.fire({ icon: 'error', title: 'ডাউনলোড ত্রুটি!', text: 'পিডিএফ তৈরি করতে সমস্যা হয়েছে। তবে আবেদনটি সফলভাবে সেভ হয়েছে।', confirmButtonColor: '#047857' });
-          });
-        }, 800);
+
+            html2pdf().set(opt).from(printElement).save().then(() => {
+              Swal.close();
+              Swal.fire({
+                icon: 'success',
+                title: 'ডাউনলোড সম্পন্ন!',
+                text: 'আপনার নির্দিষ্ট ফোল্ডারে ফাইলটি সেভ হয়ে গেছে।',
+                confirmButtonColor: '#047857'
+              }).then(() => {
+                location.reload();
+              });
+            }).catch(err => {
+              console.error(err);
+              Swal.close();
+              Swal.fire({ icon: 'error', title: 'ত্রুটি!', text: 'পিডিএফ তৈরি করতে সমস্যা হয়েছে।', confirmButtonColor: '#047857' });
+            });
+          } else {
+            location.reload();
+          }
+        });
       });
     }
   });
 </script>
+
 
   <!-- FOOTER -->
   <footer class="bg-emerald-950 text-white mt-10 shadow-inner">
