@@ -8,18 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Cropper.js -->
+    <!-- Cropper.js CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"/>
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<!-- Cropper.js CSS (এটি <head> ট্যাগের ভেতরে রাখবেন) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
-
-<!-- Cropper.js JavaScript (এটি </body> ট্যাগের ঠিক ওপরে রাখবেন) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-
 </head>
 <body class="bg-slate-100 py-8 px-4 font-sans">
 
@@ -307,7 +301,7 @@
   </div>
 </div>
 
-<!-- Cropper.js Script -->
+<!-- JavaScript Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 
 <script>
@@ -327,7 +321,11 @@
           img.src = e.target.result;
           document.getElementById('cropperModal').classList.remove('hidden');
           if (cropperObj) cropperObj.destroy();
-          cropperObj = new Cropper(img, { aspectRatio: 1, viewMode: 1 });
+          cropperObj = new Cropper(img, { 
+            aspectRatio: 1, 
+            viewMode: 1,
+            checkCrossOrigin: false // লাইভ সার্ভারে CORS সিকিউরিটি বাইপাস করার জন্য
+          });
         };
         reader.readAsDataURL(file);
       });
@@ -347,13 +345,15 @@
     if (confirmCropBtn) {
       confirmCropBtn.addEventListener('click', () => {
         if (!cropperObj) return;
-        const canvas = cropperObj.getCroppedCanvas({ width: 150, height: 150 }); // Optimized size to save memory
-        croppedBase64 = canvas.toDataURL('image/jpeg', 0.7); // Compressed quality
-        document.getElementById('photoPreview').src = croppedBase64;
-        document.getElementById('photoPreview').classList.remove('hidden');
-        document.getElementById('photoPlaceholder').classList.add('hidden');
-        document.getElementById('cropperModal').classList.add('hidden');
-        cropperObj.destroy();
+        const canvas = cropperObj.getCroppedCanvas({ width: 150, height: 150 }); 
+        if (canvas) {
+          croppedBase64 = canvas.toDataURL('image/jpeg', 0.7); 
+          document.getElementById('photoPreview').src = croppedBase64;
+          document.getElementById('photoPreview').classList.remove('hidden');
+          document.getElementById('photoPlaceholder').classList.add('hidden');
+          document.getElementById('cropperModal').classList.add('hidden');
+          cropperObj.destroy();
+        }
       });
     }
 
@@ -425,12 +425,10 @@
 
         const birthRegVal = document.getElementById('birthReg').value.trim();
         
-        // Save in Duplicate Registry
         let submittedRegNumbers = JSON.parse(localStorage.getItem('submitted_birth_regs')) || [];
         submittedRegNumbers.push(birthRegVal);
         localStorage.setItem('submitted_birth_regs', JSON.stringify(submittedRegNumbers));
 
-        // Create new applicant object with compressed photo data to prevent quota exceeded error
         const newApplicant = {
             id: 'BG-' + Math.floor(100000 + Math.random() * 900000),
             studentName: document.getElementById('nameBn').value.trim(),
@@ -451,16 +449,13 @@
             date: new Date().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' })
         };
 
-        // Save to LocalStorage with Quota Error Exception Handling
         try {
             let existingApps = JSON.parse(localStorage.getItem('siteAdmissionApplications')) || [];
             existingApps.unshift(newApplicant);
             localStorage.setItem('siteAdmissionApplications', JSON.stringify(existingApps));
         } catch (storageErr) {
-            console.warn("Storage full, clearing old images to make space...");
-            // Clear old photos if quota is exceeded
             let existingApps = JSON.parse(localStorage.getItem('siteAdmissionApplications')) || [];
-            existingApps.forEach(app => app.photo = ""); // Remove heavy base64 strings of previous records
+            existingApps.forEach(app => app.photo = ""); 
             existingApps.unshift(newApplicant);
             try {
                 localStorage.setItem('siteAdmissionApplications', JSON.stringify(existingApps));
@@ -469,7 +464,6 @@
             }
         }
 
-        // Attempt Backend API if running
         try {
             await fetch('http://localhost:5000/api/admin/admissions', {
                 method: 'POST',
@@ -482,10 +476,8 @@
 
         window.dispatchEvent(new Event('applicationSubmitted'));
 
-        // Hide Preview Modal
         document.getElementById('previewModal').classList.add('hidden');
 
-        // Populate Print Area
         document.getElementById('r_id').innerText = newApplicant.id;
         document.getElementById('r_date').innerText = new Date().toLocaleDateString('bn-BD');
         document.getElementById('r_photo').src = croppedBase64;
@@ -526,7 +518,7 @@
             Swal.fire({
               icon: 'success',
               title: 'ডাউনলোড সম্পন্ন!',
-              text: 'আপনার আবেদন সফলভাবে সম্পন্ন হয়েছে এবং অ্যাডমিন প্যানেলে জমা হয়ে গেছে।',
+              text: 'আপনার আবেদন সফলভাবে সম্পন্ন হয়েছে এবং অ্যাডমিন প্যানেলে জমা হয়ে গেছে।',
               confirmButtonColor: '#047857'
             }).then(() => {
               location.reload();
@@ -534,14 +526,13 @@
           }).catch(err => {
             console.error(err);
             Swal.close();
-            Swal.fire({ icon: 'error', title: 'ডাউনলোড ত্রুটি!', text: 'পিডিএফ তৈরি করতে সমস্যা হয়েছে। তবে আবেদনটি সফলভাবে সেভ হয়েছে।', confirmButtonColor: '#047857' });
+            Swal.fire({ icon: 'error', title: 'ডাউনলোড ত্রুটি!', text: 'পিডিএফ তৈরি করতে সমস্যা হয়েছে। তবে আবেদনটি সফলভাবে সেভ হয়েছে।', confirmButtonColor: '#047857' });
           });
         }, 800);
       });
     }
   });
 </script>
-
 
   <!-- FOOTER -->
   <footer class="bg-emerald-950 text-white mt-10 shadow-inner">
